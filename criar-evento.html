@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Evento — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+html,body{height:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+
+/* Layout */
+.page{display:grid;grid-template-columns:340px 1fr;min-height:100vh}
+
+/* LEFT PANEL */
+.panel-left{background:var(--dark);padding:60px 48px;display:flex;flex-direction:column;gap:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.left-logo{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase;margin-bottom:64px;display:block}
+.left-logo span{color:var(--gold)}
+.steps-list{flex:1}
+.step-li{display:flex;gap:16px;margin-bottom:0;position:relative}
+.step-li::before{content:'';position:absolute;left:14px;top:32px;bottom:-4px;width:1px;background:rgba(255,255,255,.08)}
+.step-li:last-child::before{display:none}
+.step-circle{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.85rem;color:rgba(255,255,255,.3);flex-shrink:0;transition:all .4s;margin-top:4px}
+.step-li.done .step-circle{background:var(--gold);border-color:var(--gold);color:#fff;font-size:.7rem}
+.step-li.active .step-circle{background:var(--rose);border-color:var(--rose);color:#fff}
+.step-body{padding-bottom:40px}
+.step-num{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:6px}
+.step-name{font-family:var(--serif);font-size:1rem;font-weight:400;color:rgba(255,255,255,.35);transition:color .4s}
+.step-li.active .step-name{color:#fff}
+.step-li.done .step-name{color:rgba(255,255,255,.5)}
+.step-desc{font-size:.75rem;color:rgba(255,255,255,.2);line-height:1.5;margin-top:4px;transition:color .4s}
+.step-li.active .step-desc{color:rgba(255,255,255,.45)}
+.panel-left-footer{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;margin-top:auto}
+.plf-text{font-size:.72rem;color:rgba(255,255,255,.25);line-height:1.6}
+
+/* RIGHT PANEL */
+.panel-right{padding:60px 80px 80px;display:flex;flex-direction:column}
+.wizard-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:60px}
+.wizard-back{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .3s}
+.wizard-back:hover{color:var(--gold)}
+.step-counter{font-size:.72rem;letter-spacing:.15em;color:var(--ink3)}
+.step-counter span{color:var(--rose);font-weight:500}
+
+/* Step Content */
+.wizard-step{display:none;animation:fadeIn .4s ease}
+.wizard-step.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.step-eyebrow{font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.step-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--gold)}
+.step-title{font-family:var(--serif);font-size:clamp(2rem,3vw,2.8rem);font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:8px}
+.step-title em{font-style:italic;color:var(--rose-dark)}
+.step-subtitle{font-size:.88rem;color:var(--ink3);margin-bottom:48px;line-height:1.7}
+
+/* Form elements */
+.form-group{margin-bottom:28px}
+.form-group label{display:block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(26,22,18,.15);padding:12px 0;font-family:var(--sans);font-size:.92rem;color:var(--ink);outline:none;transition:border-color .3s;resize:none;-webkit-appearance:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(26,22,18,.3)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+
+/* Gender toggle */
+.gender-toggle{display:flex;border:1px solid rgba(26,22,18,.12);overflow:hidden;width:fit-content}
+.gt-btn{padding:12px 32px;font-family:var(--sans);font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;background:transparent;border:none;color:var(--ink3);cursor:none;transition:all .3s}
+.gt-btn.active{background:var(--ink);color:var(--cream)}
+
+/* Style cards */
+.style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.style-card{padding:24px 20px;border:1px solid rgba(26,22,18,.1);cursor:none;transition:all .3s;position:relative;text-align:center}
+.style-card:hover{border-color:rgba(26,22,18,.25)}
+.style-card.selected{border-color:var(--rose);background:rgba(232,30,140,.03)}
+.style-card.selected::after{content:'✓';position:absolute;top:10px;right:12px;color:var(--rose);font-size:.8rem;font-weight:600}
+.style-emoji{font-size:2rem;margin-bottom:10px}
+.style-name{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:4px}
+.style-desc{font-size:.72rem;color:var(--ink3);line-height:1.4}
+
+/* Slider */
+.slider-wrap{margin-bottom:12px}
+.slider-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.slider-value{font-family:var(--serif);font-size:1.4rem;color:var(--rose);font-weight:400}
+input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--cream2);outline:none;border:none;padding:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--rose);cursor:none;border:2px solid #fff;box-shadow:0 2px 6px rgba(232,30,140,.3)}
+.slider-marks{display:flex;justify-content:space-between;font-size:.68rem;color:var(--ink3);margin-top:8px}
+
+/* Mode toggle */
+.mode-toggle{display:flex;align-items:center;justify-content:space-between;padding:24px;border:1px solid rgba(26,22,18,.1);background:#fff;margin-bottom:24px}
+.mt-info .mt-label{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink);margin-bottom:4px}
+.mt-info .mt-desc{font-size:.78rem;color:var(--ink3);line-height:1.5}
+.toggle{width:48px;height:26px;background:var(--cream2);border-radius:13px;cursor:none;position:relative;transition:background .3s;flex-shrink:0;border:none}
+.toggle.on{background:var(--rose)}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(22px)}
+
+/* Link preview */
+.link-preview{background:var(--cream2);padding:20px 24px;border-left:3px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.link-url{font-family:var(--sans);font-size:.8rem;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-copy{background:transparent;border:1px solid rgba(26,22,18,.2);padding:8px 16px;font-family:var(--sans);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s;flex-shrink:0}
+.link-copy:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Nav buttons */
+.wizard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:32px;border-top:1px solid rgba(26,22,18,.08)}
+.btn-back{background:transparent;border:1px solid rgba(26,22,18,.15);padding:16px 32px;font-family:var(--sans);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s}
+.btn-back:hover{border-color:var(--ink);color:var(--ink)}
+.btn-next{background:var(--ink);color:var(--cream);border:none;padding:16px 40px;font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.25em;text-transform:uppercase;cursor:none;transition:background .3s;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:var(--rose);transform:translateX(-101%);transition:transform .4s cubic-bezier(.77,0,.175,1)}
+.btn-next:hover::before{transform:translateX(0)}
+.btn-next span{position:relative;z-index:1}
+.btn-finish{background:var(--rose)}
+.btn-finish::before{background:var(--rose-dark)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="page">
+  <!-- LEFT PANEL: Steps -->
+  <aside class="panel-left">
+    <a href="dashboard.html" class="left-logo">Bye <span>Bye</span> Solteiro</a>
+    <div class="steps-list">
+      <div class="step-li done" id="li-1">
+        <div class="step-circle">✓</div>
+        <div class="step-body">
+          <div class="step-num">Etapa 01</div>
+          <div class="step-name">O Homenageado/a</div>
+          <div class="step-desc">Quem é o noivo ou a noiva?</div>
+        </div>
+      </div>
+      <div class="step-li active" id="li-2">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <div class="step-num">Etapa 02</div>
+          <div class="step-name">Quando e Onde?</div>
+          <div class="step-desc">Data, cidade e número de convidados</div>
+        </div>
+      </div>
+      <div class="step-li" id="li-3">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <div class="step-num">Etapa 03</div>
+          <div class="step-name">Estilo e Orçamento</div>
+          <div class="step-desc">Como será a festa e quanto investir</div>
+        </div>
+      </div>
+      <div class="step-li" id="li-4">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <div class="step-num">Etapa 04</div>
+          <div class="step-name">Configurar o Grupo</div>
+          <div class="step-desc">Convite e preferências do evento</div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-left-footer">
+      <div class="plf-text">Suas informações são salvas automaticamente. Você pode retomar de onde parou a qualquer momento.</div>
+    </div>
+  </aside>
+
+  <!-- RIGHT PANEL: Step content -->
+  <main class="panel-right">
+    <div class="wizard-topbar">
+      <a href="dashboard.html" class="wizard-back">← Voltar ao Dashboard</a>
+      <div class="step-counter">Etapa <span id="step-num-display">2</span> de 4</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="wizard-step" id="step-1">
+      <div class="step-eyebrow">Etapa 1 de 4</div>
+      <h2 class="step-title">Quem vamos <em>homenagear?</em></h2>
+      <p class="step-subtitle">Conte um pouco sobre o noivo ou a noiva — isso vai nos ajudar a criar o roteiro perfeito.</p>
+      <div class="form-group">
+        <label>Nome do homenageado/a</label>
+        <input type="text" placeholder="Ex: Camila" value="Camila">
+      </div>
+      <div class="form-group">
+        <label>É noivo ou noiva?</label>
+        <div class="gender-toggle" style="margin-top:8px">
+          <button class="gt-btn" onclick="setGender('noivo',this)">💍 Noivo</button>
+          <button class="gt-btn active" onclick="setGender('noiva',this)">💍 Noiva</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Conte um pouco sobre ela/ele</label>
+        <textarea rows="4" placeholder="Personalidade, gostos, o que não pode faltar na festa...">Camila é extrovertida, ama dançar e sempre sonhou com uma noite inesquecível com as amigas. Fã de drinks autorais e música ao vivo.</textarea>
+      </div>
+    </div>
+
+    <!-- STEP 2 (active) -->
+    <div class="wizard-step active" id="step-2">
+      <div class="step-eyebrow">Etapa 2 de 4</div>
+      <h2 class="step-title">Quando e <em>onde?</em></h2>
+      <p class="step-subtitle">Defina a data, a cidade e quantos amigos vão participar dessa noite especial.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data do evento</label>
+          <input type="date" value="2025-08-15" min="2025-03-16">
+        </div>
+        <div class="form-group">
+          <label>Cidade</label>
+          <select>
+            <option value="sp" selected>São Paulo, SP</option>
+            <option>Rio de Janeiro, RJ</option>
+            <option>Belo Horizonte, MG</option>
+            <option>Curitiba, PR</option>
+            <option>Porto Alegre, RS</option>
+            <option>Salvador, BA</option>
+            <option>Recife, PE</option>
+            <option>Fortaleza, CE</option>
+            <option>Brasília, DF</option>
+            <option>Gramado, RS</option>
+            <option>Florianópolis, SC</option>
+            <option>Campos do Jordão, SP</option>
+            <option>Outra cidade</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Número de convidados (incluindo você)</label>
+        <div class="slider-wrap">
+          <div class="slider-label-row">
+            <span style="font-size:.78rem;color:var(--ink3)">Arraste para selecionar</span>
+            <span class="slider-value" id="guests-val">12 pessoas</span>
+          </div>
+          <input type="range" min="2" max="50" value="12" oninput="updateGuests(this.value)">
+          <div class="slider-marks"><span>2</span><span>10</span><span>20</span><span>30</span><span>50</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="wizard-step" id="step-3">
+      <div class="step-eyebrow">Etapa 3 de 4</div>
+      <h2 class="step-title">Qual o <em>estilo</em> da festa?</h2>
+      <p class="step-subtitle">Escolha o clima que combina com a personalidade da homenageada. Pode selecionar mais de um.</p>
+      <div class="style-grid">
+        <div class="style-card selected" onclick="toggleStyle(this)">
+          <div class="style-emoji">🍸</div>
+          <div class="style-name">Noite Brilhante</div>
+          <div class="style-desc">Baladas, drinks e muita música</div>
+        </div>
+        <div class="style-card" onclick="toggleStyle(this)">
+          <div class="style-emoji">✈️</div>
+          <div class="style-name">Escapada de Viagem</div>
+          <div class="style-desc">Gramado, Floripa ou Arraial</div>
+        </div>
+        <div class="style-card selected" onclick="toggleStyle(this)">
+          <div class="style-emoji">🌿</div>
+          <div class="style-name">Dia de Bem-estar</div>
+          <div class="style-desc">Spa, brunch e relaxamento</div>
+        </div>
+        <div class="style-card" onclick="toggleStyle(this)">
+          <div class="style-emoji">🎯</div>
+          <div class="style-name">Aventura Total</div>
+          <div class="style-desc">Esportes e adrenalina</div>
+        </div>
+        <div class="style-card" onclick="toggleStyle(this)">
+          <div class="style-emoji">🏠</div>
+          <div class="style-name">Festa em Casa</div>
+          <div class="style-desc">Aconchegante e personalizado</div>
+        </div>
+        <div class="style-card" onclick="toggleStyle(this)">
+          <div class="style-emoji">🎭</div>
+          <div class="style-name">Experiência Cultural</div>
+          <div class="style-desc">Jantar show, teatro, arte</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:32px">
+        <label>Orçamento total do grupo</label>
+        <div class="slider-wrap">
+          <div class="slider-label-row">
+            <span style="font-size:.78rem;color:var(--ink3)">Arraste para selecionar</span>
+            <span class="slider-value" id="budget-val">R$ 2.400</span>
+          </div>
+          <input type="range" min="500" max="20000" step="100" value="2400" oninput="updateBudget(this.value)">
+          <div class="slider-marks"><span>R$500</span><span>R$5K</span><span>R$10K</span><span>R$20K</span></div>
+        </div>
+        <div style="font-size:.72rem;color:var(--ink3);margin-top:8px">≈ R$ 200 por pessoa com 12 participantes</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="wizard-step" id="step-4">
+      <div class="step-eyebrow">Etapa 4 de 4</div>
+      <h2 class="step-title">Configure <em>o grupo</em></h2>
+      <p class="step-subtitle">Dê um nome à festa e envie o convite para os participantes.</p>
+      <div class="form-group">
+        <label>Nome do evento</label>
+        <input type="text" value="Despedida da Camila 🌸" id="event-name-input" oninput="updateLink(this.value)">
+      </div>
+      <div class="mode-toggle">
+        <div class="mt-info">
+          <div class="mt-label">🤫 Modo Surpresa</div>
+          <div class="mt-desc">Ativando isso, a Camila não verá o roteiro completo — só saberá a data e o lugar. As surpresas ficam só com os organizadores.</div>
+        </div>
+        <button class="toggle on" id="surpriseToggle" onclick="this.classList.toggle('on')"></button>
+      </div>
+      <div class="form-group">
+        <label>Link de convite</label>
+        <div class="link-preview">
+          <div class="link-url" id="link-display">byebyesolteiro.com/invite/despedida-da-camila</div>
+          <button class="link-copy" onclick="copyInvite()">Copiar</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mensagem personalizada de convite</label>
+        <textarea rows="4" placeholder="Escreva uma mensagem para os convidados...">Oi! 🎉 Estou organizando a despedida da nossa querida Camila e você não pode ficar de fora! Clique no link para confirmar sua participação e pagar sua parte. Vai ser inesquecível! 💕</textarea>
+      </div>
+    </div>
+
+    <!-- Nav buttons -->
+    <div class="wizard-nav">
+      <button class="btn-back" id="btn-back" onclick="prevStep()">← Anterior</button>
+      <button class="btn-next" id="btn-next" onclick="nextStep()"><span id="btn-next-label">Próximo passo →</span></button>
+    </div>
+  </main>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+
+let current=2;
+function goTo(n){
+  document.querySelectorAll('.wizard-step').forEach((s,i)=>s.classList.toggle('active',i+1===n));
+  [1,2,3,4].forEach(i=>{
+    const li=document.getElementById('li-'+i);
+    li.classList.remove('active','done');
+    if(i<n)li.classList.add('done');
+    if(i===n)li.classList.add('active');
+    li.querySelector('.step-circle').textContent=i<n?'✓':i;
+    if(i<n)li.querySelector('.step-circle').textContent='✓';
+  });
+  document.getElementById('step-num-display').textContent=n;
+  document.getElementById('btn-back').style.visibility=n===1?'hidden':'visible';
+  const nextBtn=document.getElementById('btn-next');
+  const nextLbl=document.getElementById('btn-next-label');
+  if(n===4){nextBtn.classList.add('btn-finish');nextLbl.textContent='Criar evento! 🎉';}
+  else{nextBtn.classList.remove('btn-finish');nextLbl.textContent='Próximo passo →';}
+  current=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextStep(){if(current<4)goTo(current+1);else window.location.href='detalhe-evento.html';}
+function prevStep(){if(current>1)goTo(current-1);}
+function updateGuests(v){document.getElementById('guests-val').textContent=v+' pessoas';}
+function updateBudget(v){document.getElementById('budget-val').textContent='R$ '+parseInt(v).toLocaleString('pt-BR');}
+function toggleStyle(el){el.classList.toggle('selected');}
+function setGender(g,btn){document.querySelectorAll('.gt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function updateLink(val){const slug=val.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');document.getElementById('link-display').textContent='byebyesolteiro.com/invite/'+slug;}
+function copyInvite(){const url=document.getElementById('link-display').textContent;navigator.clipboard.writeText('https://'+url).catch(()=>{});const btn=document.querySelector('.link-copy');btn.textContent='Copiado!';setTimeout(()=>btn.textContent='Copiar',2000);}
+goTo(2);
+</script>
+</body>
+</html>

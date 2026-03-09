@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fornecedores — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+
+/* Sidebar (same as dashboard) */
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.nav-section-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.nav-badge{margin-left:auto;background:var(--rose);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:100px;font-weight:600}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.user-pill{display:flex;align-items:center;gap:12px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.user-name{font-size:.82rem;color:rgba(255,255,255,.8)}
+.user-role{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+
+/* MAIN */
+.main{margin-left:260px;flex:1;min-height:100vh}
+.topbar{background:rgba(247,243,238,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,150,90,.12);padding:20px 40px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:100}
+.topbar h1{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--ink);margin-right:auto}
+.topbar h1 em{font-style:italic;color:var(--rose-dark)}
+.search-bar{display:flex;align-items:center;gap:0;border:1px solid rgba(26,22,18,.12);background:#fff;overflow:hidden;width:280px}
+.search-bar input{border:none;padding:11px 16px;font-family:var(--sans);font-size:.82rem;color:var(--ink);outline:none;flex:1;background:transparent}
+.search-bar input::placeholder{color:rgba(26,22,18,.35)}
+.search-bar button{background:var(--ink);border:none;padding:11px 16px;color:var(--cream);cursor:none;font-size:.9rem;transition:background .3s}
+.search-bar button:hover{background:var(--gold)}
+
+/* Layout */
+.page-content{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:calc(100vh - 70px)}
+
+/* FILTERS SIDEBAR */
+.filters{padding:32px 28px;border-right:1px solid rgba(26,22,18,.06);background:#fff;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto}
+.filter-section{margin-bottom:32px}
+.filter-title{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.filter-title::after{content:'';flex:1;height:1px;background:rgba(26,22,18,.06)}
+
+/* Category chips */
+.cat-chips{display:flex;flex-direction:column;gap:6px}
+.cat-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(26,22,18,.08);cursor:none;transition:all .2s;font-size:.8rem;color:var(--ink3)}
+.cat-chip:hover{border-color:rgba(26,22,18,.2);color:var(--ink)}
+.cat-chip.active{border-color:var(--rose);background:rgba(232,30,140,.04);color:var(--rose)}
+.cat-chip .cat-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.cat-chip .cat-count{margin-left:auto;font-size:.68rem;color:var(--ink3)}
+.cat-chip.active .cat-count{color:var(--rose)}
+
+/* City select */
+.filter-select{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(26,22,18,.15);padding:10px 0;font-family:var(--sans);font-size:.85rem;color:var(--ink);outline:none;-webkit-appearance:none;cursor:none}
+
+/* Price range */
+.price-range-display{display:flex;justify-content:space-between;font-size:.78rem;color:var(--gold);margin-bottom:10px}
+input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--cream2);outline:none;border:none;padding:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:none;border:2px solid #fff;box-shadow:0 1px 4px rgba(184,150,90,.4)}
+
+/* Star filter */
+.star-filter{display:flex;gap:6px}
+.star-btn{border:1px solid rgba(26,22,18,.1);background:transparent;padding:8px 12px;font-size:.82rem;cursor:none;transition:all .2s;color:var(--ink3);font-family:var(--sans)}
+.star-btn:hover{border-color:var(--gold);color:var(--gold)}
+.star-btn.active{background:var(--gold);border-color:var(--gold);color:#fff}
+
+/* Toggle verified */
+.verified-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.vt-label{font-size:.82rem;color:var(--ink2)}
+.toggle{width:44px;height:24px;background:var(--cream2);border-radius:12px;cursor:none;position:relative;transition:background .3s;border:none;flex-shrink:0}
+.toggle.on{background:var(--rose)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(20px)}
+
+/* RESULTS */
+.results-area{padding:32px 36px}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.results-count{font-family:var(--serif);font-size:1.1rem;color:var(--ink2)}
+.results-count strong{color:var(--ink)}
+.sort-select{border:1px solid rgba(26,22,18,.12);background:#fff;padding:8px 16px;font-family:var(--sans);font-size:.75rem;color:var(--ink);outline:none;cursor:none;-webkit-appearance:none}
+
+/* Vendor Grid */
+.vendor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.vendor-card{background:#fff;border:1px solid rgba(26,22,18,.06);overflow:hidden;cursor:none;transition:box-shadow .3s,transform .3s}
+.vendor-card:hover{box-shadow:0 16px 40px rgba(26,22,18,.1);transform:translateY(-3px)}
+.vendor-img{height:200px;position:relative;overflow:hidden}
+.vendor-img-bg{width:100%;height:100%;transition:transform .6s ease}
+.vendor-card:hover .vendor-img-bg{transform:scale(1.06)}
+.vendor-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:5px;padding:5px 10px;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;font-family:var(--sans)}
+.vendor-badge.verified{background:rgba(247,243,238,.95);color:var(--gold)}
+.vendor-badge.new{background:var(--rose);color:#fff}
+.vendor-body{padding:22px 20px}
+.vendor-cat{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.vendor-name{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:6px;line-height:1.2}
+.vendor-city{font-size:.75rem;color:var(--ink3);margin-bottom:14px;display:flex;align-items:center;gap:5px}
+.vendor-footer{display:flex;align-items:center;justify-content:space-between}
+.vendor-rating{display:flex;align-items:center;gap:5px}
+.vendor-stars{color:var(--gold);font-size:.8rem}
+.vendor-rating-val{font-family:var(--serif);font-size:.9rem;color:var(--ink)}
+.vendor-rating-count{font-size:.68rem;color:var(--ink3)}
+.vendor-price{text-align:right}
+.vendor-price .from{font-size:.62rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+.vendor-price .val{font-family:var(--serif);font-size:1.1rem;color:var(--ink);font-weight:400}
+.vendor-cta{display:block;text-align:center;padding:12px;background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;margin:0 20px 20px;transition:background .3s}
+.vendor-cta:hover{background:var(--gold)}
+
+/* Gradient backgrounds for cards */
+.grad-1{background:linear-gradient(135deg,#2C1810,#C8687A)}
+.grad-2{background:linear-gradient(135deg,#1A2035,#4A6080)}
+.grad-3{background:linear-gradient(135deg,#1C2010,#6B7A3A)}
+.grad-4{background:linear-gradient(135deg,#1A1A1A,#4A4A4A)}
+.grad-5{background:linear-gradient(135deg,#2A1040,#8B5CF6)}
+.grad-6{background:linear-gradient(135deg,#401020,#B8965A)}
+.grad-7{background:linear-gradient(135deg,#0A2040,#3B82F6)}
+.grad-8{background:linear-gradient(135deg,#200A10,#E91E8C)}
+.grad-9{background:linear-gradient(135deg,#101A10,#22C55E)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <div style="margin-bottom:8px"><span class="nav-section-label">Principal</span>
+      <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+      <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+      <a href="detalhe-evento.html" class="nav-item">📅 Meus Eventos <span class="nav-badge">2</span></a>
+    </div>
+    <div><span class="nav-section-label" style="margin-top:8px">Plataforma</span>
+      <a href="fornecedores.html" class="nav-item active">🤝 Fornecedores</a>
+      <a href="split-pagamento.html" class="nav-item">💳 Pagamentos <span class="nav-badge">3</span></a>
+      <a href="#" class="nav-item">📸 Álbum de Fotos</a>
+      <a href="#" class="nav-item">🛍️ Loja de Kits</a>
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-pill"><div class="user-avatar">A</div><div><div class="user-name">Ana Ferreira</div><div class="user-role">Organizadora</div></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <h1>Fornecedores <em>Verificados</em></h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar por nome ou serviço...">
+      <button>🔍</button>
+    </div>
+    <select style="border:1px solid rgba(26,22,18,.12);background:#fff;padding:10px 16px;font-family:var(--sans);font-size:.75rem;color:var(--ink);outline:none;cursor:none;-webkit-appearance:none">
+      <option>São Paulo, SP</option><option>Rio de Janeiro, RJ</option><option>Belo Horizonte, MG</option>
+    </select>
+  </div>
+
+  <div class="page-content">
+    <!-- FILTERS -->
+    <aside class="filters">
+      <div class="filter-section">
+        <div class="filter-title">Categoria</div>
+        <div class="cat-chips">
+          <div class="cat-chip active" onclick="toggleCat(this)"><span class="cat-icon">🍸</span>Bar & Balada<span class="cat-count">24</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">📸</span>Fotografia<span class="cat-count">18</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">🚌</span>Transporte<span class="cat-count">12</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">🍽️</span>Gastronomia<span class="cat-count">31</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">💆</span>Spa & Bem-estar<span class="cat-count">9</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">🎪</span>Entretenimento<span class="cat-count">15</span></div>
+          <div class="cat-chip" onclick="toggleCat(this)"><span class="cat-icon">🎨</span>Decoração<span class="cat-count">20</span></div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Faixa de Preço</div>
+        <div class="price-range-display">
+          <span>R$ <span id="price-min">200</span></span>
+          <span>até R$ <span id="price-max">5.000</span></span>
+        </div>
+        <input type="range" min="0" max="20000" step="100" value="5000" oninput="document.getElementById('price-max').textContent=parseInt(this.value).toLocaleString('pt-BR')">
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Avaliação mínima</div>
+        <div class="star-filter">
+          <button class="star-btn" onclick="setStars(this)">★1</button>
+          <button class="star-btn" onclick="setStars(this)">★2</button>
+          <button class="star-btn" onclick="setStars(this)">★3</button>
+          <button class="star-btn active" onclick="setStars(this)">★4</button>
+          <button class="star-btn" onclick="setStars(this)">★5</button>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Outros filtros</div>
+        <div class="verified-toggle">
+          <span class="vt-label">✅ Apenas verificados</span>
+          <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="verified-toggle">
+          <span class="vt-label">📅 Disponível em Ago/25</span>
+          <button class="toggle" onclick="this.classList.toggle('on')"></button>
+        </div>
+      </div>
+
+      <button onclick="resetFilters()" style="width:100%;background:transparent;border:1px solid rgba(26,22,18,.12);padding:12px;font-family:var(--sans);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s;margin-top:8px" onmouseenter="this.style.borderColor='var(--rose)';this.style.color='var(--rose)'" onmouseleave="this.style.borderColor='rgba(26,22,18,.12)';this.style.color='var(--ink3)'">Limpar Filtros</button>
+    </aside>
+
+    <!-- RESULTS -->
+    <div class="results-area">
+      <div class="results-header">
+        <div class="results-count">Mostrando <strong>9</strong> de 129 fornecedores</div>
+        <select class="sort-select">
+          <option>Melhor avaliados</option>
+          <option>Menor preço</option>
+          <option>Mais contratados</option>
+          <option>Mais recentes</option>
+        </select>
+      </div>
+
+      <div class="vendor-grid">
+        <!-- Cards -->
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-1"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🍸 Bar & Balada</div>
+            <div class="vendor-name">Espaço Aurora</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">4.9</span><span class="vendor-rating-count">(87)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 1.200</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-5"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">📸 Fotografia</div>
+            <div class="vendor-name">Studio Lux Photo</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">4.8</span><span class="vendor-rating-count">(62)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 800</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-3"></div><div class="vendor-badge new">Novo</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">💆 Spa & Bem-estar</div>
+            <div class="vendor-name">Spa Jardins</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★☆</span><span class="vendor-rating-val">4.6</span><span class="vendor-rating-count">(34)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 350</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-7"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🚌 Transporte</div>
+            <div class="vendor-name">Van Party Premium</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">4.9</span><span class="vendor-rating-count">(118)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 600</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-6"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🍽️ Gastronomia</div>
+            <div class="vendor-name">Bistrô das Flores</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">4.7</span><span class="vendor-rating-count">(45)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 95/pessoa</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-8"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🎪 Entretenimento</div>
+            <div class="vendor-name">Show de Talentos SP</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★☆</span><span class="vendor-rating-val">4.5</span><span class="vendor-rating-count">(28)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 900</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-2"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🎨 Decoração</div>
+            <div class="vendor-name">Arte & Festa Decor</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">4.8</span><span class="vendor-rating-count">(73)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 450</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-4"></div><div class="vendor-badge new">Novo</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">🍸 Bar & Balada</div>
+            <div class="vendor-name">Black Label Club</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★☆</span><span class="vendor-rating-val">4.4</span><span class="vendor-rating-count">(12)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 1.800</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-img"><div class="vendor-img-bg grad-9"></div><div class="vendor-badge verified">✓ Verificado</div></div>
+          <div class="vendor-body">
+            <div class="vendor-cat">📸 Fotografia</div>
+            <div class="vendor-name">Memórias em Foco</div>
+            <div class="vendor-city">📍 São Paulo, SP</div>
+            <div class="vendor-footer">
+              <div class="vendor-rating"><span class="vendor-stars">★★★★★</span><span class="vendor-rating-val">5.0</span><span class="vendor-rating-count">(41)</span></div>
+              <div class="vendor-price"><div class="from">A partir de</div><div class="val">R$ 1.100</div></div>
+            </div>
+          </div>
+          <a href="#" class="vendor-cta">Ver Perfil</a>
+        </div>
+      </div>
+
+      <!-- Load more -->
+      <div style="text-align:center;margin-top:40px">
+        <button style="background:transparent;border:1px solid rgba(26,22,18,.2);padding:16px 40px;font-family:var(--sans);font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s" onmouseenter="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseleave="this.style.borderColor='rgba(26,22,18,.2)';this.style.color='var(--ink3)'">Carregar mais resultados</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function toggleCat(el){el.classList.toggle('active');}
+function setStars(el){document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function resetFilters(){document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));}
+</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--gold2:#D4AF72;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--card-bg:#FFFFFF;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+html,body{height:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;overflow-x:hidden;cursor:none;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;padding:0;flex-shrink:0;position:fixed;left:0;top:0;bottom:0;z-index:200;transition:width .3s}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0;overflow-y:auto}
+.nav-section{margin-bottom:8px}
+.nav-section-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;font-weight:400;text-decoration:none;transition:color .2s,background .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.nav-icon{width:18px;height:18px;opacity:.7;flex-shrink:0;font-size:1rem;text-align:center}
+.nav-item.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;background:var(--rose);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:100px;font-weight:600}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.user-pill{display:flex;align-items:center;gap:12px;cursor:none}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.user-name{font-size:.82rem;color:rgba(255,255,255,.8);font-weight:400}
+.user-role{font-size:.65rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}
+
+/* MAIN */
+.main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:rgba(247,243,238,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,150,90,.12);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-left h1{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--ink)}
+.topbar-left h1 span{font-style:italic;color:var(--rose-dark)}
+.topbar-left .date{font-size:.72rem;color:var(--ink3);letter-spacing:.1em;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.notif-btn{width:40px;height:40px;border:1px solid rgba(26,22,18,.1);background:transparent;display:flex;align-items:center;justify-content:center;cursor:none;position:relative;transition:border-color .3s}
+.notif-btn:hover{border-color:var(--gold)}
+.notif-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;background:var(--rose);border-radius:50%;border:2px solid var(--cream)}
+.btn-new{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:12px 24px;border:none;cursor:none;transition:background .3s}
+.btn-new:hover{background:var(--gold)}
+
+/* CONTENT */
+.content{padding:40px;flex:1}
+
+/* KPI Cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:40px}
+.kpi-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:28px 24px;position:relative;overflow:hidden;transition:box-shadow .3s,transform .3s}
+.kpi-card:hover{box-shadow:0 12px 32px rgba(26,22,18,.08);transform:translateY(-2px)}
+.kpi-card::after{content:attr(data-icon);position:absolute;right:-10px;bottom:-10px;font-size:4rem;opacity:.05;line-height:1}
+.kpi-label{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.kpi-value{font-family:var(--serif);font-size:2.6rem;font-weight:400;color:var(--ink);line-height:1;margin-bottom:6px}
+.kpi-value.rose{color:var(--rose)}
+.kpi-value.gold{color:var(--gold)}
+.kpi-value.green{color:#1A6B3A}
+.kpi-change{font-size:.72rem;color:var(--ink3)}
+.kpi-change.up{color:#1A6B3A}.kpi-change.up::before{content:'↑ '}
+.kpi-change.down{color:#8B1A1A}.kpi-change.down::before{content:'↓ '}
+.kpi-bar{height:3px;background:var(--cream2);margin-top:16px;border-radius:2px;overflow:hidden}
+.kpi-bar-fill{height:100%;border-radius:2px;background:var(--rose)}
+
+/* Two-col layout */
+.two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-bottom:24px}
+
+/* Section headers */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-hdr h2{font-family:var(--serif);font-size:1.4rem;font-weight:500;color:var(--ink)}
+.section-hdr a{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:color .3s}
+.section-hdr a:hover{color:var(--rose)}
+
+/* Events list */
+.events-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:0;overflow:hidden}
+.event-row{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid rgba(26,22,18,.05);transition:background .2s;cursor:none}
+.event-row:last-child{border-bottom:none}
+.event-row:hover{background:rgba(247,243,238,.6)}
+.event-color{width:4px;height:48px;border-radius:2px;flex-shrink:0}
+.event-info{flex:1;min-width:0}
+.event-name{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.event-meta{font-size:.72rem;color:var(--ink3);display:flex;gap:12px}
+.event-meta span{display:flex;align-items:center;gap:4px}
+.event-progress{width:80px;text-align:right}
+.event-pct{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--ink)}
+.event-pct-lbl{font-size:.6rem;color:var(--ink3);letter-spacing:.15em;text-transform:uppercase}
+.badge{display:inline-flex;align-items:center;font-family:var(--sans);font-size:.62rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.badge-active{background:rgba(232,30,140,.1);color:var(--rose)}
+.badge-confirmed{background:#DBEAFE;color:#1E40AF}
+.badge-draft{background:var(--cream2);color:var(--ink3)}
+.badge-completed{background:#D1FAE5;color:#065F46}
+.avatars{display:flex}
+.av{width:26px;height:26px;border-radius:50%;background:var(--cream2);border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--ink3);font-weight:500;font-family:var(--serif)}
+.av:first-child{margin-left:0}
+
+/* Activity feed */
+.activity-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:0;overflow:hidden}
+.activity-item{display:flex;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(26,22,18,.05)}
+.activity-item:last-child{border-bottom:none}
+.act-avatar{width:36px;height:36px;border-radius:50%;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.9rem;color:var(--ink3);flex-shrink:0;font-weight:500}
+.act-avatar.rose{background:rgba(232,30,140,.12);color:var(--rose)}
+.act-avatar.gold{background:rgba(184,150,90,.15);color:var(--gold)}
+.act-avatar.green{background:rgba(26,107,58,.1);color:#1A6B3A}
+.act-content{flex:1;min-width:0}
+.act-text{font-size:.82rem;color:var(--ink2);line-height:1.5}
+.act-text strong{color:var(--ink);font-weight:500}
+.act-time{font-size:.68rem;color:var(--ink3);margin-top:3px;letter-spacing:.05em}
+
+/* Upcoming card */
+.upcoming-card{background:var(--dark);padding:28px;color:#fff;position:relative;overflow:hidden}
+.upcoming-card::before{content:'💍';position:absolute;right:-20px;bottom:-20px;font-size:120px;opacity:.06;line-height:1}
+.upcoming-eyebrow{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+.upcoming-name{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:#fff;margin-bottom:4px}
+.upcoming-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:24px}
+.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+.cd-cell{background:rgba(255,255,255,.06);padding:14px 8px;text-align:center}
+.cd-num{font-family:var(--serif);font-size:1.8rem;font-weight:400;color:var(--gold);line-height:1}
+.cd-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+.progress-bar-wrap{background:rgba(255,255,255,.08);height:4px;border-radius:2px;overflow:hidden;margin-bottom:8px}
+.progress-bar-fill{height:100%;background:var(--rose);border-radius:2px}
+.progress-info{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.35)}
+
+/* Quick actions */
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.qa-btn{background:#fff;border:1px solid rgba(26,22,18,.08);padding:20px;display:flex;align-items:center;gap:14px;cursor:none;text-decoration:none;transition:border-color .3s,box-shadow .3s}
+.qa-btn:hover{border-color:var(--gold);box-shadow:0 8px 24px rgba(26,22,18,.07)}
+.qa-icon{width:40px;height:40px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.qa-label{font-size:.78rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+.qa-sub{font-size:.68rem;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="index.html">Bye <span>Bye</span> Solteiro</a>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <span class="nav-section-label">Principal</span>
+      <a href="dashboard.html" class="nav-item active"><span class="nav-icon">🏠</span> Dashboard</a>
+      <a href="criar-evento.html" class="nav-item"><span class="nav-icon">✨</span> Criar Evento</a>
+      <a href="detalhe-evento.html" class="nav-item"><span class="nav-icon">📅</span> Meus Eventos <span class="nav-badge">2</span></a>
+    </div>
+    <div class="nav-section" style="margin-top:16px">
+      <span class="nav-section-label">Plataforma</span>
+      <a href="fornecedores.html" class="nav-item"><span class="nav-icon">🤝</span> Fornecedores</a>
+      <a href="split-pagamento.html" class="nav-item"><span class="nav-icon">💳</span> Pagamentos <span class="nav-badge">3</span></a>
+      <a href="#" class="nav-item"><span class="nav-icon">📸</span> Álbum de Fotos</a>
+      <a href="#" class="nav-item"><span class="nav-icon">🛍️</span> Loja de Kits</a>
+    </div>
+    <div class="nav-section" style="margin-top:16px">
+      <span class="nav-section-label">Conta</span>
+      <a href="#" class="nav-item"><span class="nav-icon">👤</span> Meu Perfil</a>
+      <a href="#" class="nav-item"><span class="nav-icon">⚙️</span> Configurações</a>
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Ana Ferreira</div>
+        <div class="user-role">Organizadora</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Olá, <span>Ana</span> 👋</h1>
+      <div class="date">Segunda-feira, 9 de março de 2025</div>
+    </div>
+    <div class="topbar-right">
+      <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+      <a href="criar-evento.html" class="btn-new">+ Novo Evento</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card" data-icon="🎉">
+        <div class="kpi-label">Eventos Ativos</div>
+        <div class="kpi-value rose">2</div>
+        <div class="kpi-change up">1 novo este mês</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:66%;background:var(--rose)"></div></div>
+      </div>
+      <div class="kpi-card" data-icon="💳">
+        <div class="kpi-label">Pagamentos Pendentes</div>
+        <div class="kpi-value gold">3</div>
+        <div class="kpi-change">de 12 participantes</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:75%;background:var(--gold)"></div></div>
+      </div>
+      <div class="kpi-card" data-icon="✅">
+        <div class="kpi-label">Itens no Checklist</div>
+        <div class="kpi-value">8</div>
+        <div class="kpi-change up">5 concluídos</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:62%;background:#1A6B3A"></div></div>
+      </div>
+      <div class="kpi-card" data-icon="🤝">
+        <div class="kpi-label">Fornecedores</div>
+        <div class="kpi-value">4</div>
+        <div class="kpi-change up">2 confirmados</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" style="width:50%;background:#1A3A6B"></div></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- LEFT -->
+      <div>
+        <!-- Events List -->
+        <div class="section-hdr">
+          <h2>Meus Eventos</h2>
+          <a href="detalhe-evento.html">Ver todos →</a>
+        </div>
+        <div class="events-card">
+          <div class="event-row">
+            <div class="event-color" style="background:var(--rose)"></div>
+            <div class="event-info">
+              <div class="event-name">Despedida da Camila 🌸</div>
+              <div class="event-meta">
+                <span>📅 15 Ago 2025</span>
+                <span>📍 São Paulo</span>
+                <span>👥 12 pessoas</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="badge badge-active">Ativo</span>
+              <div class="avatars">
+                <div class="av">C</div><div class="av">M</div><div class="av">R</div><div class="av" style="background:var(--cream2);font-size:.6rem;color:var(--ink3)">+9</div>
+              </div>
+            </div>
+            <div class="event-progress">
+              <div class="event-pct">75%</div>
+              <div class="event-pct-lbl">pago</div>
+            </div>
+          </div>
+          <div class="event-row">
+            <div class="event-color" style="background:var(--gold)"></div>
+            <div class="event-info">
+              <div class="event-name">Despedida do Pedro 🍻</div>
+              <div class="event-meta">
+                <span>📅 22 Ago 2025</span>
+                <span>📍 Rio de Janeiro</span>
+                <span>👥 8 pessoas</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="badge badge-draft">Rascunho</span>
+              <div class="avatars">
+                <div class="av">P</div><div class="av">L</div><div class="av">G</div>
+              </div>
+            </div>
+            <div class="event-progress">
+              <div class="event-pct">20%</div>
+              <div class="event-pct-lbl">pago</div>
+            </div>
+          </div>
+          <div class="event-row" style="opacity:.5">
+            <div class="event-color" style="background:#1A6B3A"></div>
+            <div class="event-info">
+              <div class="event-name">Despedida da Julia 🥂</div>
+              <div class="event-meta">
+                <span>📅 10 Mai 2025</span>
+                <span>📍 Gramado</span>
+                <span>👥 10 pessoas</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span class="badge badge-completed">Concluído</span>
+              <div class="avatars">
+                <div class="av">J</div><div class="av">A</div><div class="av">F</div>
+              </div>
+            </div>
+            <div class="event-progress">
+              <div class="event-pct">100%</div>
+              <div class="event-pct-lbl">pago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="section-hdr" style="margin-top:28px">
+          <h2>Atividade Recente</h2>
+          <a href="#">Ver tudo →</a>
+        </div>
+        <div class="activity-card">
+          <div class="activity-item">
+            <div class="act-avatar green">M</div>
+            <div class="act-content">
+              <div class="act-text"><strong>Mariana Costa</strong> pagou sua parte da Despedida da Camila</div>
+              <div class="act-time">Há 12 minutos · R$ 180,00</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar rose">R</div>
+            <div class="act-content">
+              <div class="act-text"><strong>Rafael Souza</strong> entrou no grupo da Despedida do Pedro</div>
+              <div class="act-time">Há 1 hora</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar gold">🤝</div>
+            <div class="act-content">
+              <div class="act-text"><strong>Espaço Aurora</strong> confirmou disponibilidade para 15 de agosto</div>
+              <div class="act-time">Há 3 horas · Fornecedor</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar">L</div>
+            <div class="act-content">
+              <div class="act-text"><strong>Larissa Mello</strong> adicionou 3 fotos ao álbum da Despedida da Camila</div>
+              <div class="act-time">Ontem às 19:30</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar green">✅</div>
+            <div class="act-content">
+              <div class="act-text"><strong>Você</strong> marcou "Contratar fotógrafo" como concluído</div>
+              <div class="act-time">Ontem às 16:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <!-- Upcoming Event Countdown -->
+        <div class="section-hdr">
+          <h2>Próximo Evento</h2>
+          <a href="detalhe-evento.html">Detalhes →</a>
+        </div>
+        <div class="upcoming-card" style="margin-bottom:24px">
+          <div class="upcoming-eyebrow">Despedida da Camila 🌸</div>
+          <div class="upcoming-name">15 de Agosto de 2025</div>
+          <div class="upcoming-sub">São Paulo · 12 participantes</div>
+          <div class="countdown" id="countdown">
+            <div class="cd-cell"><div class="cd-num" id="cd-d">158</div><div class="cd-lbl">Dias</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cd-h">14</div><div class="cd-lbl">Horas</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cd-m">32</div><div class="cd-lbl">Min</div></div>
+            <div class="cd-cell"><div class="cd-num" id="cd-s">07</div><div class="cd-lbl">Seg</div></div>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:75%"></div></div>
+          <div class="progress-info"><span>Arrecadado</span><span>75% · R$ 1.620 / R$ 2.160</span></div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-hdr">
+          <h2>Ações Rápidas</h2>
+        </div>
+        <div class="quick-actions">
+          <a href="criar-evento.html" class="qa-btn">
+            <div class="qa-icon">✨</div>
+            <div><div class="qa-label">Novo Evento</div><div class="qa-sub">Comece agora</div></div>
+          </a>
+          <a href="fornecedores.html" class="qa-btn">
+            <div class="qa-icon">🔍</div>
+            <div><div class="qa-label">Fornecedores</div><div class="qa-sub">Encontre serviços</div></div>
+          </a>
+          <a href="split-pagamento.html" class="qa-btn">
+            <div class="qa-icon">💳</div>
+            <div><div class="qa-label">Cobrar Grupo</div><div class="qa-sub">3 pendentes</div></div>
+          </a>
+          <a href="#" class="qa-btn">
+            <div class="qa-icon">📋</div>
+            <div><div class="qa-label">Checklist</div><div class="qa-sub">8 tarefas</div></div>
+          </a>
+        </div>
+
+        <!-- Invite card -->
+        <div style="background:#fff;border:1px solid rgba(26,22,18,.06);padding:24px;margin-bottom:0">
+          <div style="font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Link de Convite</div>
+          <div style="font-family:var(--serif);font-size:1rem;color:var(--ink);margin-bottom:16px">Despedida da Camila</div>
+          <div style="display:flex;gap:0;border:1px solid rgba(26,22,18,.1);overflow:hidden">
+            <div style="flex:1;padding:10px 14px;font-size:.72rem;color:var(--ink3);background:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">byebyesolteiro.com/invite/camila-2025</div>
+            <button onclick="copyLink(this)" style="background:var(--ink);color:var(--cream);border:none;padding:10px 18px;font-family:var(--sans);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;cursor:none;flex-shrink:0;transition:background .3s" onmouseenter="this.style.background='var(--gold)'" onmouseleave="this.style.background='var(--ink)'">Copiar</button>
+          </div>
+          <div style="font-size:.7rem;color:var(--ink3);margin-top:10px">9 de 12 convidados aceitaram</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+// Countdown
+function updateCountdown(){
+  const target=new Date('2025-08-15T22:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<0)return;
+  document.getElementById('cd-d').textContent=Math.floor(diff/86400000);
+  document.getElementById('cd-h').textContent=Math.floor((diff%86400000)/3600000).toString().padStart(2,'0');
+  document.getElementById('cd-m').textContent=Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
+  document.getElementById('cd-s').textContent=Math.floor((diff%60000)/1000).toString().padStart(2,'0');
+}
+updateCountdown();setInterval(updateCountdown,1000);
+function copyLink(btn){
+  navigator.clipboard.writeText('https://byebyesolteiro.com/invite/camila-2025').catch(()=>{});
+  const orig=btn.textContent;btn.textContent='Copiado!';btn.style.background='#1A6B3A';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='var(--ink)'},2000);
+}
+</script>
+</body>
+</html>
