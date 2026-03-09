@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bye Bye Solteiro — Despedidas Inesquecíveis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream:    #F7F3EE;
+    --cream2:   #EDE8E0;
+    --ink:      #1A1612;
+    --ink2:     #3A342E;
+    --ink3:     #6B5F57;
+    --gold:     #B8965A;
+    --gold2:    #D4AF72;
+    --rose:     #C8687A;
+    --rose-soft:#F0D4D9;
+    --serif:    'Cormorant Garamond', Georgia, serif;
+    --sans:     'Jost', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Custom Cursor ─────────────────────────────────────────────────────────── */
+  .cursor {
+    position: fixed; top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.4s cubic-bezier(.25,.46,.45,.94),
+                width 0.4s ease, height 0.4s ease, opacity 0.3s;
+    opacity: 0.6;
+  }
+  body:hover .cursor { opacity: 1; }
+  a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+  /* ── Noise Texture Overlay ─────────────────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── Nav ────────────────────────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 28px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.5s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(247,243,238,0.92);
+    backdrop-filter: blur(16px);
+    padding: 18px 60px;
+    border-bottom: 1px solid rgba(184,150,90,0.15);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+  .nav-links a {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink2);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--ink);
+    color: var(--cream) !important;
+    padding: 10px 24px;
+    border: 1px solid var(--ink);
+    transition: background 0.3s, color 0.3s !important;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--gold) !important; border-color: var(--gold); color: var(--cream) !important; }
+
+  /* ── Hero ───────────────────────────────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.2s forwards;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.2rem, 5vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .hero-title .line-indent { padding-left: 80px; }
+  .hero-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink3);
+    max-width: 420px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 42px;
+    border: 1px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+    transition: color 0.4s;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(.77,0,.175,1);
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-ghost {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: gap 0.3s, color 0.3s;
+  }
+  .btn-ghost:hover { gap: 18px; color: var(--gold); }
+  .btn-ghost::after {
+    content: '→';
+    font-size: 1rem;
+    transition: transform 0.3s;
+  }
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image-wrap {
+    position: absolute; inset: 0;
+    opacity: 0;
+    animation: fadeIn 1.4s ease 0.3s forwards;
+  }
+  .hero-image-bg {
+    width: 100%; height: 100%;
+    background:
+      linear-gradient(160deg, rgba(200,104,122,0.12) 0%, transparent 50%),
+      linear-gradient(to bottom, var(--cream2) 0%, #D4C4B8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  /* Illustrated abstract composition */
+  .hero-illustration {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-blob-1 {
+    position: absolute;
+    width: 520px; height: 520px;
+    background: radial-gradient(ellipse, rgba(200,104,122,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .hero-blob-2 {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(ellipse, rgba(184,150,90,0.15) 0%, transparent 70%);
+    top: 20%; left: 60%;
+    animation: pulse 8s ease-in-out 2s infinite reverse;
+  }
+  .hero-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 220px;
+    opacity: 0.06;
+    color: var(--ink);
+    font-family: var(--serif);
+    user-select: none;
+    animation: slowRotate 40s linear infinite;
+    letter-spacing: -10px;
+  }
+  .hero-card {
+    position: absolute;
+    background: rgba(247,243,238,0.88);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(184,150,90,0.25);
+    padding: 24px 28px;
+    box-shadow: 0 20px 60px rgba(26,22,18,0.1);
+  }
+  .hero-card-1 {
+    bottom: 120px; left: 40px;
+    opacity: 0;
+    animation: slideRight 0.9s ease 1.0s forwards;
+  }
+  .hero-card-2 {
+    top: 130px; right: 50px;
+    opacity: 0;
+    animation: slideLeft 0.9s ease 1.2s forwards;
+  }
+  .card-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    font-family: var(--sans);
+  }
+  .card-value {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .card-sub {
+    font-size: 0.72rem;
+    color: var(--ink3);
+    margin-top: 4px;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px; left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.4s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  .scroll-text {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    writing-mode: vertical-lr;
+    font-family: var(--sans);
+  }
+
+  /* ── Section Shared ─────────────────────────────────────────────────────────── */
+  section { position: relative; }
+
+  .section-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--rose); }
+
+  /* ── Marquee ─────────────────────────────────────────────────────────────────── */
+  .marquee-band {
+    background: var(--ink);
+    padding: 18px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 28s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    padding: 0 40px;
+    opacity: 0.7;
+    letter-spacing: 0.05em;
+  }
+  .marquee-dot {
+    color: var(--gold);
+    opacity: 1 !important;
+    font-style: normal !important;
+    font-size: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* ── Como Funciona ────────────────────────────────────────────────────────────── */
+  #como-funciona {
+    padding: 130px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 100px;
+    align-items: center;
+    background: var(--cream);
+  }
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    padding: 36px 0;
+    border-bottom: 1px solid rgba(26,22,18,0.08);
+    position: relative;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .step-item:first-child { border-top: 1px solid rgba(26,22,18,0.08); }
+  .step-num {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: rgba(26,22,18,0.12);
+    line-height: 1;
+    transition: color 0.4s;
+  }
+  .step-item:hover .step-num { color: var(--gold); }
+  .step-content {}
+  .step-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .step-desc {
+    font-size: 0.87rem;
+    line-height: 1.75;
+    color: var(--ink3);
+  }
+  .step-arrow {
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%) translateX(-10px);
+    color: var(--gold);
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .step-item:hover .step-arrow { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+  .cf-visual {
+    position: relative;
+    height: 580px;
+  }
+  .cf-main-card {
+    position: absolute;
+    top: 0; left: 60px;
+    width: 320px; height: 420px;
+    background: var(--ink);
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 30px 30px 0px var(--cream2), 31px 31px 0px rgba(184,150,90,0.3);
+  }
+  .cf-card-top .label {
+    font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(247,243,238,0.4); margin-bottom: 24px;
+  }
+  .cf-card-big {
+    font-family: var(--serif);
+    font-size: 3.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .cf-card-big span { color: var(--gold); }
+  .cf-card-bottom {}
+  .cf-divider { height: 1px; background: rgba(247,243,238,0.12); margin-bottom: 20px; }
+  .cf-stat-row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cf-stat .val {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+  .cf-stat .lbl {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(247,243,238,0.4);
+    margin-top: 2px;
+  }
+  .cf-accent-card {
+    position: absolute;
+    bottom: 20px; right: 0;
+    width: 240px;
+    background: var(--rose-soft);
+    border: 1px solid rgba(200,104,122,0.2);
+    padding: 28px 24px;
+  }
+  .cf-accent-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .cf-accent-card .title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .cf-accent-card .desc {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--ink3);
+  }
+  .cf-gold-pill {
+    position: absolute;
+    top: 80px; right: 20px;
+    background: var(--gold);
+    color: var(--cream);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    font-family: var(--sans);
+  }
+
+  /* ── Experiências ─────────────────────────────────────────────────────────────── */
+  #experiencias {
+    padding: 130px 80px;
+    background: var(--cream2);
+  }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 70px;
+  }
+  .exp-header-left { max-width: 540px; }
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .exp-card {
+    position: relative;
+    height: 460px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .exp-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.7s cubic-bezier(.25,.46,.45,.94);
+  }
+  .exp-card:hover .exp-bg { transform: scale(1.06); }
+  .exp-bg-1 {
+    background: linear-gradient(145deg, #2C1810 0%, #4A2820 40%, #C8687A 100%);
+  }
+  .exp-bg-2 {
+    background: linear-gradient(145deg, #1A2035 0%, #2A3555 40%, #4A6080 100%);
+  }
+  .exp-bg-3 {
+    background: linear-gradient(145deg, #1C2010 0%, #2A3018 40%, #6B7A3A 100%);
+  }
+  .exp-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,22,18,0.92) 0%, transparent 60%);
+  }
+  .exp-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 36px 32px;
+    transform: translateY(10px);
+    transition: transform 0.5s ease;
+  }
+  .exp-card:hover .exp-content { transform: translateY(0); }
+  .exp-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-family: var(--sans);
+  }
+  .exp-name {
+    font-family: var(--serif);
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .exp-desc {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: rgba(247,243,238,0.65);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+  .exp-card:hover .exp-desc { max-height: 80px; }
+  .exp-icon {
+    position: absolute;
+    top: 28px; right: 28px;
+    width: 48px; height: 48px;
+    border: 1px solid rgba(247,243,238,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .exp-card:hover .exp-icon {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* ── Depoimentos ─────────────────────────────────────────────────────────────── */
+  #depoimentos {
+    padding: 130px 80px;
+    background: var(--cream);
+    overflow: hidden;
+  }
+  .dep-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .dep-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .dep-card {
+    padding: 44px 40px;
+    border: 1px solid rgba(26,22,18,0.08);
+    position: relative;
+    transition: border-color 0.4s, box-shadow 0.4s;
+    background: var(--cream);
+  }
+  .dep-card:hover {
+    border-color: rgba(184,150,90,0.3);
+    box-shadow: 0 20px 50px rgba(26,22,18,0.07);
+  }
+  .dep-card.featured {
+    background: var(--ink);
+    border-color: var(--ink);
+    margin-top: -20px;
+    margin-bottom: -20px;
+  }
+  .dep-quote-mark {
+    font-family: var(--serif);
+    font-size: 5rem;
+    font-weight: 300;
+    line-height: 0.5;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0.6;
+  }
+  .dep-card.featured .dep-quote-mark { color: var(--gold2); opacity: 0.8; }
+  .dep-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink2);
+    margin-bottom: 32px;
+  }
+  .dep-card.featured .dep-text { color: rgba(247,243,238,0.85); }
+  .dep-author { display: flex; align-items: center; gap: 14px; }
+  .dep-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--cream2);
+    border: 2px solid rgba(184,150,90,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .dep-card.featured .dep-avatar { background: rgba(247,243,238,0.1); }
+  .dep-name {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+  .dep-card.featured .dep-name { color: var(--cream); }
+  .dep-role {
+    font-size: 0.72rem;
+    color: var(--ink3);
+    margin-top: 2px;
+  }
+  .dep-card.featured .dep-role { color: rgba(247,243,238,0.5); }
+  .dep-stars {
+    position: absolute;
+    top: 36px; right: 36px;
+    color: var(--gold);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+  }
+
+  /* ── Stats Band ─────────────────────────────────────────────────────────────── */
+  #stats {
+    padding: 100px 80px;
+    background: var(--cream2);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-cell {
+    padding: 50px 40px;
+    background: var(--cream);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .stat-cell:hover { background: var(--ink); }
+  .stat-cell::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width 0.5s ease;
+  }
+  .stat-cell:hover::after { width: 80%; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 4vw, 4.2rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 8px;
+    transition: color 0.4s;
+  }
+  .stat-cell:hover .stat-num { color: var(--cream); }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    transition: color 0.4s;
+  }
+  .stat-cell:hover .stat-label { color: rgba(247,243,238,0.5); }
+
+  /* ── CTA Final ─────────────────────────────────────────────────────────────── */
+  #cta {
+    padding: 150px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '💍';
+    position: absolute;
+    font-size: 32vw;
+    opacity: 0.025;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+  }
+  .cta-content { position: relative; z-index: 2; }
+  .cta-title {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .cta-title em { font-style: italic; color: var(--rose); }
+  .cta-desc {
+    font-size: 0.92rem;
+    line-height: 1.85;
+    color: var(--ink3);
+    max-width: 400px;
+    margin-bottom: 48px;
+  }
+  .cta-form-area {
+    position: relative;
+    z-index: 2;
+    background: var(--ink);
+    padding: 56px 52px;
+  }
+  .cta-form-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .cta-form-sub {
+    font-size: 0.78rem;
+    color: rgba(247,243,238,0.45);
+    margin-bottom: 36px;
+    letter-spacing: 0.05em;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(247,243,238,0.45);
+    margin-bottom: 8px;
+    font-family: var(--sans);
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(247,243,238,0.15);
+    padding: 12px 0;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--cream);
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+  }
+  .form-group input::placeholder { color: rgba(247,243,238,0.25); }
+  .form-group input:focus,
+  .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--ink); color: var(--cream); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-submit {
+    width: 100%;
+    background: var(--gold);
+    color: var(--cream);
+    border: none;
+    padding: 18px;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: none;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .form-submit::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--cream);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .form-submit:hover { background: var(--gold2); }
+  .form-submit span { position: relative; z-index: 1; }
+
+  /* ── Footer ─────────────────────────────────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    padding: 80px 80px 40px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(247,243,238,0.08);
+    margin-bottom: 40px;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--cream);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(247,243,238,0.4);
+    line-height: 1.7;
+    max-width: 260px;
+  }
+  .footer-col h4 {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul li a {
+    font-size: 0.82rem;
+    color: rgba(247,243,238,0.45);
+    text-decoration: none;
+    transition: color 0.3s;
+    letter-spacing: 0.03em;
+  }
+  .footer-col ul li a:hover { color: var(--cream); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(247,243,238,0.25);
+    letter-spacing: 0.1em;
+  }
+  .footer-socials { display: flex; gap: 20px; }
+  .footer-socials a {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(247,243,238,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(247,243,238,0.4);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: var(--sans);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .footer-socials a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(184,150,90,0.08);
+  }
+
+  /* ── Animations ─────────────────────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideLeft {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+    50%       { transform: translate(-50%,-50%) scale(1.08); opacity: 0.7; }
+  }
+  @keyframes slowRotate {
+    from { transform: translate(-50%,-50%) rotate(0deg); }
+    to   { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  @keyframes scrollLine {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* Scroll-reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+  .reveal-delay-4 { transition-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ────────────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Bye <span>Bye</span> Solteiro</a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Como Funciona</a></li>
+    <li><a href="#experiencias">Experiências</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+    <li><a href="login.html" style="font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);text-decoration:none;transition:color .3s" onmouseenter="this.style.color='var(--gold)'" onmouseleave="this.style.color='var(--ink2)'">Entrar</a></li><li><a href="login.html" class="nav-cta">Começar Agora</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">A nova era das despedidas</div>
+    <h1 class="hero-title">
+      A festa <em>perfeita</em><br>
+      <span class="line-indent">começa aqui.</span>
+    </h1>
+    <p class="hero-desc">
+      Planejamos, organizamos e executamos despedidas de solteiro inesquecíveis. Você foca no que importa — celebrar quem você ama.
+    </p>
+    <div class="hero-actions">
+      <a href="login.html" class="btn-primary"><span>Planejar minha festa</span></a>
+      <a href="#como-funciona" class="btn-ghost">Ver como funciona</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-wrap">
+      <div class="hero-image-bg">
+        <div class="hero-illustration">
+          <div class="hero-blob-1"></div>
+          <div class="hero-blob-2"></div>
+          <div class="hero-ring">💍</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card hero-card-1">
+      <div class="card-label">Eventos realizados</div>
+      <div class="card-value">3.200<span style="color:var(--gold);font-size:1.2rem">+</span></div>
+      <div class="card-sub">em São Paulo, Rio e BH</div>
+    </div>
+
+    <div class="hero-card hero-card-2">
+      <div class="card-label">Avaliação média</div>
+      <div class="card-value" style="color:var(--gold)">★ 4.9</div>
+      <div class="card-sub">de 5 estrelas</div>
+    </div>
+
+    <div class="hero-gold-pill">
+      <div class="cf-gold-pill">100% personalizado</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">Deslizar</div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ─────────────────────────────────────────────────────────── -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span class="marquee-item">Roteiro Inteligente</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Pagamento Dividido via Pix</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Fornecedores Verificados</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Checklist Colaborativo</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Experiências Exclusivas</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Suporte 24 horas</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">IA Planejadora</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Destinos Nacionais</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Roteiro Inteligente</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Pagamento Dividido via Pix</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Fornecedores Verificados</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Checklist Colaborativo</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Experiências Exclusivas</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Suporte 24 horas</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">IA Planejadora</span>
+    <span class="marquee-item marquee-dot">◆</span>
+    <span class="marquee-item">Destinos Nacionais</span>
+    <span class="marquee-item marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- ── COMO FUNCIONA ──────────────────────────────────────────────────── -->
+<section id="como-funciona">
+  <div class="cf-visual reveal">
+    <div class="cf-main-card">
+      <div class="cf-card-top">
+        <div class="label">Seu evento</div>
+        <div class="cf-card-big">Pronto<br>em <span>3h</span></div>
+      </div>
+      <div class="cf-card-bottom">
+        <div class="cf-divider"></div>
+        <div class="cf-stat-row">
+          <div class="cf-stat">
+            <div class="val">98%</div>
+            <div class="lbl">Satisfação</div>
+          </div>
+          <div class="cf-stat">
+            <div class="val">0</div>
+            <div class="lbl">Estresse</div>
+          </div>
+          <div class="cf-stat">
+            <div class="val">∞</div>
+            <div class="lbl">Memórias</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cf-accent-card reveal reveal-delay-2">
+      <div class="icon">🤖</div>
+      <div class="title">IA Planejadora</div>
+      <div class="desc">Recomendações personalizadas baseadas no perfil único de cada noivo/a.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-eyebrow reveal">Como funciona</div>
+    <h2 class="section-title reveal reveal-delay-1">
+      Do WhatsApp caótico<br>
+      à <em>festa perfeita.</em>
+    </h2>
+    <p style="font-size:0.9rem;line-height:1.85;color:var(--ink3);max-width:420px;margin-bottom:50px;" class="reveal reveal-delay-2">
+      Em menos de 10 minutos você tem um roteiro completo, fornecedores confirmados e todos os amigos alinhados — sem estresse.
+    </p>
+
+    <div class="steps-grid reveal reveal-delay-3">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">Conte-nos sobre o noivo/a</div>
+          <div class="step-desc">Preencha o perfil em 3 minutos: cidade, data, estilo e orçamento. Nossa IA cria o roteiro ideal.</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Convide o grupo com um link</div>
+          <div class="step-desc">Um link e todo o grupo acessa o plano, aprova o roteiro e paga sua parte via Pix automaticamente.</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Confirme e relaxe</div>
+          <div class="step-desc">Nós confirmamos todos os fornecedores, enviamos o itinerário e ficamos disponíveis 24h no dia do evento.</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">Viva o momento</div>
+          <div class="step-desc">No dia, use o modo ao vivo para rastrear o grupo e guardar cada memória no álbum coletivo.</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIÊNCIAS ───────────────────────────────────────────────────── -->
+<section id="experiencias">
+  <div class="exp-header">
+    <div class="exp-header-left reveal">
+      <div class="section-eyebrow">Nossas experiências</div>
+      <h2 class="section-title">Cada despedida,<br>uma <em>história única.</em></h2>
+    </div>
+    <a href="fornecedores.html" class="btn-ghost reveal" style="flex-shrink:0">Ver todos os fornecedores</a>
+  </div>
+
+  <div class="exp-grid">
+    <div class="exp-card reveal">
+      <div class="exp-bg exp-bg-1"></div>
+      <div class="exp-overlay"></div>
+      <div class="exp-icon">🍸</div>
+      <div class="exp-content">
+        <div class="exp-tag">Urbano · Noturno</div>
+        <div class="exp-name">Noite Brilhante</div>
+        <div class="exp-desc">Jantar gourmet, bar de coquetéis autorais e a melhor pista de dança da cidade. Para quem quer uma noite verdadeiramente memorável.</div>
+      </div>
+    </div>
+    <div class="exp-card reveal reveal-delay-1">
+      <div class="exp-bg exp-bg-2"></div>
+      <div class="exp-overlay"></div>
+      <div class="exp-icon">✈️</div>
+      <div class="exp-content">
+        <div class="exp-tag">Viagem · Premium</div>
+        <div class="exp-name">Escapada de Luxo</div>
+        <div class="exp-desc">Gramado, Florianópolis ou Arraial d'Ajuda. Roteiro completo com hospedagem boutique, atividades exclusivas e tudo organizado para o grupo.</div>
+      </div>
+    </div>
+    <div class="exp-card reveal reveal-delay-2">
+      <div class="exp-bg exp-bg-3"></div>
+      <div class="exp-overlay"></div>
+      <div class="exp-icon">🌿</div>
+      <div class="exp-content">
+        <div class="exp-tag">Bem-estar · Dia</div>
+        <div class="exp-name">Dia de Rainha</div>
+        <div class="exp-desc">Spa exclusivo, brunch especial e experiências de bem-estar personalizadas. A despedida para quem valoriza sofisticação e leveza.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ──────────────────────────────────────────────────────────── -->
+<div id="stats">
+  <div class="stat-cell reveal">
+    <div class="stat-num">3.2<span>K</span></div>
+    <div class="stat-label">Festas realizadas</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-1">
+    <div class="stat-num"><span>★</span> 4.9</div>
+    <div class="stat-label">Avaliação média</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-2">
+    <div class="stat-num">98<span>%</span></div>
+    <div class="stat-label">Indicariam a amigos</div>
+  </div>
+  <div class="stat-cell reveal reveal-delay-3">
+    <div class="stat-num">15<span>+</span></div>
+    <div class="stat-label">Cidades atendidas</div>
+  </div>
+</div>
+
+<!-- ── DEPOIMENTOS ────────────────────────────────────────────────────── -->
+<section id="depoimentos">
+  <div class="dep-header">
+    <div class="section-eyebrow reveal" style="justify-content:center">Depoimentos</div>
+    <h2 class="section-title reveal" style="text-align:center">O que dizem<br>quem <em>viveu</em> a festa.</h2>
+  </div>
+
+  <div class="dep-grid">
+    <div class="dep-card reveal">
+      <div class="dep-stars">★★★★★</div>
+      <div class="dep-quote-mark">"</div>
+      <p class="dep-text">Organizei a despedida da minha melhor amiga em dois dias. O app sugeriu o roteiro, dividiu os custos automaticamente e no final todo mundo ficou impressionado. Parecia que tínhamos meses de planejamento.</p>
+      <div class="dep-author">
+        <div class="dep-avatar">C</div>
+        <div>
+          <div class="dep-name">Carolina Mendes</div>
+          <div class="dep-role">Madrinha da noiva · São Paulo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dep-card featured reveal reveal-delay-1">
+      <div class="dep-stars" style="color:var(--gold2)">★★★★★</div>
+      <div class="dep-quote-mark">"</div>
+      <p class="dep-text">A minha despedida foi em Gramado e ficou exatamente como eu sempre sonhei. Cada detalhe foi pensado, o grupo recebeu tudo pelo app e a IA até sugeriu um jantar secreto que foi a surpresa da viagem.</p>
+      <div class="dep-author">
+        <div class="dep-avatar" style="border-color:rgba(212,175,114,0.4)">A</div>
+        <div>
+          <div class="dep-name">Amanda Ferreira</div>
+          <div class="dep-role">Noiva · Rio de Janeiro</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dep-card reveal reveal-delay-2">
+      <div class="dep-stars">★★★★★</div>
+      <div class="dep-quote-mark">"</div>
+      <p class="dep-text">Como padrinho, eu ficava com pavor de organizar. O Bye Bye Solteiro transformou algo estressante em algo divertido. Recomendo para qualquer pessoa que queira fazer diferente.</p>
+      <div class="dep-author">
+        <div class="dep-avatar">R</div>
+        <div>
+          <div class="dep-name">Rafael Costa</div>
+          <div class="dep-role">Padrinho do noivo · Belo Horizonte</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────────────── -->
+<section id="cta">
+  <div class="cta-content reveal">
+    <div class="section-eyebrow">Comece hoje</div>
+    <h2 class="cta-title">
+      A despedida<br>
+      que ela <em>sempre</em><br>
+      sonhou.
+    </h2>
+    <p class="cta-desc">
+      Em menos de 5 minutos, tenha um roteiro completo e personalizado. Sem taxa de cadastro. Pague apenas quando confirmar.
+    </p>
+    <div style="display:flex;align-items:center;gap:32px;margin-top:8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--gold);font-size:0.9rem">✓</span>
+        <span style="font-size:0.78rem;color:var(--ink3)">Cadastro gratuito</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--gold);font-size:0.9rem">✓</span>
+        <span style="font-size:0.78rem;color:var(--ink3)">Sem compromisso</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--gold);font-size:0.9rem">✓</span>
+        <span style="font-size:0.78rem;color:var(--ink3)">Suporte 24h</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-form-area reveal reveal-delay-2">
+    <div class="cta-form-title">Monte seu roteiro</div>
+    <div class="cta-form-sub">Leva menos de 3 minutos</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome do Noivo/a</label>
+        <input type="text" placeholder="Ex: Camila">
+      </div>
+      <div class="form-group">
+        <label>Cidade do Evento</label>
+        <input type="text" placeholder="Ex: São Paulo">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date">
+      </div>
+      <div class="form-group">
+        <label>Nº de Pessoas</label>
+        <input type="number" placeholder="Ex: 12" min="2">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Estilo da Festa</label>
+      <select>
+        <option value="" disabled selected>Escolha o estilo</option>
+        <option>Noite brilhante (baladas e jantar)</option>
+        <option>Dia relaxante (spa e brunch)</option>
+        <option>Aventura e adrenalina</option>
+        <option>Escapada de viagem</option>
+        <option>Festa em casa personalizada</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Seu e-mail</label>
+      <input type="email" placeholder="seu@email.com">
+    </div>
+
+    <a href="criar-evento.html" class="form-submit" style="display:block;text-align:center;text-decoration:none"><span>Criar meu roteiro grátis →</span></a>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo"><a href="index.html" style="text-decoration:none;color:inherit">Bye <span>Bye</span> Solteiro</a></div>
+      <div class="footer-tagline">Do caos ao casamento, com estilo e sofisticação.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Experiências</h4>
+      <ul>
+        <li><a href="fornecedores.html">Noite Brilhante</a></li>
+        <li><a href="fornecedores.html">Escapada de Luxo</a></li>
+        <li><a href="fornecedores.html">Dia de Rainha</a></li>
+        <li><a href="fornecedores.html">Aventura Total</a></li>
+        <li><a href="criar-evento.html">Personalizado</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <ul>
+        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="fornecedores.html">Seja Fornecedor</a></li>
+        <li><a href="login.html">Cadastrar</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#">Carreiras</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="#">Fale conosco</a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">Termos de uso</a></li>
+        <li><a href="#">Privacidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Bye Bye Solteiro. Todos os direitos reservados.</div>
+    <div class="footer-socials">
+      <a href="#">Ig</a>
+      <a href="#">Tk</a>
+      <a href="#">Wa</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ────────────────────────────────────────────────────────── -->
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '18px';
+      cursor.style.height = '18px';
+      ring.style.width = '54px';
+      ring.style.height = '54px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Stat counter animation
+  function animateCount(el, target, suffix = '', duration = 1800) {
+    let start = null;
+    const startVal = 0;
+    const isFloat = String(target).includes('.');
+    const step = ts => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const cur = startVal + (target - startVal) * ease;
+      el.textContent = isFloat ? cur.toFixed(1) : Math.floor(cur);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const numEl = e.target.querySelector('.stat-num');
+        if (numEl && !numEl.dataset.animated) {
+          numEl.dataset.animated = '1';
+          const text = numEl.textContent;
+          const goldSpan = numEl.querySelector('span');
+          const suffix = goldSpan ? goldSpan.textContent : '';
+          // preserve the gold span
+          const match = text.replace(suffix,'').trim();
+          const val = parseFloat(match);
+          if (!isNaN(val)) {
+            numEl.innerHTML = `<span id="cval_${Math.random().toString(36).slice(2)}">0</span><span style="color:var(--gold)">${suffix}</span>`;
+            animateCount(numEl.querySelector('[id^="cval"]'), val, suffix);
+          }
+        }
+        statObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.stat-cell').forEach(c => statObserver.observe(c));
+</script>
+
+<!-- Quick Nav Banner -->
+<div id="quicknav" style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;display:flex;gap:2px;background:var(--ink);padding:6px;box-shadow:0 20px 50px rgba(26,22,18,.25);opacity:0;transition:opacity .5s;pointer-events:none" >
+  <a href="dashboard.html" style="display:flex;align-items:center;gap:7px;padding:11px 18px;color:rgba(255,255,255,.7);font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s" onmouseenter="this.style.background='rgba(255,255,255,.07)';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='rgba(255,255,255,.7)'">🏠 Dashboard</a>
+  <a href="criar-evento.html" style="display:flex;align-items:center;gap:7px;padding:11px 18px;color:rgba(255,255,255,.7);font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s" onmouseenter="this.style.background='rgba(255,255,255,.07)';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='rgba(255,255,255,.7)'">✨ Criar Evento</a>
+  <a href="fornecedores.html" style="display:flex;align-items:center;gap:7px;padding:11px 18px;color:rgba(255,255,255,.7);font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s" onmouseenter="this.style.background='rgba(255,255,255,.07)';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='rgba(255,255,255,.7)'">🤝 Fornecedores</a>
+  <a href="split-pagamento.html" style="display:flex;align-items:center;gap:7px;padding:11px 18px;color:rgba(255,255,255,.7);font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s" onmouseenter="this.style.background='rgba(255,255,255,.07)';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='rgba(255,255,255,.7)'">💳 Pagamentos</a>
+  <a href="login.html" style="display:flex;align-items:center;gap:7px;padding:11px 20px;background:var(--rose);color:#fff;font-family:var(--sans);font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:background .2s" onmouseenter="this.style.background='var(--rose-dark)'" onmouseleave="this.style.background='var(--rose)'">Entrar →</a>
+</div>
+
+<script>
+// Show quicknav after scrolling past hero
+const qn = document.getElementById('quicknav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > window.innerHeight * 0.6) {
+    qn.style.opacity = '1';
+    qn.style.pointerEvents = 'auto';
+  } else {
+    qn.style.opacity = '0';
+    qn.style.pointerEvents = 'none';
+  }
+});
+</script>
+</body>
+</html>
