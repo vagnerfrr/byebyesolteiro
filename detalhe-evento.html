@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Despedida da Camila — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--gold2:#D4AF72;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+html,body{height:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.nbadge{margin-left:auto;background:var(--rose);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:100px;font-weight:600}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}
+.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh;display:flex;flex-direction:column}
+.event-banner{background:var(--dark);padding:36px 48px 0;position:relative;overflow:hidden}
+.event-banner::before{content:'';position:absolute;right:0;top:0;bottom:0;width:300px;background:radial-gradient(ellipse at right,rgba(232,30,140,.12),transparent 70%);pointer-events:none}
+.bc{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:18px}
+.bc a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
+.bc a:hover{color:var(--gold)}
+.bc span{margin:0 8px}
+.banner-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:20px}
+.banner-title{font-family:var(--serif);font-size:clamp(1.8rem,3vw,3rem);font-weight:400;color:#fff;margin-bottom:12px;line-height:1.05}
+.banner-title em{font-style:italic;color:var(--rose-dark)}
+.bmeta{display:flex;gap:20px;flex-wrap:wrap}
+.bmi{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.5)}
+.bmi strong{color:rgba(255,255,255,.8);font-weight:400}
+.bactions{display:flex;gap:8px;align-items:flex-start;flex-shrink:0}
+.bsm{padding:10px 18px;font-family:var(--sans);font-size:.66rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;cursor:none;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.bsmo{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7)}
+.bsmo:hover{border-color:var(--gold);color:var(--gold)}
+.bsmr{background:var(--rose);color:#fff;border:1px solid var(--rose)}
+.bsmr:hover{background:var(--rose-dark);border-color:var(--rose-dark)}
+.bprog{padding-bottom:0}
+.psegs{display:flex;gap:3px}
+.ps{height:3px;flex:1;background:rgba(255,255,255,.1);border-radius:1px;overflow:hidden}
+.psf{height:100%;border-radius:1px}
+.plbls{display:flex;justify-content:space-between;font-size:.6rem;color:rgba(255,255,255,.28);margin-top:5px}
+.tabs-bar{background:#fff;border-bottom:1px solid rgba(26,22,18,.06);padding:0 48px;display:flex;gap:0;position:sticky;top:0;z-index:100;overflow-x:auto}
+.tab-btn{padding:17px 22px;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:none;transition:color .3s,border-color .3s;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--rose);border-bottom-color:var(--rose)}
+.tc{background:var(--cream2);color:var(--ink3);font-size:.58rem;padding:2px 7px;border-radius:100px}
+.tab-btn.active .tc{background:rgba(232,30,140,.1);color:var(--rose)}
+.tab-content{display:none;padding:36px 48px;flex:1}
+.tab-content.active{display:block}
+
+/* overview */
+.ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.ov-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:22px;transition:box-shadow .3s}
+.ov-card:hover{box-shadow:0 8px 24px rgba(26,22,18,.07)}
+.ov-ico{font-size:1.3rem;margin-bottom:10px}
+.ov-lbl{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.ov-val{font-family:var(--serif);font-size:1.75rem;font-weight:400;color:var(--ink);line-height:1}
+.ov-val.rose{color:var(--rose)}.ov-val.gold{color:var(--gold)}.ov-val.green{color:#1A6B3A}
+.ov-sub{font-size:.7rem;color:var(--ink3);margin-top:3px}
+.qa-row{display:flex;gap:10px;flex-wrap:wrap}
+.qa{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-size:.68rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;padding:13px 22px;cursor:none;transition:all .3s;text-decoration:none}
+.qa-dark{background:var(--ink);color:var(--cream);border:1px solid var(--ink)}
+.qa-dark:hover{background:var(--gold);border-color:var(--gold)}
+.qa-out{background:transparent;color:var(--ink2);border:1px solid rgba(26,22,18,.15)}
+.qa-out:hover{border-color:var(--gold);color:var(--gold)}
+
+/* timeline */
+.timeline{position:relative;padding-left:36px}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:rgba(26,22,18,.08)}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-dot{position:absolute;left:-29px;top:14px;width:10px;height:10px;border-radius:50%;border:2px solid var(--cream)}
+.tl-dot.gold{background:var(--gold)}.tl-dot.pending{background:var(--cream2);border-color:rgba(26,22,18,.2)}.tl-dot.rose{background:var(--rose)}
+.tl-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px 22px;display:flex;align-items:flex-start;gap:14px;transition:all .3s}
+.tl-card:hover{border-color:rgba(184,150,90,.25);box-shadow:0 6px 18px rgba(26,22,18,.06)}
+.tl-time{font-family:var(--serif);font-size:1rem;color:var(--gold);font-weight:400;min-width:48px;flex-shrink:0;margin-top:2px}
+.tl-em{font-size:1.3rem;flex-shrink:0}
+.tl-body{flex:1}
+.tl-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink);margin-bottom:3px}
+.tl-desc{font-size:.78rem;color:var(--ink3);line-height:1.6;margin-bottom:7px}
+.tl-tags{display:flex;gap:8px;flex-wrap:wrap}
+.tl-tag{font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);background:var(--cream2);padding:3px 9px}
+.tl-tag.gold{background:rgba(184,150,90,.12);color:var(--gold)}
+.tl-st{margin-left:auto;flex-shrink:0}
+.st-ok{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#1A6B3A;background:#D1FAE5;padding:4px 9px}
+.st-pend{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#856404;background:#FFF3CD;padding:4px 9px}
+
+/* checklist */
+.cl-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.add-bar{display:flex;border:1px solid rgba(26,22,18,.12);overflow:hidden;background:#fff;margin-bottom:24px}
+.add-bar input{flex:1;border:none;padding:13px 16px;font-family:var(--sans);font-size:.84rem;color:var(--ink);outline:none;background:transparent}
+.add-bar input::placeholder{color:rgba(26,22,18,.3)}
+.add-bar button{background:var(--ink);color:var(--cream);border:none;padding:13px 18px;font-family:var(--sans);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;cursor:none;transition:background .3s;white-space:nowrap}
+.add-bar button:hover{background:var(--gold)}
+.cl-group{margin-bottom:24px}
+.cl-glbl{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.cl-glbl::after{content:'';flex:1;height:1px;background:rgba(184,150,90,.2)}
+.cl-item{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;border:1px solid rgba(26,22,18,.06);margin-bottom:5px;transition:all .3s;cursor:none}
+.cl-item:hover{border-color:rgba(26,22,18,.14)}
+.cl-item.done{opacity:.5}
+.cl-item.done .cl-title{text-decoration:line-through;color:var(--ink3)}
+.cl-cb{width:18px;height:18px;border:1.5px solid rgba(26,22,18,.2);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:.65rem;color:transparent}
+.cl-item.done .cl-cb{background:var(--gold);border-color:var(--gold);color:#fff}
+.cl-title{flex:1;font-size:.86rem;color:var(--ink)}
+.cl-meta{display:flex;align-items:center;gap:8px}
+.cl-av{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:500;font-family:var(--serif);flex-shrink:0}
+.cl-dt{font-size:.66rem;color:var(--ink3);white-space:nowrap}
+.prio{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.ph{background:#DC2626}.pm{background:#F59E0B}.pl{background:#10B981}
+
+/* group */
+.gs-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.gs{background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px;text-align:center}
+.gs-val{font-family:var(--serif);font-size:1.8rem;color:var(--ink);line-height:1;margin-bottom:3px}
+.gs-lbl{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+.inv-box{background:var(--dark);padding:18px 22px;display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.inv-lbl{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:3px}
+.inv-url{font-size:.8rem;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-btn{background:var(--gold);color:#fff;border:none;padding:10px 18px;font-family:var(--sans);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;cursor:none;flex-shrink:0;transition:background .3s}
+.inv-btn:hover{background:var(--gold2)}
+.mg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mc{background:#fff;border:1px solid rgba(26,22,18,.06);padding:16px 18px;display:flex;align-items:center;gap:12px;transition:all .3s}
+.mc:hover{border-color:rgba(26,22,18,.14)}
+.mav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.mi{flex:1;min-width:0}
+.mn{font-size:.85rem;font-weight:500;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mr{font-size:.66rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em}
+.badge{display:inline-flex;align-items:center;font-family:var(--sans);font-size:.58rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.bp{background:#D1FAE5;color:#065F46}.bpend{background:#FFF3CD;color:#856404}.borg{background:rgba(232,30,140,.1);color:var(--rose)}
+
+/* chat */
+.chat-panel{background:#fff;border:1px solid rgba(26,22,18,.06);margin-top:20px}
+.chat-hdr{padding:14px 18px;border-bottom:1px solid rgba(26,22,18,.06);display:flex;align-items:center;justify-content:space-between}
+.chat-hdr-title{font-family:var(--serif);font-size:.95rem;font-weight:500;color:var(--ink)}
+.online{font-size:.62rem;letter-spacing:.1em;color:#1A6B3A;background:#D1FAE5;padding:3px 9px}
+.chat-msgs{padding:18px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:8px;align-items:flex-start}
+.msg.mine{flex-direction:row-reverse}
+.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.75rem;color:#fff;font-weight:500;flex-shrink:0}
+.msg-body{max-width:65%}
+.msg-name{font-size:.6rem;color:var(--ink3);margin-bottom:3px}
+.mine .msg-name{text-align:right}
+.msg-bbl{padding:9px 13px;font-size:.8rem;color:var(--ink2);line-height:1.5;background:var(--cream2)}
+.mine .msg-bbl{background:var(--dark);color:rgba(255,255,255,.82)}
+.msg-t{font-size:.58rem;color:var(--ink3);margin-top:3px}
+.mine .msg-t{text-align:right}
+.msg-sys{text-align:center;font-size:.7rem;color:var(--ink3);font-style:italic;padding:3px 0}
+.chat-inp{border-top:1px solid rgba(26,22,18,.06);display:flex}
+.chat-inp input{flex:1;border:none;padding:13px 16px;font-family:var(--sans);font-size:.83rem;color:var(--ink);outline:none;background:transparent}
+.chat-inp input::placeholder{color:rgba(26,22,18,.3)}
+.chat-send{background:var(--rose);border:none;padding:13px 18px;color:#fff;font-family:var(--sans);font-size:.68rem;cursor:none;transition:background .3s;letter-spacing:.1em;text-transform:uppercase}
+.chat-send:hover{background:var(--rose-dark)}
+
+/* album */
+.alb-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.alb-cnt{font-size:.76rem;color:var(--ink3)}
+.alb-cnt strong{color:var(--ink);font-family:var(--serif);font-size:.95rem}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.photo-item{position:relative;overflow:hidden;cursor:none}
+.photo-item:nth-child(3n+1){grid-row:span 2}
+.pbg{width:100%;height:100%;min-height:150px;transition:transform .5s ease}
+.photo-item:hover .pbg{transform:scale(1.05)}
+.pov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,.7),transparent 50%);opacity:0;transition:opacity .3s}
+.photo-item:hover .pov{opacity:1}
+.pinfo{position:absolute;bottom:0;left:0;right:0;padding:10px;transform:translateY(6px);transition:transform .3s}
+.photo-item:hover .pinfo{transform:translateY(0)}
+.pauth{font-size:.66rem;color:rgba(255,255,255,.9)}
+.pdate{font-size:.58rem;color:rgba(255,255,255,.55)}
+.pg1{background:linear-gradient(135deg,#2C1810,#C8687A,#F0D4D9)}
+.pg2{background:linear-gradient(160deg,#1A2035,#4A6080,#8BB4CC)}
+.pg3{background:linear-gradient(135deg,#1C2010,#6B7A3A,#C4D48A)}
+.pg4{background:linear-gradient(135deg,#2A1040,#8B5CF6,#C4B5FD)}
+.pg5{background:linear-gradient(135deg,#401020,#B8965A,#F0D4A8)}
+.pg6{background:linear-gradient(135deg,#0A2040,#1E40AF,#93C5FD)}
+.pg7{background:linear-gradient(135deg,#1A1A1A,#4A4A4A,#A0A0A0)}
+.pg8{background:linear-gradient(135deg,#200A10,#E91E8C,#F9A8D4)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item active">📅 Meus Eventos <span class="nbadge">2</span></a>
+    <span class="snl" style="margin-top:16px">Plataforma</span>
+    <a href="fornecedores.html" class="nav-item">🤝 Fornecedores</a>
+    <a href="split-pagamento.html" class="nav-item">💳 Pagamentos <span class="nbadge">3</span></a>
+    <a href="#" class="nav-item">📸 Álbum</a>
+    <a href="#" class="nav-item">🛍️ Loja de Kits</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="event-banner">
+    <div class="bc"><a href="dashboard.html">Dashboard</a><span>/</span><a href="#">Eventos</a><span>/</span>Despedida da Camila</div>
+    <div class="banner-top">
+      <div>
+        <h1 class="banner-title">Despedida da <em>Camila</em> 🌸</h1>
+        <div class="bmeta">
+          <div class="bmi">📅 <strong>15 de Agosto, 2025</strong></div>
+          <div class="bmi">📍 <strong>São Paulo, SP</strong></div>
+          <div class="bmi">👥 <strong>12 participantes</strong></div>
+          <div class="bmi">🎨 <strong>Noite Brilhante + Bem-estar</strong></div>
+        </div>
+      </div>
+      <div class="bactions">
+        <button class="bsm bsmo" onclick="copyInvite()">🔗 Copiar Convite</button>
+        <a href="split-pagamento.html" class="bsm bsmr">💳 Pagamentos</a>
+      </div>
+    </div>
+    <div class="bprog">
+      <div class="psegs">
+        <div class="ps"><div class="psf" style="width:100%;background:var(--gold)"></div></div>
+        <div class="ps"><div class="psf" style="width:100%;background:var(--gold)"></div></div>
+        <div class="ps"><div class="psf" style="width:100%;background:var(--gold)"></div></div>
+        <div class="ps"><div class="psf" style="width:75%;background:var(--rose)"></div></div>
+        <div class="ps"><div class="psf" style="width:0%"></div></div>
+      </div>
+      <div class="plbls"><span>Criado</span><span>Roteiro</span><span>Grupo</span><span>Pagamentos</span><span>Confirmado</span></div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('ov',this)">📊 Visão Geral</button>
+    <button class="tab-btn" onclick="switchTab('rt',this)">🗺️ Roteiro <span class="tc">6</span></button>
+    <button class="tab-btn" onclick="switchTab('cl',this)">✅ Checklist <span class="tc">8</span></button>
+    <button class="tab-btn" onclick="switchTab('gr',this)">👥 Grupo <span class="tc">12</span></button>
+    <button class="tab-btn" onclick="switchTab('al',this)">📸 Álbum <span class="tc">24</span></button>
+  </div>
+
+  <!-- VISÃO GERAL -->
+  <div class="tab-content active" id="tab-ov">
+    <div class="ov-grid">
+      <div class="ov-card"><div class="ov-ico">💰</div><div class="ov-lbl">Arrecadado</div><div class="ov-val gold">R$ 1.620</div><div class="ov-sub">de R$ 2.160 · 75%</div></div>
+      <div class="ov-card"><div class="ov-ico">👥</div><div class="ov-lbl">Participantes</div><div class="ov-val">9<span style="font-size:1.1rem;color:var(--ink3)">/12</span></div><div class="ov-sub">3 pendentes de aceitar</div></div>
+      <div class="ov-card"><div class="ov-ico">✅</div><div class="ov-lbl">Checklist</div><div class="ov-val green">5<span style="font-size:1.1rem;color:var(--ink3)">/8</span></div><div class="ov-sub">3 tarefas em aberto</div></div>
+      <div class="ov-card"><div class="ov-ico">📍</div><div class="ov-lbl">Roteiro</div><div class="ov-val">6</div><div class="ov-sub">4 confirmados · 2 pend.</div></div>
+      <div class="ov-card"><div class="ov-ico">🤝</div><div class="ov-lbl">Fornecedores</div><div class="ov-val rose">4</div><div class="ov-sub">2 confirmados</div></div>
+      <div class="ov-card"><div class="ov-ico">⏳</div><div class="ov-lbl">Dias Restantes</div><div class="ov-val" id="days-left">—</div><div class="ov-sub">até 15 de agosto</div></div>
+    </div>
+    <div class="qa-row">
+      <a href="split-pagamento.html" class="qa qa-dark">💳 Gerenciar Pagamentos</a>
+      <a href="fornecedores.html" class="qa qa-out">🤝 Buscar Fornecedores</a>
+      <button class="qa qa-out" onclick="copyInvite()">🔗 Copiar Convite</button>
+    </div>
+  </div>
+
+  <!-- ROTEIRO -->
+  <div class="tab-content" id="tab-rt">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <div><div style="font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:5px">15 de Agosto · São Paulo</div><h2 style="font-family:var(--serif);font-size:1.7rem;font-weight:400;color:var(--ink)">Roteiro do Dia</h2></div>
+      <a href="fornecedores.html" class="qa qa-dark" style="font-size:.65rem">✨ Editar Roteiro</a>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot gold"></div><div class="tl-card"><div class="tl-time">10h00</div><div class="tl-em">🌿</div><div class="tl-body"><div class="tl-title">Spa Jardins — Manhã de Bem-estar</div><div class="tl-desc">Massagem relaxante, esfoliação e tratamento facial para todas. Inclui welcome drink.</div><div class="tl-tags"><span class="tl-tag">📍 Jardins</span><span class="tl-tag gold">🤝 Spa Jardins</span><span class="tl-tag">⏱ 3h</span></div></div><div class="tl-st"><span class="st-ok">✓ Confirmado</span></div></div></div>
+      <div class="tl-item"><div class="tl-dot gold"></div><div class="tl-card"><div class="tl-time">13h30</div><div class="tl-em">🍽️</div><div class="tl-body"><div class="tl-title">Brunch no Bistrô das Flores</div><div class="tl-desc">Menu degustação especial. Mesa reservada com decoração temática de despedida.</div><div class="tl-tags"><span class="tl-tag">📍 Pinheiros</span><span class="tl-tag gold">🤝 Bistrô das Flores</span><span class="tl-tag">⏱ 2h</span></div></div><div class="tl-st"><span class="st-ok">✓ Confirmado</span></div></div></div>
+      <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-card"><div class="tl-time">16h00</div><div class="tl-em">🎨</div><div class="tl-body"><div class="tl-title">Workshop de Customização de Looks</div><div class="tl-desc">Cada participante personaliza uma peça para levar de lembrança. Inclui materiais.</div><div class="tl-tags"><span class="tl-tag">📍 A definir</span><span class="tl-tag">⏱ 1h30</span></div></div><div class="tl-st"><span class="st-pend">⏳ Pendente</span></div></div></div>
+      <div class="tl-item"><div class="tl-dot rose"></div><div class="tl-card"><div class="tl-time">18h00</div><div class="tl-em">🚌</div><div class="tl-body"><div class="tl-title">Transfer Van Party para o Bar</div><div class="tl-desc">Van decorada com música, drinks a bordo e animação garantida.</div><div class="tl-tags"><span class="tl-tag gold">🤝 Van Party Premium</span><span class="tl-tag">⏱ 45min</span></div></div><div class="tl-st"><span class="st-ok">✓ Confirmado</span></div></div></div>
+      <div class="tl-item"><div class="tl-dot gold"></div><div class="tl-card"><div class="tl-time">19h00</div><div class="tl-em">🍸</div><div class="tl-body"><div class="tl-title">Espaço Aurora — Noite VIP</div><div class="tl-desc">Área VIP reservada, open bar por 3h, DJ exclusivo e fotógrafa do evento.</div><div class="tl-tags"><span class="tl-tag">📍 Vila Olímpia</span><span class="tl-tag gold">🤝 Espaço Aurora</span><span class="tl-tag">⏱ 4h</span></div></div><div class="tl-st"><span class="st-ok">✓ Confirmado</span></div></div></div>
+      <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-card"><div class="tl-time">23h00</div><div class="tl-em">🌙</div><div class="tl-body"><div class="tl-title">After Party — A Definir</div><div class="tl-desc">Continuação em bar próximo ou retorno ao hotel, dependendo da energia do grupo.</div><div class="tl-tags"><span class="tl-tag">📍 A confirmar</span></div></div><div class="tl-st"><span class="st-pend">⏳ Em aberto</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="tab-content" id="tab-cl">
+    <div class="cl-hdr"><h2 style="font-family:var(--serif);font-size:1.7rem;font-weight:400">Checklist do Evento</h2><div style="font-size:.76rem;color:var(--ink3)"><strong>5</strong> de 8 concluídas · <strong style="color:var(--gold)">62%</strong></div></div>
+    <div class="add-bar"><input type="text" placeholder="Adicionar tarefa... ex: Comprar decoração"><button>+ Adicionar</button></div>
+    <div class="cl-group">
+      <div class="cl-glbl">Urgente</div>
+      <div class="cl-item" onclick="toggleCheck(this)"><div class="prio ph"></div><div class="cl-cb"></div><div class="cl-title">Confirmar pagamento final com Espaço Aurora</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div><div class="cl-dt">📅 10 ago</div></div></div>
+      <div class="cl-item" onclick="toggleCheck(this)"><div class="prio ph"></div><div class="cl-cb"></div><div class="cl-title">Cobrar os 3 participantes com pagamento pendente</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div><div class="cl-dt">📅 12 ago</div></div></div>
+    </div>
+    <div class="cl-group">
+      <div class="cl-glbl">Em Andamento</div>
+      <div class="cl-item" onclick="toggleCheck(this)"><div class="prio pm"></div><div class="cl-cb"></div><div class="cl-title">Definir presente coletivo para a Camila</div><div class="cl-meta"><div class="cl-av" style="background:#1A3A6B">M</div><div class="cl-dt">📅 8 ago</div></div></div>
+    </div>
+    <div class="cl-group">
+      <div class="cl-glbl">Concluídas</div>
+      <div class="cl-item done" onclick="toggleCheck(this)"><div class="prio pl"></div><div class="cl-cb">✓</div><div class="cl-title">Reservar mesa no Bistrô das Flores</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div></div></div>
+      <div class="cl-item done" onclick="toggleCheck(this)"><div class="prio pl"></div><div class="cl-cb">✓</div><div class="cl-title">Contratar fotógrafa para o evento</div><div class="cl-meta"><div class="cl-av" style="background:#1A6B3A">R</div></div></div>
+      <div class="cl-item done" onclick="toggleCheck(this)"><div class="prio pl"></div><div class="cl-cb">✓</div><div class="cl-title">Criar e enviar convites para todas</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div></div></div>
+      <div class="cl-item done" onclick="toggleCheck(this)"><div class="prio pl"></div><div class="cl-cb">✓</div><div class="cl-title">Confirmar Spa Jardins para manhã</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div></div></div>
+      <div class="cl-item done" onclick="toggleCheck(this)"><div class="prio pl"></div><div class="cl-cb">✓</div><div class="cl-title">Montar roteiro completo do dia</div><div class="cl-meta"><div class="cl-av" style="background:var(--rose)">A</div></div></div>
+    </div>
+  </div>
+
+  <!-- GRUPO -->
+  <div class="tab-content" id="tab-gr">
+    <div class="gs-row">
+      <div class="gs"><div class="gs-val">12</div><div class="gs-lbl">Convidados</div></div>
+      <div class="gs"><div class="gs-val" style="color:#1A6B3A">9</div><div class="gs-lbl">Confirmados</div></div>
+      <div class="gs"><div class="gs-val" style="color:var(--gold)">9</div><div class="gs-lbl">Pagaram</div></div>
+      <div class="gs"><div class="gs-val" style="color:var(--rose)">3</div><div class="gs-lbl">Pendentes</div></div>
+    </div>
+    <div class="inv-box">
+      <div style="flex:1;min-width:0"><div class="inv-lbl">Link de Convite</div><div class="inv-url">byebyesolteiro.com/invite/despedida-da-camila-2025</div></div>
+      <button class="inv-btn" onclick="copyInvite()">📋 Copiar</button>
+    </div>
+    <div class="mg">
+      <div class="mc"><div class="mav" style="background:var(--rose)">A</div><div class="mi"><div class="mn">Ana Ferreira</div><div class="mr">Organizadora</div></div><span class="badge borg">👑 Org.</span></div>
+      <div class="mc"><div class="mav" style="background:#1A3A6B">C</div><div class="mi"><div class="mn">Camila Santos</div><div class="mr">Noiva · Surpresa</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#1A6B3A">M</div><div class="mi"><div class="mn">Mariana Costa</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#6B4A1A">R</div><div class="mi"><div class="mn">Rafaela Lima</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#4A1A6B">L</div><div class="mi"><div class="mn">Larissa Mello</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#1A5555">F</div><div class="mi"><div class="mn">Fernanda Rocha</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#555511">B</div><div class="mi"><div class="mn">Beatriz Alves</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#3A3A3A">J</div><div class="mi"><div class="mn">Julia Campos</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc"><div class="mav" style="background:#6B1A3A">P</div><div class="mi"><div class="mn">Patricia Dias</div><div class="mr">Participante</div></div><span class="badge bp">✓ Pago</span></div>
+      <div class="mc" style="opacity:.6"><div class="mav" style="background:var(--cream2);color:var(--ink3)">G</div><div class="mi"><div class="mn">Gabriela Nunes</div><div class="mr">Pendente</div></div><span class="badge bpend">⏳ Pend.</span></div>
+      <div class="mc" style="opacity:.6"><div class="mav" style="background:var(--cream2);color:var(--ink3)">T</div><div class="mi"><div class="mn">Tatiana Souza</div><div class="mr">Pendente</div></div><span class="badge bpend">⏳ Pend.</span></div>
+      <div class="mc" style="opacity:.6"><div class="mav" style="background:var(--cream2);color:var(--ink3)">V</div><div class="mi"><div class="mn">Vanessa Moraes</div><div class="mr">Pendente</div></div><span class="badge bpend">⏳ Pend.</span></div>
+    </div>
+    <div class="chat-panel">
+      <div class="chat-hdr"><div class="chat-hdr-title">💬 Chat do Grupo</div><div class="online">● 4 online</div></div>
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="msg-sys">Ana criou o grupo · 20 de fev</div>
+        <div class="msg"><div class="msg-av" style="background:var(--rose)">A</div><div class="msg-body"><div class="msg-name">Ana Ferreira</div><div class="msg-bbl">Gente, o roteiro do dia tá INCRÍVEL! Spa de manhã, jantar e balada 🎉</div><div class="msg-t">Hoje 14:20</div></div></div>
+        <div class="msg"><div class="msg-av" style="background:#1A6B3A">M</div><div class="msg-body"><div class="msg-name">Mariana</div><div class="msg-bbl">Amei! A Camila vai surtar 😍</div><div class="msg-t">Hoje 14:23</div></div></div>
+        <div class="msg-sys">Mariana Costa pagou R$ 180,00 · há 12 min</div>
+        <div class="msg mine"><div class="msg-av" style="background:var(--rose)">A</div><div class="msg-body"><div class="msg-name">Você</div><div class="msg-bbl">Quem ainda não pagou, o link Pix tá na aba Pagamentos 💳</div><div class="msg-t">Hoje 14:31</div></div></div>
+        <div class="msg"><div class="msg-av" style="background:#4A1A6B">L</div><div class="msg-body"><div class="msg-name">Larissa</div><div class="msg-bbl">Já paguei! Mal posso esperar 🥂</div><div class="msg-t">Hoje 14:35</div></div></div>
+      </div>
+      <div class="chat-inp">
+        <input type="text" placeholder="Escreva para o grupo..." id="chat-input" onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALBUM -->
+  <div class="tab-content" id="tab-al">
+    <div class="alb-bar">
+      <div class="alb-cnt"><strong>24</strong> fotos · 8 contribuidores</div>
+      <div style="display:flex;gap:8px">
+        <button class="qa qa-out" style="font-size:.65rem;padding:10px 18px">⬇ Baixar ZIP</button>
+        <button class="qa qa-dark" style="font-size:.65rem;padding:10px 18px">📷 Adicionar Fotos</button>
+      </div>
+    </div>
+    <div class="photo-grid">
+      <div class="photo-item"><div class="pbg pg1"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Ana Ferreira</div><div class="pdate">Spa · 15 ago</div></div></div>
+      <div class="photo-item"><div class="pbg pg2" style="min-height:120px"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Mariana Costa</div><div class="pdate">Brunch · 15 ago</div></div></div>
+      <div class="photo-item"><div class="pbg pg3" style="min-height:120px"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Larissa Mello</div><div class="pdate">Van Party</div></div></div>
+      <div class="photo-item"><div class="pbg pg4"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Rafaela Lima</div><div class="pdate">Aurora VIP</div></div></div>
+      <div class="photo-item"><div class="pbg pg5" style="min-height:120px"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Fernanda</div><div class="pdate">Noite</div></div></div>
+      <div class="photo-item"><div class="pbg pg6" style="min-height:120px"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Beatriz Alves</div><div class="pdate">After</div></div></div>
+      <div class="photo-item"><div class="pbg pg7"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Julia Campos</div><div class="pdate">Grupo</div></div></div>
+      <div class="photo-item"><div class="pbg pg8" style="min-height:120px"></div><div class="pov"></div><div class="pinfo"><div class="pauth">Ana Ferreira</div><div class="pdate">Brinde final</div></div></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleCheck(el){el.classList.toggle('done');el.querySelector('.cl-cb').textContent=el.classList.contains('done')?'✓':'';}
+function copyInvite(){navigator.clipboard.writeText('https://byebyesolteiro.com/invite/despedida-da-camila-2025').catch(()=>{});const b=event.target;const orig=b.textContent;b.textContent='✓ Copiado!';setTimeout(()=>b.textContent=orig,2000);}
+function sendMsg(){
+  const inp=document.getElementById('chat-input');const txt=inp.value.trim();if(!txt)return;
+  const msgs=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='msg mine';
+  const t=new Date();const ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');
+  d.innerHTML=`<div class="msg-av" style="background:var(--rose)">A</div><div class="msg-body"><div class="msg-name">Você</div><div class="msg-bbl">${txt}</div><div class="msg-t">Hoje ${ts}</div></div>`;
+  msgs.appendChild(d);inp.value='';msgs.scrollTop=msgs.scrollHeight;
+}
+const diff=new Date('2025-08-15')-new Date();
+document.getElementById('days-left').textContent=Math.max(0,Math.floor(diff/86400000));
+</script>
+</body>
+</html>
