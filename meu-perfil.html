@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Perfil — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh}
+/* Profile Hero */
+.profile-hero{background:var(--dark);padding:40px 48px;display:flex;align-items:center;gap:28px;position:relative;overflow:hidden}
+.profile-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(232,30,140,.12),transparent 60%)}
+.profile-avatar{width:96px;height:96px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:2.4rem;color:#fff;font-weight:500;flex-shrink:0;border:3px solid rgba(255,255,255,.1);position:relative;z-index:2}
+.pa-edit{position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--gold);border:2px solid var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:none}
+.profile-info{position:relative;z-index:2}
+.pi-name{font-family:var(--serif);font-size:2rem;font-weight:400;color:#fff;margin-bottom:4px}
+.pi-email{font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:10px}
+.pi-badges{display:flex;gap:8px;flex-wrap:wrap}
+.pi-badge{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:100px}
+.pib-gold{background:rgba(184,150,90,.2);color:var(--gold);border:1px solid rgba(184,150,90,.25)}
+.pib-rose{background:rgba(232,30,140,.15);color:var(--rose);border:1px solid rgba(232,30,140,.2)}
+.profile-stats{margin-left:auto;display:flex;gap:32px;position:relative;z-index:2}
+.ps-item{text-align:center}
+.ps-val{font-family:var(--serif);font-size:1.8rem;color:var(--gold);font-weight:400;line-height:1}
+.ps-lbl{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:3px}
+
+.content{padding:32px 48px}
+.two-col{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}
+.card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:24px;margin-bottom:20px}
+.card-title{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(26,22,18,.06);display:flex;align-items:center;justify-content:space-between}
+.edit-link{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);cursor:none;background:none;border:none;font-family:var(--sans);transition:color .2s}
+.edit-link:hover{color:var(--rose)}
+.fi-row{margin-bottom:18px}
+.fi-label{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.fi-val{font-size:.88rem;color:var(--ink2);padding-bottom:8px;border-bottom:1px solid rgba(26,22,18,.06)}
+.fi-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(26,22,18,.15);padding:8px 0;font-family:var(--sans);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .3s}
+.fi-input:focus{border-color:var(--gold)}
+.save-btn{background:var(--ink);color:var(--cream);border:none;padding:12px 28px;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:none;transition:background .3s;margin-top:8px}
+.save-btn:hover{background:var(--gold)}
+/* Past events */
+.ev-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(26,22,18,.05)}
+.ev-row:last-child{border-bottom:none}
+.ev-color{width:3px;height:40px;border-radius:2px;flex-shrink:0}
+.ev-name{font-family:var(--serif);font-size:.95rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+.ev-meta{font-size:.7rem;color:var(--ink3)}
+.badge{display:inline-flex;font-size:.58rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-family:var(--sans)}
+.bp{background:#D1FAE5;color:#065F46}.ba{background:rgba(232,30,140,.1);color:var(--rose)}.bd{background:var(--cream2);color:var(--ink3)}
+/* Preferences */
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(26,22,18,.05)}
+.pref-row:last-child{border-bottom:none}
+.pr-label{font-size:.84rem;color:var(--ink2)}
+.pr-sub{font-size:.7rem;color:var(--ink3);margin-top:2px}
+.toggle{width:44px;height:24px;background:var(--cream2);border-radius:12px;cursor:none;position:relative;transition:background .3s;border:none;flex-shrink:0}
+.toggle.on{background:var(--rose)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(20px)}
+/* Plan */
+.plan-card{background:var(--dark);padding:24px}
+.plan-badge{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:rgba(184,150,90,.15);border:1px solid rgba(184,150,90,.2);padding:4px 10px;margin-bottom:12px}
+.plan-name{font-family:var(--serif);font-size:1.5rem;color:#fff;font-weight:400;margin-bottom:4px}
+.plan-desc{font-size:.76rem;color:rgba(255,255,255,.4);line-height:1.65;margin-bottom:16px}
+.plan-features{list-style:none;margin-bottom:18px}
+.plan-features li{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.plan-features li::before{content:'✓';color:var(--gold);font-weight:600;flex-shrink:0}
+.upgrade-btn{width:100%;background:var(--rose);color:#fff;border:none;padding:13px;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:none;transition:background .3s}
+.upgrade-btn:hover{background:var(--rose-dark)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item">📅 Meus Eventos</a>
+    <span class="snl" style="margin-top:16px">Plataforma</span>
+    <a href="fornecedores.html" class="nav-item">🤝 Fornecedores</a>
+    <a href="split-pagamento.html" class="nav-item">💳 Pagamentos</a>
+    <a href="album-fotos.html" class="nav-item">📸 Álbum</a>
+    <a href="loja-kits.html" class="nav-item">🛍️ Loja de Kits</a>
+    <span class="snl" style="margin-top:16px">Conta</span>
+    <a href="meu-perfil.html" class="nav-item active">👤 Meu Perfil</a>
+    <a href="configuracoes.html" class="nav-item">⚙️ Configurações</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="profile-hero">
+    <div style="position:relative">
+      <div class="profile-avatar">A<span class="pa-edit">✏️</span></div>
+    </div>
+    <div class="profile-info">
+      <div class="pi-name">Ana Ferreira</div>
+      <div class="pi-email">ana.ferreira@gmail.com · Membro desde Março 2024</div>
+      <div class="pi-badges">
+        <span class="pi-badge pib-gold">⭐ Organizadora Premium</span>
+        <span class="pi-badge pib-rose">🎉 3 Eventos Realizados</span>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="ps-item"><div class="ps-val">3</div><div class="ps-lbl">Eventos</div></div>
+      <div class="ps-item"><div class="ps-val">R$ 6,2K</div><div class="ps-lbl">Gerenciado</div></div>
+      <div class="ps-item"><div class="ps-val">★ 5.0</div><div class="ps-lbl">Avaliação</div></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <!-- Dados pessoais -->
+        <div class="card">
+          <div class="card-title">Dados Pessoais <button class="edit-link" onclick="toggleEdit()">Editar</button></div>
+          <div id="view-mode">
+            <div class="fi-row"><div class="fi-label">Nome completo</div><div class="fi-val">Ana Ferreira</div></div>
+            <div class="fi-row"><div class="fi-label">E-mail</div><div class="fi-val">ana.ferreira@gmail.com</div></div>
+            <div class="fi-row"><div class="fi-label">WhatsApp</div><div class="fi-val">(11) 99876-5432</div></div>
+            <div class="fi-row"><div class="fi-label">Cidade</div><div class="fi-val">São Paulo, SP</div></div>
+            <div class="fi-row" style="margin-bottom:0"><div class="fi-label">Data de nascimento</div><div class="fi-val">15 de março de 1994</div></div>
+          </div>
+          <div id="edit-mode" style="display:none">
+            <div class="fi-row"><div class="fi-label">Nome completo</div><input class="fi-input" value="Ana Ferreira"></div>
+            <div class="fi-row"><div class="fi-label">E-mail</div><input class="fi-input" value="ana.ferreira@gmail.com"></div>
+            <div class="fi-row"><div class="fi-label">WhatsApp</div><input class="fi-input" value="(11) 99876-5432"></div>
+            <div class="fi-row"><div class="fi-label">Cidade</div><input class="fi-input" value="São Paulo, SP"></div>
+            <button class="save-btn" onclick="saveEdit()">Salvar Alterações</button>
+          </div>
+        </div>
+
+        <!-- Histórico de eventos -->
+        <div class="card">
+          <div class="card-title">Histórico de Eventos</div>
+          <div class="ev-row"><div class="ev-color" style="background:var(--rose)"></div><div style="flex:1"><div class="ev-name">Despedida da Camila 🌸</div><div class="ev-meta">15 Ago 2025 · São Paulo · 12 pessoas</div></div><span class="badge ba">Ativo</span></div>
+          <div class="ev-row"><div class="ev-color" style="background:var(--gold)"></div><div style="flex:1"><div class="ev-name">Despedida do Pedro 🍻</div><div class="ev-meta">22 Ago 2025 · Rio de Janeiro · 8 pessoas</div></div><span class="badge bd">Rascunho</span></div>
+          <div class="ev-row"><div class="ev-color" style="background:#1A6B3A"></div><div style="flex:1"><div class="ev-name">Despedida da Julia 🥂</div><div class="ev-meta">10 Mai 2025 · Gramado · 10 pessoas</div></div><span class="badge bp">Concluído</span></div>
+        </div>
+      </div>
+      <div>
+        <!-- Plano atual -->
+        <div class="plan-card" style="margin-bottom:20px">
+          <div class="plan-badge">⭐ Plano Atual</div>
+          <div class="plan-name">Premium</div>
+          <div class="plan-desc">Acesso completo a todos os recursos da plataforma. Renovação em 15 de Abril.</div>
+          <ul class="plan-features">
+            <li>Eventos ilimitados</li>
+            <li>IA Planejadora inclusa</li>
+            <li>Suporte prioritário 24h</li>
+            <li>Desconto de 10% na loja</li>
+            <li>Relatórios avançados</li>
+          </ul>
+          <button class="upgrade-btn">Gerenciar assinatura</button>
+        </div>
+
+        <!-- Notificações -->
+        <div class="card">
+          <div class="card-title">Notificações</div>
+          <div class="pref-row"><div><div class="pr-label">Pagamentos recebidos</div><div class="pr-sub">Quando alguém pagar</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="pref-row"><div><div class="pr-label">Novos participantes</div><div class="pr-sub">Quando alguém entrar no grupo</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="pref-row"><div><div class="pr-label">Mensagens do grupo</div><div class="pr-sub">Atividade no chat</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+          <div class="pref-row"><div><div class="pr-label">Lembretes de evento</div><div class="pr-sub">7 e 1 dia antes</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="pref-row"><div><div class="pr-label">Novidades da plataforma</div><div class="pr-sub">Promoções e novos recursos</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+        </div>
+
+        <!-- Danger zone -->
+        <div class="card" style="border-color:rgba(220,38,38,.12)">
+          <div class="card-title" style="color:#DC2626;border-color:rgba(220,38,38,.08)">Zona de Perigo</div>
+          <p style="font-size:.8rem;color:var(--ink3);margin-bottom:14px">Ações irreversíveis. Prossiga com cuidado.</p>
+          <div style="display:flex;gap:8px">
+            <button style="padding:10px 16px;background:transparent;border:1px solid rgba(220,38,38,.2);color:#DC2626;font-family:var(--sans);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;cursor:none;transition:all .3s" onmouseenter="this.style.background='rgba(220,38,38,.06)'" onmouseleave="this.style.background='transparent'">Desativar conta</button>
+            <button style="padding:10px 16px;background:transparent;border:1px solid rgba(220,38,38,.15);color:rgba(220,38,38,.6);font-family:var(--sans);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;cursor:none">Excluir conta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function toggleEdit(){document.getElementById('view-mode').style.display='none';document.getElementById('edit-mode').style.display='block';}
+function saveEdit(){document.getElementById('view-mode').style.display='block';document.getElementById('edit-mode').style.display='none';}
+</script>
+</body>
+</html>

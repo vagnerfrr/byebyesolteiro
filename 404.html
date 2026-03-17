@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página não encontrada — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--dark);color:#fff;font-family:var(--sans);font-weight:300;cursor:none;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+body::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,30,140,.12),transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(184,150,90,.08),transparent 50%)}
+.noise{position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:100;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+/* Floating particles */
+.particle{position:absolute;pointer-events:none;opacity:.15;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.15}90%{opacity:.15}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+.wrap{text-align:center;position:relative;z-index:10;padding:20px;max-width:600px;animation:fadeIn .8s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.logo{margin-bottom:48px}
+.logo a{font-family:var(--serif);font-size:1.1rem;font-weight:500;letter-spacing:.18em;color:rgba(255,255,255,.35);text-decoration:none;text-transform:uppercase}
+.logo a span{color:var(--gold)}
+.num{font-family:var(--serif);font-size:clamp(6rem,15vw,10rem);font-weight:300;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1);line-height:1;margin-bottom:0;position:relative;display:inline-block}
+.num::before{content:'404';position:absolute;inset:0;-webkit-text-stroke:0;background:linear-gradient(135deg,var(--rose),var(--gold),var(--rose-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.4}
+.emoji-big{font-size:4rem;display:block;margin:-10px 0 20px;animation:wobble 3s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.title{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.6rem);font-weight:400;color:#fff;line-height:1.1;margin-bottom:10px}
+.title em{font-style:italic;color:var(--rose-dark)}
+.sub{font-size:.88rem;color:rgba(255,255,255,.4);line-height:1.8;max-width:420px;margin:0 auto 36px}
+.links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.link{padding:12px 22px;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:all .3s;cursor:none;display:inline-flex;align-items:center;gap:7px}
+.link-primary{background:var(--rose);color:#fff;border:1px solid var(--rose)}
+.link-primary:hover{background:var(--rose-dark);border-color:var(--rose-dark)}
+.link-sec{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.12)}
+.link-sec:hover{border-color:var(--gold);color:var(--gold)}
+/* Quick links */
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:440px;margin:0 auto}
+.ql{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:14px;text-align:center;text-decoration:none;transition:all .3s;cursor:none}
+.ql:hover{border-color:rgba(184,150,90,.25);background:rgba(184,150,90,.05)}
+.ql-icon{font-size:1.3rem;display:block;margin-bottom:5px}
+.ql-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise"></div>
+<div id="particles"></div>
+
+<div class="wrap">
+  <div class="logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <div class="num">404</div>
+  <span class="emoji-big">💍</span>
+  <h1 class="title">Ops! Essa <em>página fugiu</em></h1>
+  <p class="sub">Parece que a página que você procura se perdeu na festa... Mas calma, a gente te leva de volta para a celebração!</p>
+  <div class="links">
+    <a href="index.html" class="link link-primary">🏠 Voltar ao início</a>
+    <a href="dashboard.html" class="link link-sec">📊 Dashboard</a>
+  </div>
+  <div style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:14px">Atalhos rápidos</div>
+  <div class="quick">
+    <a href="criar-evento.html" class="ql"><span class="ql-icon">✨</span><span class="ql-label">Criar evento</span></a>
+    <a href="fornecedores.html" class="ql"><span class="ql-icon">🤝</span><span class="ql-label">Fornecedores</span></a>
+    <a href="split-pagamento.html" class="ql"><span class="ql-icon">💳</span><span class="ql-label">Pagamentos</span></a>
+  </div>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+// Floating particles
+const emojis=['💍','🥂','✨','🌸','👑','💕','🎉','💫'];
+const pc=document.getElementById('particles');
+for(let i=0;i<20;i++){
+  const el=document.createElement('div');
+  el.className='particle';
+  el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  el.style.left=Math.random()*100+'vw';
+  el.style.fontSize=(0.8+Math.random()*1.5)+'rem';
+  el.style.animationDuration=(8+Math.random()*12)+'s';
+  el.style.animationDelay=(-Math.random()*12)+'s';
+  pc.appendChild(el);
+}
+</script>
+</body>
+</html>

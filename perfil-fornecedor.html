@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espaço Aurora — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.nbadge{margin-left:auto;background:var(--rose);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:100px;font-weight:600}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}
+.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh}
+.hero{height:360px;background:linear-gradient(135deg,#1A0A14,#C8687A,#2C1810);position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.hero::before{content:'🍸';position:absolute;right:-20px;top:-20px;font-size:240px;opacity:.05;line-height:1}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,.85),transparent 50%)}
+.hero-photos{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;opacity:.3}
+.hp{background:linear-gradient(135deg,#2C1810,#C8687A)}
+.hp:nth-child(2){background:linear-gradient(135deg,#1A2035,#4A6080)}
+.hp:nth-child(3){background:linear-gradient(135deg,#2A1040,#8B5CF6)}
+.hp:nth-child(4){background:linear-gradient(135deg,#1C2010,#6B7A3A)}
+.hp:nth-child(5){background:linear-gradient(135deg,#401020,#B8965A)}
+.hero-content{position:relative;z-index:2;padding:36px 48px;width:100%}
+.hero-bc{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px}
+.hero-bc a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+.hero-bc a:hover{color:var(--gold)}
+.hero-bc span{margin:0 8px}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(184,150,90,.2);border:1px solid rgba(184,150,90,.3);color:var(--gold);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;padding:4px 12px;margin-bottom:10px}
+.hero-name{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;color:#fff;line-height:1.05;margin-bottom:8px}
+.hero-meta{display:flex;gap:18px;flex-wrap:wrap}
+.hm{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px}
+.hm strong{color:rgba(255,255,255,.82);font-weight:400}
+.hr-stars{color:var(--gold);font-size:1.3rem;letter-spacing:2px}
+.hr-val{font-family:var(--serif);font-size:1.9rem;color:#fff;line-height:1}
+.hr-count{font-size:.68rem;color:rgba(255,255,255,.38);margin-top:2px}
+.page-body{display:grid;grid-template-columns:1fr 320px;gap:0;align-items:start}
+.content{padding:32px 44px}
+.sidebar-right{padding:28px 32px 28px 0;position:sticky;top:0}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:28px}
+.gi{overflow:hidden;cursor:none}
+.gi:first-child{grid-column:span 2;grid-row:span 2}
+.gi-bg{width:100%;height:100%;min-height:110px;transition:transform .5s}
+.gi:hover .gi-bg{transform:scale(1.04)}
+.g1{background:linear-gradient(135deg,#2C1810,#C8687A,#F0D4D9)}
+.g2{background:linear-gradient(160deg,#1A2035,#4A6080)}
+.g3{background:linear-gradient(135deg,#2A1040,#8B5CF6)}
+.g4{background:linear-gradient(135deg,#1C2010,#6B7A3A)}
+.g5{background:linear-gradient(135deg,#401020,#B8965A)}
+.sec{margin-bottom:28px}
+.sec-title{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:var(--ink);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(26,22,18,.06)}
+.sec-body{font-size:.86rem;color:var(--ink2);line-height:1.85}
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.srv{background:#fff;border:1px solid rgba(26,22,18,.06);padding:16px;transition:all .3s}
+.srv:hover{border-color:rgba(184,150,90,.25);box-shadow:0 4px 12px rgba(26,22,18,.06)}
+.srv-icon{font-size:1.3rem;margin-bottom:7px}
+.srv-name{font-family:var(--serif);font-size:.95rem;font-weight:500;color:var(--ink);margin-bottom:3px}
+.srv-desc{font-size:.73rem;color:var(--ink3);line-height:1.5;margin-bottom:7px}
+.srv-price{font-size:.78rem;color:var(--gold);font-weight:500}
+.reviews-list{display:flex;flex-direction:column;gap:12px}
+.rev{background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px 20px}
+.rev-top{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.rev-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.88rem;color:#fff;font-weight:500;flex-shrink:0}
+.rev-name{font-size:.82rem;font-weight:500;color:var(--ink)}
+.rev-date{font-size:.66rem;color:var(--ink3)}
+.rev-stars{color:var(--gold);font-size:.72rem;margin-left:auto}
+.rev-text{font-size:.8rem;color:var(--ink2);line-height:1.65;font-style:italic}
+.rev-event{font-size:.66rem;color:var(--ink3);margin-top:7px}
+.book-card{background:var(--dark);padding:26px;margin-bottom:12px}
+.bc-eyebrow{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:5px}
+.bc-price{font-family:var(--serif);font-size:2rem;color:var(--gold);font-weight:400;line-height:1;margin-bottom:2px}
+.bc-from{font-size:.68rem;color:rgba(255,255,255,.32);margin-bottom:18px}
+.bc-row{display:flex;justify-content:space-between;font-size:.76rem;color:rgba(255,255,255,.45);margin-bottom:8px}
+.bc-row strong{color:rgba(255,255,255,.78);font-weight:400}
+.bc-sep{height:1px;background:rgba(255,255,255,.06);margin:12px 0}
+.bc-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:10px 13px;font-family:var(--sans);font-size:.8rem;color:#fff;outline:none;margin-bottom:8px;transition:border-color .3s;-webkit-appearance:none}
+.bc-input::placeholder{color:rgba(255,255,255,.28)}
+.bc-input:focus{border-color:var(--gold)}
+.bc-btn{width:100%;background:var(--rose);color:#fff;border:none;padding:14px;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;cursor:none;transition:background .3s;margin-top:3px}
+.bc-btn:hover{background:var(--rose-dark)}
+.bc-note{font-size:.66rem;color:rgba(255,255,255,.28);text-align:center;margin-top:9px}
+.info-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:20px;margin-bottom:12px}
+.info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.info-row:last-child{margin-bottom:0}
+.info-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.info-val{font-size:.82rem;color:var(--ink2)}
+.sim-card{background:#fff;border:1px solid rgba(26,22,18,.06);display:flex;gap:10px;padding:12px;transition:all .3s;cursor:none;text-decoration:none;margin-bottom:8px}
+.sim-card:hover{border-color:rgba(184,150,90,.25)}
+.sim-img{width:50px;height:50px;flex-shrink:0}
+.sim-name{font-family:var(--serif);font-size:.9rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+.sim-cat{font-size:.62rem;color:var(--ink3)}
+.sim-price{font-size:.74rem;color:var(--gold);margin-top:3px}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item">📅 Meus Eventos</a>
+    <span class="snl" style="margin-top:16px">Plataforma</span>
+    <a href="fornecedores.html" class="nav-item active">🤝 Fornecedores</a>
+    <a href="split-pagamento.html" class="nav-item">💳 Pagamentos <span class="nbadge">3</span></a>
+    <a href="album-fotos.html" class="nav-item">📸 Álbum</a>
+    <a href="loja-kits.html" class="nav-item">🛍️ Loja de Kits</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="hero">
+    <div class="hero-photos"><div class="hp"></div><div class="hp"></div><div class="hp"></div><div class="hp"></div><div class="hp"></div></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-bc"><a href="fornecedores.html">Fornecedores</a><span>/</span>Bar & Balada<span>/</span>Espaço Aurora</div>
+      <div class="hero-top">
+        <div>
+          <div class="hero-badge">✓ Verificado · Bar & Balada</div>
+          <div class="hero-name">Espaço Aurora</div>
+          <div class="hero-meta">
+            <div class="hm">📍 <strong>Vila Olímpia, São Paulo</strong></div>
+            <div class="hm">👥 <strong>Até 80 pessoas</strong></div>
+            <div class="hm">🕐 <strong>18h–04h</strong></div>
+            <div class="hm">🎉 <strong>87 despedidas realizadas</strong></div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="hr-stars">★★★★★</div>
+          <div class="hr-val">4.9</div>
+          <div class="hr-count">87 avaliações</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="content">
+      <div class="gallery">
+        <div class="gi"><div class="gi-bg g1" style="min-height:230px"></div></div>
+        <div class="gi"><div class="gi-bg g2"></div></div>
+        <div class="gi"><div class="gi-bg g3"></div></div>
+        <div class="gi"><div class="gi-bg g4"></div></div>
+        <div class="gi"><div class="gi-bg g5"></div></div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">Sobre o Espaço</div>
+        <div class="sec-body">O Espaço Aurora é referência em despedidas de solteiro premium em São Paulo. Com ambiente sofisticado na Vila Olímpia, oferecemos área VIP privativa, open bar de drinks autorais, DJ residente e toda a infraestrutura para uma noite inesquecível.<br><br>Nossa equipe especializada em despedidas cuida de cada detalhe — desde a decoração temática até a organização do grupo — para que a organizadora possa curtir junto sem preocupações.</div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">Pacotes & Serviços</div>
+        <div class="services-grid">
+          <div class="srv"><div class="srv-icon">🥂</div><div class="srv-name">Pacote Básico</div><div class="srv-desc">Área reservada, open bar 2h, DJ e decoração. Ideal para 10–20 pessoas.</div><div class="srv-price">A partir de R$ 1.200</div></div>
+          <div class="srv"><div class="srv-icon">👑</div><div class="srv-name">Pacote VIP</div><div class="srv-desc">Área exclusiva, open bar 4h, DJ personalizado e fotógrafa inclusa.</div><div class="srv-price">A partir de R$ 2.800</div></div>
+          <div class="srv"><div class="srv-icon">🎭</div><div class="srv-name">Pacote Show</div><div class="srv-desc">Tudo do VIP + show especial, brunch de madrugada e transfer.</div><div class="srv-price">A partir de R$ 4.500</div></div>
+          <div class="srv"><div class="srv-icon">🌙</div><div class="srv-name">After Party</div><div class="srv-desc">Espaço das 00h–04h. Perfeito como continuação de outro evento.</div><div class="srv-price">A partir de R$ 800</div></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">Avaliações <span style="font-size:.75rem;color:var(--ink3);font-family:var(--sans);font-weight:300">(87 · média 4.9)</span></div>
+        <div class="reviews-list">
+          <div class="rev"><div class="rev-top"><div class="rev-av" style="background:var(--rose)">A</div><div><div class="rev-name">Ana Ferreira</div><div class="rev-date">Março 2025</div></div><div class="rev-stars">★★★★★</div></div><div class="rev-text">"Superou todas as expectativas! A equipe foi incrível e a Camila não parou de sorrir a noite toda."</div><div class="rev-event">🎉 Despedida da Camila · 12 pessoas</div></div>
+          <div class="rev"><div class="rev-top"><div class="rev-av" style="background:#1A3A6B">M</div><div><div class="rev-name">Mariana Costa</div><div class="rev-date">Janeiro 2025</div></div><div class="rev-stars">★★★★★</div></div><div class="rev-text">"Lugar lindo, drinks deliciosos e staff atencioso. A área VIP é enorme. Vale cada centavo."</div><div class="rev-event">🎉 Despedida da Fernanda · 15 pessoas</div></div>
+          <div class="rev"><div class="rev-top"><div class="rev-av" style="background:#1A6B3A">R</div><div><div class="rev-name">Rafaela Lima</div><div class="rev-date">Dezembro 2024</div></div><div class="rev-stars">★★★★☆</div></div><div class="rev-text">"Ótima estrutura e atendimento. Pequeno delay no início mas resolveram rápido. Noite incrível!"</div><div class="rev-event">🎉 Despedida da Julia · 8 pessoas</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-right">
+      <div class="book-card">
+        <div class="bc-eyebrow">Reservar para seu evento</div>
+        <div class="bc-price">R$ 1.200</div>
+        <div class="bc-from">a partir de · por evento</div>
+        <div class="bc-row"><span>Avaliação</span><strong>★ 4.9 (87)</strong></div>
+        <div class="bc-row"><span>Capacidade</span><strong>10–80 pessoas</strong></div>
+        <div class="bc-sep"></div>
+        <input class="bc-input" type="date">
+        <input class="bc-input" type="number" placeholder="Nº de convidados" min="5" max="80">
+        <select class="bc-input" style="color:rgba(255,255,255,.6)">
+          <option style="background:#1A1A2E;color:#fff">Selecionar pacote</option>
+          <option style="background:#1A1A2E;color:#fff">Pacote Básico — R$ 1.200</option>
+          <option style="background:#1A1A2E;color:#fff">Pacote VIP — R$ 2.800</option>
+          <option style="background:#1A1A2E;color:#fff">Pacote Show — R$ 4.500</option>
+          <option style="background:#1A1A2E;color:#fff">After Party — R$ 800</option>
+        </select>
+        <button class="bc-btn" onclick="window.location.href='detalhe-evento.html'">Solicitar Reserva →</button>
+        <div class="bc-note">Sem cobrança agora · Confirmação em 24h</div>
+      </div>
+      <div class="info-card">
+        <div class="info-row"><span style="font-size:1rem">⏱</span><div><div class="info-label">Resposta</div><div class="info-val">Em até 2 horas</div></div></div>
+        <div class="info-row"><span style="font-size:1rem">📅</span><div><div class="info-label">Cancelamento</div><div class="info-val">Gratuito até 7 dias antes</div></div></div>
+        <div class="info-row"><span style="font-size:1rem">💳</span><div><div class="info-label">Pagamento</div><div class="info-val">Pix, cartão ou split</div></div></div>
+        <div class="info-row"><span style="font-size:1rem">🏆</span><div><div class="info-label">Na plataforma desde</div><div class="info-val">Março 2024 · Top Fornecedor</div></div></div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px">
+        <div style="font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Similares</div>
+        <a href="perfil-fornecedor.html" class="sim-card"><div class="sim-img" style="background:linear-gradient(135deg,#1A1A1A,#4A4A4A)"></div><div><div class="sim-name">Black Label Club</div><div class="sim-cat">🍸 Vila Madalena</div><div class="sim-price">A partir de R$ 1.800</div></div></a>
+        <a href="perfil-fornecedor.html" class="sim-card" style="margin-bottom:0"><div class="sim-img" style="background:linear-gradient(135deg,#200A10,#E91E8C)"></div><div><div class="sim-name">Club Rose</div><div class="sim-cat">🍸 Itaim Bibi</div><div class="sim-price">A partir de R$ 950</div></div></a>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+</script>
+</body>
+</html>

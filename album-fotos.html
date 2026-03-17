@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Álbum de Fotos — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh}
+.topbar{background:rgba(247,243,238,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,150,90,.12);padding:18px 44px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar h1{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--ink)}
+.topbar h1 em{font-style:italic;color:var(--rose-dark)}
+.tb-actions{display:flex;align-items:center;gap:8px}
+.tb-btn{padding:10px 18px;font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s;border:none;display:inline-flex;align-items:center;gap:6px}
+.tb-dark{background:var(--ink);color:var(--cream)}
+.tb-dark:hover{background:var(--gold)}
+.tb-out{background:transparent;color:var(--ink2);border:1px solid rgba(26,22,18,.12)}
+.tb-out:hover{border-color:var(--gold);color:var(--gold)}
+.content{padding:28px 44px}
+/* Event selector */
+.ev-sel{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.ev-pill{padding:8px 18px;border:1px solid rgba(26,22,18,.1);background:transparent;font-family:var(--sans);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s}
+.ev-pill:hover{border-color:rgba(26,22,18,.2);color:var(--ink)}
+.ev-pill.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+/* Stats bar */
+.stats-bar{display:flex;gap:24px;background:#fff;border:1px solid rgba(26,22,18,.06);padding:16px 24px;margin-bottom:24px}
+.sb-item{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--ink3)}
+.sb-item strong{color:var(--ink2);font-weight:500}
+.sb-sep{width:1px;height:20px;background:rgba(26,22,18,.06)}
+/* Upload zone */
+.upload-zone{border:2px dashed rgba(184,150,90,.25);padding:32px;text-align:center;margin-bottom:24px;cursor:none;transition:all .3s;background:rgba(184,150,90,.02)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--gold);background:rgba(184,150,90,.05)}
+.uz-icon{font-size:2.5rem;margin-bottom:10px;display:block}
+.uz-title{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:4px}
+.uz-sub{font-size:.76rem;color:var(--ink3);margin-bottom:16px}
+.uz-btn{display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;padding:11px 22px;border:none;cursor:none;transition:background .3s}
+.uz-btn:hover{background:var(--gold)}
+/* Progress bar for upload */
+.upload-progress{display:none;margin-top:12px}
+.up-bar{height:4px;background:var(--cream2);border-radius:2px;overflow:hidden}
+.up-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--rose));border-radius:2px;width:0;transition:width .3s}
+.up-label{font-size:.68rem;color:var(--ink3);margin-top:5px;text-align:center}
+/* Gallery masonry-style */
+.gallery-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.gallery-hdr h2{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--ink)}
+.view-btns{display:flex;gap:2px}
+.vb{width:28px;height:28px;border:1px solid rgba(26,22,18,.1);background:transparent;cursor:none;display:flex;align-items:center;justify-content:center;font-size:.72rem;transition:all .2s}
+.vb.active,.vb:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.gallery-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:32px}
+.gallery-grid.list-view{grid-template-columns:1fr;gap:8px}
+.photo{position:relative;overflow:hidden;cursor:none;aspect-ratio:1}
+.photo-bg{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.photo:hover .photo-bg{transform:scale(1.06)}
+.photo-overlay{position:absolute;inset:0;background:rgba(26,22,18,0);transition:background .3s;display:flex;align-items:flex-end;padding:10px}
+.photo:hover .photo-overlay{background:rgba(26,22,18,.45)}
+.photo-actions{opacity:0;transition:opacity .3s;display:flex;gap:5px}
+.photo:hover .photo-actions{opacity:1}
+.pa-btn{background:rgba(255,255,255,.9);border:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.75rem;transition:all .2s}
+.pa-btn:hover{background:var(--rose);color:#fff}
+.photo.span2{grid-column:span 2;grid-row:span 2}
+.photo.span2 .photo-overlay{padding:16px}
+.photo-like{position:absolute;top:8px;right:8px;background:rgba(26,22,18,.5);border:none;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.75rem;opacity:0;transition:opacity .3s}
+.photo:hover .photo-like,.photo.liked .photo-like{opacity:1}
+.photo.liked .photo-like{background:var(--rose)}
+/* Section label */
+.sec-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin:24px 0 12px;display:block}
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(26,22,18,.95);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.lightbox.open{opacity:1;pointer-events:all}
+.lb-content{max-width:80vw;max-height:80vh;position:relative}
+.lb-img{width:100%;height:100%;object-fit:contain;max-width:80vw;max-height:75vh;display:flex;align-items:center;justify-content:center;font-size:5rem}
+.lb-close{position:absolute;top:-40px;right:0;background:none;border:none;color:rgba(255,255,255,.5);font-size:1.5rem;cursor:none;transition:color .2s}
+.lb-close:hover{color:#fff}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);width:40px;height:40px;cursor:none;font-size:1rem;transition:all .2s}
+.lb-nav:hover{background:rgba(255,255,255,.2);color:#fff}
+.lb-prev{left:-56px}.lb-next{right:-56px}
+.lb-info{text-align:center;margin-top:14px;color:rgba(255,255,255,.5);font-size:.74rem}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item">📅 Meus Eventos</a>
+    <span class="snl" style="margin-top:16px">Plataforma</span>
+    <a href="fornecedores.html" class="nav-item">🤝 Fornecedores</a>
+    <a href="split-pagamento.html" class="nav-item">💳 Pagamentos</a>
+    <a href="album-fotos.html" class="nav-item active">📸 Álbum</a>
+    <a href="loja-kits.html" class="nav-item">🛍️ Loja de Kits</a>
+    <span class="snl" style="margin-top:16px">Conta</span>
+    <a href="meu-perfil.html" class="nav-item">👤 Meu Perfil</a>
+    <a href="configuracoes.html" class="nav-item">⚙️ Configurações</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><h1>Álbum de <em>Fotos</em> 📸</h1></div>
+    <div class="tb-actions">
+      <button class="tb-btn tb-out" onclick="downloadAll()">⬇️ Baixar tudo (ZIP)</button>
+      <button class="tb-btn tb-dark" onclick="document.getElementById('file-input').click()">+ Enviar Fotos</button>
+      <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="simulateUpload()">
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Event selector -->
+    <div class="ev-sel">
+      <button class="ev-pill active">🌸 Despedida da Camila</button>
+      <button class="ev-pill">🍻 Despedida do Pedro</button>
+      <button class="ev-pill">🥂 Despedida da Julia</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="sb-item">📸 <strong>47</strong> fotos</div>
+      <div class="sb-sep"></div>
+      <div class="sb-item">👥 <strong>12</strong> contribuíram</div>
+      <div class="sb-sep"></div>
+      <div class="sb-item">❤️ <strong>134</strong> curtidas</div>
+      <div class="sb-sep"></div>
+      <div class="sb-item">💾 <strong>312 MB</strong> usados</div>
+      <div class="sb-sep"></div>
+      <div class="sb-item">📅 <strong>15 Ago 2025</strong></div>
+    </div>
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="upload-zone"
+      ondragover="event.preventDefault();this.classList.add('drag')"
+      ondragleave="this.classList.remove('drag')"
+      ondrop="handleDrop(event)">
+      <span class="uz-icon">📷</span>
+      <div class="uz-title">Arraste fotos aqui</div>
+      <div class="uz-sub">ou clique para selecionar · JPG, PNG, HEIC até 20MB cada</div>
+      <button class="uz-btn" onclick="document.getElementById('file-input').click()">Selecionar Fotos</button>
+      <div class="upload-progress" id="upload-progress">
+        <div class="up-bar"><div class="up-fill" id="up-fill"></div></div>
+        <div class="up-label" id="up-label">Enviando...</div>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-hdr">
+      <h2>Todas as fotos</h2>
+      <div class="view-btns">
+        <button class="vb active" onclick="setView(this,'grid')" title="Grade">⊞</button>
+        <button class="vb" onclick="setView(this,'list')" title="Lista">☰</button>
+      </div>
+    </div>
+
+    <span class="sec-label">Antes do evento · 12 fotos</span>
+    <div class="gallery-grid" id="gallery">
+      <div class="photo span2" onclick="openLb('🌸','Selfie do grupo','Ana Ferreira · 15 Ago, 18:32')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#F0D4D9,#E8B4C0,#D4889A);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button><button class="pa-btn" onclick="event.stopPropagation()">🔗</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('💄','Maquiagem da noiva','Mariana · 15 Ago, 17:45')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#F7F3EE,#EDE8E0);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like liked" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('🥂','Chegando no local','Julia · 15 Ago, 19:10')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#1A1A2E,#4A3060,#8B5CF6);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('🎂','Bolo surpresa','Rafaela · 15 Ago, 19:30')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#FFF0F5,#FFD4E8,#FFB4D5);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('🌃','Visão externa','Ana · 15 Ago, 19:15')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#0A0A1A,#1A1A3E,#2A2A6E);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+    </div>
+
+    <span class="sec-label">Durante o evento · 35 fotos</span>
+    <div class="gallery-grid">
+      <div class="photo" onclick="openLb('💃','Pista de dança','Grupo · 15 Ago, 22:15')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#2A0A30,#8B0050,#E91E8C);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like liked" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo span2" onclick="openLb('🥂','Brinde do grupo','Mariana · 15 Ago, 21:00')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#B8965A,#D4AF72,#F0D4A0);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like liked" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('🎵','DJ da noite','Julia · 15 Ago, 23:40')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#0A1A0A,#1A4A1A,#2A8A2A);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('👑','A homenageada','Ana · 15 Ago, 20:30')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#C8687A,#E91E8C,#FF6BA8);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like liked" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+      <div class="photo" onclick="openLb('🍹','Drinks autorais','Rafa · 15 Ago, 21:45')">
+        <div class="photo-bg" style="background:linear-gradient(135deg,#1A0A3A,#4A1A8A,#8A4ACA);width:100%;height:100%"></div>
+        <div class="photo-overlay"><div class="photo-actions"><button class="pa-btn" onclick="event.stopPropagation()">⬇️</button></div></div>
+        <button class="photo-like" onclick="event.stopPropagation();toggleLike(this)">❤️</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLb()">
+  <div class="lb-content">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <button class="lb-nav lb-prev" onclick="navLb(-1)">←</button>
+    <button class="lb-nav lb-next" onclick="navLb(1)">→</button>
+    <div class="lb-img" id="lb-img">🌸</div>
+    <div class="lb-info" id="lb-info">Foto · Ana Ferreira</div>
+  </div>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function setView(btn,mode){
+  document.querySelectorAll('.vb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gallery-grid').forEach(g=>{g.classList.toggle('list-view',mode==='list');});
+}
+function openLb(emoji,title,author){
+  document.getElementById('lb-img').textContent=emoji;
+  document.getElementById('lb-info').textContent=title+' · '+author;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLb(){document.getElementById('lightbox').classList.remove('open');}
+function navLb(dir){/* nav through photos */}
+function toggleLike(btn){btn.closest('.photo').classList.toggle('liked');}
+function handleDrop(e){e.preventDefault();document.getElementById('upload-zone').classList.remove('drag');simulateUpload();}
+function simulateUpload(){
+  const prog=document.getElementById('upload-progress'),fill=document.getElementById('up-fill'),lbl=document.getElementById('up-label');
+  prog.style.display='block';let p=0;
+  const iv=setInterval(()=>{p+=Math.random()*15;if(p>=100){p=100;clearInterval(iv);lbl.textContent='✓ Upload completo!';setTimeout(()=>{prog.style.display='none';fill.style.width='0';},2000);}
+  fill.style.width=p+'%';lbl.textContent='Enviando... '+Math.floor(p)+'%';},200);
+}
+function downloadAll(){alert('ZIP com 47 fotos sendo preparado...');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')navLb(-1);if(e.key==='ArrowRight')navLb(1);});
+</script>
+</body>
+</html>

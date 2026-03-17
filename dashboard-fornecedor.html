@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Fornecedor — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.nbadge{margin-left:auto;background:var(--rose);color:#fff;font-size:.6rem;padding:2px 7px;border-radius:100px;font-weight:600}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:rgba(247,243,238,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,150,90,.12);padding:20px 44px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-left h1{font-family:var(--serif);font-size:1.55rem;font-weight:400;color:var(--ink)}
+.topbar-left h1 em{font-style:italic;color:var(--rose-dark)}
+.topbar-left .sub{font-size:.72rem;color:var(--ink3);margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.tb-btn{padding:10px 18px;font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.tb-dark{background:var(--ink);color:var(--cream);border:1px solid var(--ink)}
+.tb-dark:hover{background:var(--gold);border-color:var(--gold)}
+.tb-out{background:transparent;color:var(--ink2);border:1px solid rgba(26,22,18,.15)}
+.tb-out:hover{border-color:var(--gold);color:var(--gold)}
+.content{padding:32px 44px;flex:1}
+/* KPIs */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.kc{background:#fff;border:1px solid rgba(26,22,18,.06);padding:22px 20px;position:relative;overflow:hidden;transition:all .3s}
+.kc:hover{box-shadow:0 8px 24px rgba(26,22,18,.07);transform:translateY(-2px)}
+.kc::after{content:attr(data-icon);position:absolute;right:-8px;bottom:-8px;font-size:3.5rem;opacity:.05;line-height:1}
+.kc-lbl{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.kc-val{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--ink);line-height:1;margin-bottom:4px}
+.kc-val.gold{color:var(--gold)}.kc-val.rose{color:var(--rose)}.kc-val.green{color:#1A6B3A}
+.kc-sub{font-size:.7rem;color:var(--ink3)}
+.kc-sub.up{color:#1A6B3A}.kc-sub.up::before{content:'↑ '}
+/* Two col */
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-hdr h2{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--ink)}
+.sec-hdr a,.sec-hdr button{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;background:none;border:none;cursor:none;font-family:var(--sans)}
+/* Reservations */
+.res-card{background:#fff;border:1px solid rgba(26,22,18,.06);overflow:hidden;margin-bottom:16px}
+.res-row{padding:18px 22px;border-bottom:1px solid rgba(26,22,18,.05);display:flex;align-items:center;gap:14px;transition:background .2s}
+.res-row:last-child{border-bottom:none}
+.res-row:hover{background:rgba(247,243,238,.5)}
+.res-color{width:3px;height:44px;border-radius:2px;flex-shrink:0}
+.res-info{flex:1;min-width:0}
+.res-name{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+.res-meta{font-size:.7rem;color:var(--ink3);display:flex;gap:10px;flex-wrap:wrap}
+.res-actions{display:flex;gap:6px;flex-shrink:0}
+.ra{padding:6px 12px;font-family:var(--sans);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(26,22,18,.12);background:transparent;color:var(--ink3);cursor:none;transition:all .25s}
+.ra:hover{border-color:var(--gold);color:var(--gold)}
+.ra.confirm{border-color:rgba(26,107,58,.25);color:#1A6B3A}
+.ra.confirm:hover{background:#1A6B3A;color:#fff;border-color:#1A6B3A}
+.ra.decline{border-color:rgba(220,38,38,.2);color:#DC2626}
+.badge{display:inline-flex;font-size:.58rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-family:var(--sans)}
+.bp{background:#D1FAE5;color:#065F46}.bpend{background:#FFF3CD;color:#856404}.bc{background:#DBEAFE;color:#1E40AF}.bcanc{background:#FEE2E2;color:#991B1B}
+/* Calendar */
+.cal-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:20px}
+.cal-month{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink)}
+.cal-nav{background:none;border:1px solid rgba(26,22,18,.1);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.8rem;transition:all .2s}
+.cal-nav:hover{border-color:var(--gold)}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-bottom:6px}
+.cal-day-lbl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:4px 0}
+.cal-day{font-size:.78rem;color:var(--ink3);padding:6px 4px;border-radius:2px;cursor:none;transition:background .2s;border:none;background:transparent;font-family:var(--sans)}
+.cal-day.today{background:var(--ink);color:var(--cream)}
+.cal-day.booked{background:rgba(232,30,140,.12);color:var(--rose);font-weight:500}
+.cal-day.available{color:var(--ink2)}
+.cal-day:hover:not(.today){background:var(--cream2)}
+/* Revenue chart mock */
+.chart-card{background:#fff;border:1px solid rgba(26,22,18,.06);padding:20px;margin-top:16px}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;margin-top:12px}
+.bar{flex:1;background:var(--cream2);border-radius:2px 2px 0 0;transition:background .3s;cursor:none;position:relative}
+.bar:hover{background:var(--rose)}
+.bar::after{content:attr(data-val);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:.58rem;color:var(--ink3);white-space:nowrap;opacity:0;transition:opacity .2s}
+.bar:hover::after{opacity:1}
+.bar-lbl{font-size:.58rem;color:var(--ink3);text-align:center;margin-top:4px;letter-spacing:.05em}
+.chart-lbl{display:flex;justify-content:space-between;font-size:.6rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+/* Reviews summary */
+.rev-summary{background:#fff;border:1px solid rgba(26,22,18,.06);padding:20px;margin-top:16px}
+.rs-score{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.rs-big{font-family:var(--serif);font-size:2.8rem;color:var(--ink);font-weight:400;line-height:1}
+.rs-stars{color:var(--gold);font-size:1rem;letter-spacing:1px;margin-bottom:2px}
+.rs-count{font-size:.7rem;color:var(--ink3)}
+.rs-bars{flex:1}
+.rb-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rb-lbl{font-size:.65rem;color:var(--ink3);width:12px;flex-shrink:0;text-align:right}
+.rb-bar{flex:1;height:4px;background:var(--cream2);border-radius:2px;overflow:hidden}
+.rb-fill{height:100%;background:var(--gold);border-radius:2px}
+.rb-count{font-size:.62rem;color:var(--ink3);width:20px;text-align:right}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Fornecedor</span>
+    <a href="dashboard-fornecedor.html" class="nav-item active">🏠 Dashboard</a>
+    <a href="perfil-fornecedor.html" class="nav-item">👁️ Meu Perfil Público</a>
+    <span class="snl" style="margin-top:16px">Gestão</span>
+    <a href="#" class="nav-item">📅 Agenda <span class="nbadge">5</span></a>
+    <a href="#" class="nav-item">💰 Financeiro</a>
+    <a href="#" class="nav-item">⭐ Avaliações</a>
+    <a href="#" class="nav-item">📊 Relatórios</a>
+    <span class="snl" style="margin-top:16px">Conta</span>
+    <a href="configuracoes.html" class="nav-item">⚙️ Configurações</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">E</div><div><div class="un">Espaço Aurora</div><div class="ur">Fornecedor · Top</div></div></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Dashboard <em>Fornecedor</em></h1>
+      <div class="sub">Espaço Aurora · Bar & Balada · Vila Olímpia, SP</div>
+    </div>
+    <div class="topbar-right">
+      <a href="perfil-fornecedor.html" class="tb-btn tb-out">👁️ Ver Perfil Público</a>
+      <a href="#" class="tb-btn tb-dark">+ Nova Disponibilidade</a>
+    </div>
+  </div>
+  <div class="content">
+    <div class="kpi-grid">
+      <div class="kc" data-icon="📅"><div class="kc-lbl">Reservas este mês</div><div class="kc-val rose">8</div><div class="kc-sub up">3 a mais que o mês passado</div></div>
+      <div class="kc" data-icon="💰"><div class="kc-lbl">Faturamento (Mês)</div><div class="kc-val gold">R$ 14.200</div><div class="kc-sub up">18% acima da meta</div></div>
+      <div class="kc" data-icon="⭐"><div class="kc-lbl">Avaliação Média</div><div class="kc-val">4.9</div><div class="kc-sub">87 avaliações totais</div></div>
+      <div class="kc" data-icon="👀"><div class="kc-lbl">Visualizações do Perfil</div><div class="kc-val">342</div><div class="kc-sub up">este mês</div></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="sec-hdr"><h2>Solicitações de Reserva</h2><a href="#">Ver todas →</a></div>
+        <div class="res-card">
+          <div class="res-row">
+            <div class="res-color" style="background:var(--rose)"></div>
+            <div class="res-info">
+              <div class="res-name">Despedida da Camila 🌸</div>
+              <div class="res-meta"><span>📅 15 Ago 2025</span><span>👥 12 pessoas</span><span>💳 Pacote VIP · R$ 2.800</span></div>
+            </div>
+            <span class="badge bc" style="margin-right:8px">Confirmado</span>
+          </div>
+          <div class="res-row">
+            <div class="res-color" style="background:var(--gold)"></div>
+            <div class="res-info">
+              <div class="res-name">Despedida da Isabela</div>
+              <div class="res-meta"><span>📅 22 Ago 2025</span><span>👥 15 pessoas</span><span>💳 Pacote Show · R$ 4.500</span></div>
+            </div>
+            <div class="res-actions">
+              <button class="ra confirm" onclick="confirmRes(this)">✓ Confirmar</button>
+              <button class="ra decline">✕ Recusar</button>
+            </div>
+          </div>
+          <div class="res-row">
+            <div class="res-color" style="background:#1A3A6B"></div>
+            <div class="res-info">
+              <div class="res-name">Despedida da Renata</div>
+              <div class="res-meta"><span>📅 5 Set 2025</span><span>👥 8 pessoas</span><span>💳 Pacote Básico · R$ 1.200</span></div>
+            </div>
+            <div class="res-actions">
+              <button class="ra confirm" onclick="confirmRes(this)">✓ Confirmar</button>
+              <button class="ra decline">✕ Recusar</button>
+            </div>
+          </div>
+          <div class="res-row">
+            <div class="res-color" style="background:var(--cream2)"></div>
+            <div class="res-info">
+              <div class="res-name">Evento Corporativo</div>
+              <div class="res-meta"><span>📅 12 Set 2025</span><span>👥 40 pessoas</span><span>💳 Personalizado · R$ 6.000</span></div>
+            </div>
+            <span class="badge bpend" style="margin-right:8px">Pendente</span>
+          </div>
+        </div>
+
+        <!-- Revenue chart -->
+        <div class="chart-card">
+          <div class="sec-hdr" style="margin-bottom:8px"><h2>Faturamento Mensal</h2><span style="font-size:.7rem;color:var(--ink3)">Últimos 6 meses</span></div>
+          <div class="chart-bars">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$8.4K" style="height:55%;background:var(--cream2)"></div><div class="bar-lbl">Out</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$9.1K" style="height:62%;background:var(--cream2)"></div><div class="bar-lbl">Nov</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$11.2K" style="height:75%"></div><div class="bar-lbl">Dez</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$8.8K" style="height:58%"></div><div class="bar-lbl">Jan</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$12.0K" style="height:80%"></div><div class="bar-lbl">Fev</div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="bar" data-val="R$14.2K" style="height:95%;background:var(--rose)"></div><div class="bar-lbl">Mar</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Calendar -->
+        <div class="sec-hdr"><h2>Agenda — Agosto 2025</h2><button style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:none;font-family:var(--sans)">Bloquear datas</button></div>
+        <div class="cal-card">
+          <div class="cal-month">
+            <button class="cal-nav">←</button>
+            <div class="cal-title">Agosto 2025</div>
+            <button class="cal-nav">→</button>
+          </div>
+          <div class="cal-days">
+            <div class="cal-day-lbl">Dom</div><div class="cal-day-lbl">Seg</div><div class="cal-day-lbl">Ter</div><div class="cal-day-lbl">Qua</div><div class="cal-day-lbl">Qui</div><div class="cal-day-lbl">Sex</div><div class="cal-day-lbl">Sáb</div>
+            <div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div>
+            <div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day available">9</div><div class="cal-day booked">10</div>
+            <div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day booked">15</div><div class="cal-day">16</div><div class="cal-day booked">17</div>
+            <div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day booked">22</div><div class="cal-day">23</div><div class="cal-day available">24</div>
+            <div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day today">29</div><div class="cal-day">30</div><div class="cal-day available">31</div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:12px;font-size:.65rem;color:var(--ink3)">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(232,30,140,.15);display:inline-block"></span>Reservado</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--cream2);display:inline-block"></span>Disponível</span>
+          </div>
+        </div>
+
+        <!-- Reviews summary -->
+        <div class="rev-summary">
+          <div class="sec-hdr" style="margin-bottom:12px"><h2>Avaliações</h2><a href="#" style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none">Ver todas</a></div>
+          <div class="rs-score">
+            <div><div class="rs-big">4.9</div><div class="rs-stars">★★★★★</div><div class="rs-count">87 avaliações</div></div>
+            <div class="rs-bars">
+              <div class="rb-row"><div class="rb-lbl">5</div><div class="rb-bar"><div class="rb-fill" style="width:85%"></div></div><div class="rb-count">74</div></div>
+              <div class="rb-row"><div class="rb-lbl">4</div><div class="rb-bar"><div class="rb-fill" style="width:12%"></div></div><div class="rb-count">10</div></div>
+              <div class="rb-row"><div class="rb-lbl">3</div><div class="rb-bar"><div class="rb-fill" style="width:3%"></div></div><div class="rb-count">2</div></div>
+              <div class="rb-row"><div class="rb-lbl">2</div><div class="rb-bar"><div class="rb-fill" style="width:1%"></div></div><div class="rb-count">1</div></div>
+              <div class="rb-row"><div class="rb-lbl">1</div><div class="rb-bar"><div class="rb-fill" style="width:0%"></div></div><div class="rb-count">0</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function confirmRes(btn){
+  const row=btn.closest('.res-row');
+  row.querySelector('.res-actions').innerHTML='<span class="badge bc">✓ Confirmado</span>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento Confirmado — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--green:#1A6B3A;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--dark);color:#fff;font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(26,107,58,.2),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,150,90,.1),transparent 50%)}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.noise{position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.wrap{width:100%;max-width:480px;padding:20px;position:relative;z-index:10}
+.logo{text-align:center;margin-bottom:40px}
+.logo a{font-family:var(--serif);font-size:1.1rem;font-weight:500;letter-spacing:.15em;color:rgba(255,255,255,.4);text-decoration:none;text-transform:uppercase}
+.logo a span{color:var(--gold)}
+.success-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:48px 40px;text-align:center;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.check-circle{width:80px;height:80px;background:rgba(26,107,58,.2);border:2px solid rgba(26,107,58,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2rem;animation:bounceIn .6s .2s both}
+@keyframes bounceIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success-eyebrow{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#4ADE80;margin-bottom:10px}
+.success-title{font-family:var(--serif);font-size:2.4rem;font-weight:400;color:#fff;line-height:1.08;margin-bottom:8px}
+.success-title em{font-style:italic;color:var(--gold)}
+.success-sub{font-size:.86rem;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:32px}
+.receipt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:24px;margin-bottom:28px;text-align:left}
+.receipt-title{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+.receipt-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.82rem}
+.receipt-row:last-child{margin-bottom:0;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.receipt-row span{color:rgba(255,255,255,.45)}
+.receipt-row strong{color:rgba(255,255,255,.82);font-weight:400}
+.receipt-row.total strong{font-family:var(--serif);font-size:1.2rem;color:var(--gold)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:500}
+.cf{position:absolute;width:8px;height:8px;animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.btns{display:flex;flex-direction:column;gap:8px}
+.btn-primary{display:block;text-align:center;background:var(--rose);color:#fff;font-family:var(--sans);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;padding:15px;transition:background .3s;border:none;cursor:none}
+.btn-primary:hover{background:var(--rose-dark)}
+.btn-sec{display:block;text-align:center;background:transparent;color:rgba(255,255,255,.45);font-family:var(--sans);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:14px;border:1px solid rgba(255,255,255,.1);transition:all .3s;cursor:none}
+.btn-sec:hover{border-color:var(--gold);color:var(--gold)}
+.share-row{display:flex;gap:8px;margin-top:8px}
+.share-btn{flex:1;padding:12px;font-family:var(--sans);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);cursor:none;transition:all .3s;text-align:center;text-decoration:none;display:block}
+.share-btn.wpp{border-color:rgba(37,211,102,.25);color:#25D366}
+.share-btn.wpp:hover{background:#25D366;color:#fff}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise"></div>
+<div class="confetti" id="confetti"></div>
+
+<div class="wrap">
+  <div class="logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <div class="success-card">
+    <div class="check-circle">✓</div>
+    <div class="success-eyebrow">Pagamento confirmado</div>
+    <h1 class="success-title">Pix <em>recebido</em> com sucesso!</h1>
+    <p class="success-sub">O pagamento da Mariana Costa foi confirmado. O grupo foi notificado e o progresso do evento foi atualizado.</p>
+
+    <div class="receipt">
+      <div class="receipt-title">Comprovante</div>
+      <div class="receipt-row"><span>Participante</span><strong>Mariana Costa</strong></div>
+      <div class="receipt-row"><span>Evento</span><strong>Despedida da Camila 🌸</strong></div>
+      <div class="receipt-row"><span>Data</span><strong>09 Mar 2025 · 14:32</strong></div>
+      <div class="receipt-row"><span>Método</span><strong>Pix Instantâneo</strong></div>
+      <div class="receipt-row"><span>ID da transação</span><strong style="font-family:'Courier New',monospace;font-size:.72rem">E3A92B...8F1D</strong></div>
+      <div class="receipt-row total"><span>Total pago</span><strong>R$ 180,00</strong></div>
+    </div>
+
+    <div style="background:rgba(26,107,58,.1);border:1px solid rgba(26,107,58,.2);padding:16px;margin-bottom:24px">
+      <div style="font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#4ADE80;margin-bottom:6px">Progresso do evento</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden"><div style="height:100%;width:83%;background:linear-gradient(to right,var(--gold),#4ADE80);border-radius:3px;transition:width 1s ease" id="prog"></div></div>
+        <div style="font-family:var(--serif);font-size:1.1rem;color:#4ADE80;flex-shrink:0">83%</div>
+      </div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.35);margin-top:6px">R$ 1.800 arrecadados de R$ 2.160 · Faltam 2 pagamentos</div>
+    </div>
+
+    <div class="btns">
+      <a href="split-pagamento.html" class="btn-primary">Ver todos os pagamentos</a>
+      <a href="detalhe-evento.html" class="btn-sec">← Voltar ao evento</a>
+      <div class="share-row">
+        <a href="#" class="share-btn wpp" onclick="cobrarRestantes()">📲 Cobrar os 2 restantes</a>
+        <a href="dashboard.html" class="share-btn">🏠 Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+// Confetti
+(function(){
+  const c=document.getElementById('confetti');
+  const colors=['#B8965A','#E91E8C','#4ADE80','#fff','#C8687A','#D4AF72'];
+  for(let i=0;i<40;i++){
+    const el=document.createElement('div');el.className='cf';
+    el.style.left=Math.random()*100+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*3)+'s';
+    el.style.animationDelay=(Math.random()*2)+'s';
+    el.style.opacity=Math.random()*.8+.2;
+    el.style.borderRadius=Math.random()>.5?'50%':'0';
+    c.appendChild(el);
+  }
+  setTimeout(()=>c.style.display='none',4000);
+})();
+setTimeout(()=>document.getElementById('prog').style.width='83%',300);
+function cobrarRestantes(){window.open('https://wa.me/?text='+encodeURIComponent('Oi! 👋 Lembrete: sua parte da despedida da Camila ainda está pendente — R$ 180,00 via Pix. Obrigada! 💕'),'_blank');}
+</script>
+</body>
+</html>

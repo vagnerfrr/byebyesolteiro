@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Você foi convidada! — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--dark);color:#fff;font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(232,30,140,.18),transparent 55%),radial-gradient(ellipse at 70% 60%,rgba(184,150,90,.12),transparent 50%)}
+body::after{content:'💍';position:fixed;right:-40px;bottom:-40px;font-size:320px;opacity:.04;line-height:1;pointer-events:none}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.noise{position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.card{width:100%;max-width:520px;position:relative;z-index:10;padding:20px}
+.logo{text-align:center;margin-bottom:40px}
+.logo a{font-family:var(--serif);font-size:1.1rem;font-weight:500;letter-spacing:.15em;color:rgba(255,255,255,.5);text-decoration:none;text-transform:uppercase}
+.logo a span{color:var(--gold)}
+.invite-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(20px);padding:48px 44px;text-align:center;margin-bottom:16px;animation:fadeUp .6s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.invite-emoji{font-size:3rem;margin-bottom:16px;display:block}
+.invite-eyebrow{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px}
+.invite-title{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;color:#fff;line-height:1.08;margin-bottom:6px}
+.invite-title em{font-style:italic;color:var(--rose-dark)}
+.invite-sub{font-size:.88rem;color:rgba(255,255,255,.45);margin-bottom:32px;line-height:1.7}
+.event-details{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);margin:0 -44px 32px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.ed-item{padding:20px 16px;background:rgba(255,255,255,.02);text-align:center}
+.ed-icon{font-size:1.2rem;margin-bottom:6px}
+.ed-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:4px}
+.ed-val{font-family:var(--serif);font-size:1.05rem;color:#fff;font-weight:400}
+.organizer{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:16px 20px;margin-bottom:28px;text-align:left}
+.org-av{width:40px;height:40px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.org-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:3px}
+.org-name{font-size:.88rem;color:#fff;font-weight:400}
+.valor-box{background:rgba(184,150,90,.1);border:1px solid rgba(184,150,90,.2);padding:20px;margin-bottom:28px}
+.vb-label{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(184,150,90,.7);margin-bottom:6px}
+.vb-val{font-family:var(--serif);font-size:2.2rem;color:var(--gold);font-weight:400;line-height:1;margin-bottom:3px}
+.vb-sub{font-size:.72rem;color:rgba(255,255,255,.35)}
+.rsvp-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.btn-confirm{background:var(--rose);color:#fff;border:none;padding:16px;font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;cursor:none;transition:background .3s;position:relative;overflow:hidden}
+.btn-confirm::before{content:'';position:absolute;inset:0;background:var(--rose-dark);transform:translateX(-101%);transition:transform .4s cubic-bezier(.77,0,.175,1)}
+.btn-confirm:hover::before{transform:translateX(0)}
+.btn-confirm span{position:relative;z-index:1}
+.btn-decline{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.12);padding:16px;font-family:var(--sans);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;cursor:none;transition:all .3s}
+.btn-decline:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
+.members-preview{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:8px}
+.mp-avatars{display:flex}
+.mp-av{width:28px;height:28px;border-radius:50%;border:2px solid var(--dark);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.7rem;color:#fff;font-weight:500}
+.mp-av:first-child{margin-left:0}
+.mp-text{font-size:.75rem;color:rgba(255,255,255,.4)}
+.step-form{display:none;animation:fadeUp .4s ease}
+.step-form.active{display:block}
+.form-title{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:#fff;margin-bottom:4px}
+.form-sub{font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:24px}
+.fi{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:12px 14px;font-family:var(--sans);font-size:.85rem;color:#fff;outline:none;margin-bottom:12px;transition:border-color .3s}
+.fi::placeholder{color:rgba(255,255,255,.28)}
+.fi:focus{border-color:var(--gold)}
+.pix-confirm{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:24px;text-align:center;margin-top:16px}
+.pc-lbl{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.pc-val{font-family:var(--serif);font-size:2.4rem;color:var(--gold);font-weight:400;margin-bottom:16px}
+.pix-qr{width:100px;height:100px;background:rgba(255,255,255,.08);margin:0 auto 12px;display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px;padding:7px}
+.pc{background:rgba(255,255,255,.8)}.pw{background:transparent}
+.pix-key{font-family:'Courier New',monospace;font-size:.62rem;color:rgba(255,255,255,.35);word-break:break-all;line-height:1.5;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise"></div>
+
+<div class="card">
+  <div class="logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+
+  <!-- STEP 1: Convite -->
+  <div class="step-form active" id="step-invite">
+    <div class="invite-card">
+      <span class="invite-emoji">🌸</span>
+      <div class="invite-eyebrow">Convite especial para você</div>
+      <h1 class="invite-title">Despedida da <em>Camila</em></h1>
+      <p class="invite-sub">Ana Ferreira está organizando a despedida da Camila Santos e você não pode ficar de fora! Confirme sua participação abaixo.</p>
+
+      <div class="event-details">
+        <div class="ed-item"><div class="ed-icon">📅</div><div class="ed-label">Data</div><div class="ed-val">15 Ago 2025</div></div>
+        <div class="ed-item"><div class="ed-icon">📍</div><div class="ed-label">Cidade</div><div class="ed-val">São Paulo</div></div>
+        <div class="ed-item"><div class="ed-icon">👥</div><div class="ed-label">Grupo</div><div class="ed-val">12 amigas</div></div>
+      </div>
+
+      <div class="organizer">
+        <div class="org-av">A</div>
+        <div><div class="org-label">Organizado por</div><div class="org-name">Ana Ferreira</div></div>
+      </div>
+
+      <div class="valor-box">
+        <div class="vb-label">Sua contribuição</div>
+        <div class="vb-val">R$ 180,00</div>
+        <div class="vb-sub">Inclui spa, brunch, van e área VIP · Divisão igualitária</div>
+      </div>
+
+      <div class="rsvp-btns">
+        <button class="btn-confirm" onclick="goStep('step-rsvp')"><span>✓ Confirmar presença</span></button>
+        <button class="btn-decline" onclick="goStep('step-decline')">Não posso ir</button>
+      </div>
+
+      <div class="members-preview">
+        <div class="mp-avatars">
+          <div class="mp-av" style="background:var(--rose)">A</div>
+          <div class="mp-av" style="background:#1A6B3A">M</div>
+          <div class="mp-av" style="background:#4A1A6B">L</div>
+          <div class="mp-av" style="background:#6B4A1A">R</div>
+          <div class="mp-av" style="background:rgba(255,255,255,.15);font-size:.55rem">+5</div>
+        </div>
+        <div class="mp-text">9 amigas já confirmaram</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: RSVP Form -->
+  <div class="step-form" id="step-rsvp">
+    <div class="invite-card" style="text-align:left">
+      <span class="invite-emoji" style="text-align:center;display:block">🎉</span>
+      <div class="form-title">Que ótimo! Vamos confirmar</div>
+      <div class="form-sub">Preencha suas informações para entrar no grupo</div>
+      <input class="fi" type="text" placeholder="Seu nome completo">
+      <input class="fi" type="tel" placeholder="WhatsApp (com DDD)">
+      <input class="fi" type="email" placeholder="Seu e-mail">
+      <div style="margin-bottom:12px">
+        <div style="font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px">Restrição alimentar?</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.5);cursor:none"><input type="checkbox" style="cursor:none"> Vegetariana</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.5);cursor:none"><input type="checkbox" style="cursor:none"> Vegana</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.5);cursor:none"><input type="checkbox" style="cursor:none"> Sem glúten</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:rgba(255,255,255,.5);cursor:none"><input type="checkbox" style="cursor:none"> Nenhuma</label>
+        </div>
+      </div>
+      <button class="btn-confirm" style="width:100%;margin-bottom:8px" onclick="goStep('step-payment')"><span>Confirmar e pagar R$ 180 →</span></button>
+      <button class="btn-decline" style="width:100%" onclick="goStep('step-invite')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Payment -->
+  <div class="step-form" id="step-payment">
+    <div class="invite-card">
+      <span class="invite-emoji">💳</span>
+      <div class="form-title" style="text-align:left">Pagar via Pix</div>
+      <div class="form-sub" style="text-align:left;margin-bottom:20px">Escaneie o QR Code ou copie o código</div>
+      <div class="pix-confirm">
+        <div class="pc-lbl">Valor a pagar</div>
+        <div class="pc-val">R$ 180,00</div>
+        <div class="pix-qr" id="qr"></div>
+        <div class="pix-key">00020126580014BR.GOV.BCB.PIX0136a1b2c3d4-e5f6-7890-abcd-ef12345678905204000053039865405180.005802BR5913ByeByeSolteiro6009SaoPaulo62070503***6304ABCD</div>
+        <button onclick="copyPix(this)" style="width:100%;background:var(--gold);color:#fff;border:none;padding:13px;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:none;margin-bottom:8px;transition:background .3s" onmouseenter="this.style.background='#D4AF72'" onmouseleave="this.style.background='var(--gold)'">📋 Copiar código Pix</button>
+        <button onclick="goStep('step-success')" style="width:100%;background:var(--rose);color:#fff;border:none;padding:13px;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:none;transition:background .3s" onmouseenter="this.style.background='var(--rose-dark)'" onmouseleave="this.style.background='var(--rose)'">✓ Já paguei!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Success -->
+  <div class="step-form" id="step-success">
+    <div class="invite-card">
+      <span class="invite-emoji">🥂</span>
+      <div style="font-family:var(--serif);font-size:2rem;color:#fff;margin-bottom:8px;line-height:1.1">Você está dentro!</div>
+      <p style="font-size:.86rem;color:rgba(255,255,255,.45);margin-bottom:28px;line-height:1.7">Confirmação enviada para o seu WhatsApp. A Ana vai ver sua confirmação em instantes.</p>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:20px;margin-bottom:20px;text-align:left">
+        <div style="font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px">Resumo</div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.9">📅 15 de Agosto de 2025<br>📍 São Paulo, SP<br>👥 12 participantes<br>💰 R$ 180,00 · Pago</div>
+      </div>
+      <a href="login.html" style="display:block;text-align:center;background:var(--rose);color:#fff;font-family:var(--sans);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;padding:15px;margin-bottom:8px;transition:background .3s" onmouseenter="this.style.background='var(--rose-dark)'" onmouseleave="this.style.background='var(--rose)'">Criar minha conta grátis →</a>
+      <p style="font-size:.7rem;color:rgba(255,255,255,.28);text-align:center">Acesse a página do evento, veja o roteiro completo e converse com o grupo</p>
+    </div>
+  </div>
+
+  <!-- STEP: Decline -->
+  <div class="step-form" id="step-decline">
+    <div class="invite-card">
+      <span class="invite-emoji">😢</span>
+      <div style="font-family:var(--serif);font-size:1.8rem;color:#fff;margin-bottom:8px">Que pena...</div>
+      <p style="font-size:.86rem;color:rgba(255,255,255,.45);margin-bottom:24px;line-height:1.7">Avisarei a Ana que você não poderá comparecer. Mas você ainda pode mudar de ideia até 7 dias antes!</p>
+      <button onclick="goStep('step-invite')" style="width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;padding:14px;cursor:none;transition:all .3s;margin-bottom:8px" onmouseenter="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseleave="this.style.borderColor='rgba(255,255,255,.15)';this.style.color='rgba(255,255,255,.6)'">← Voltar e confirmar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function goStep(id){
+  document.querySelectorAll('.step-form').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+(function(){
+  const qr=document.getElementById('qr');
+  const p=[1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,0,1,0,1,0,1,1,0,0,1,0,0,1,1,0,1,0,1,0,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1];
+  p.forEach(v=>{const c=document.createElement('div');c.className=v?'pc':'pw';qr.appendChild(c);});
+})();
+function copyPix(btn){
+  navigator.clipboard.writeText('00020126580014BR.GOV.BCB.PIX...').catch(()=>{});
+  const o=btn.textContent;btn.textContent='✓ Copiado!';
+  setTimeout(()=>btn.textContent=o,2000);
+}
+</script>
+</body>
+</html>

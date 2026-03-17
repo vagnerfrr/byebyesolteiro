@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist — Despedida da Camila · Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh}
+.topbar{background:rgba(247,243,238,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,150,90,.12);padding:18px 44px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tb-left h1{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--ink)}
+.tb-left h1 em{font-style:italic;color:var(--rose-dark)}
+.tb-left .sub{font-size:.72rem;color:var(--ink3);margin-top:2px}
+.tb-right{display:flex;gap:8px}
+.tb-btn{padding:10px 18px;font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s;border:none}
+.tb-dark{background:var(--ink);color:var(--cream)}.tb-dark:hover{background:var(--gold)}
+.tb-out{background:transparent;color:var(--ink2);border:1px solid rgba(26,22,18,.12)}.tb-out:hover{border-color:var(--gold);color:var(--gold)}
+.content{padding:28px 44px;display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+/* Progress */
+.progress-card{background:var(--dark);padding:24px;margin-bottom:20px}
+.pc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pc-title{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.pc-val{font-family:var(--serif);font-size:1.8rem;color:var(--gold);font-weight:400}
+.pc-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.pc-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--rose));border-radius:3px;transition:width .6s ease}
+.pc-sub{font-size:.7rem;color:rgba(255,255,255,.35)}
+/* Filters */
+.filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.fp{padding:7px 16px;border:1px solid rgba(26,22,18,.1);background:transparent;font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);cursor:none;transition:all .3s}
+.fp:hover{border-color:rgba(26,22,18,.2);color:var(--ink)}
+.fp.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+/* Category sections */
+.cat-section{margin-bottom:20px}
+.cat-hdr{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:2px solid rgba(26,22,18,.06);margin-bottom:0;cursor:none}
+.cat-icon{font-size:1.1rem}
+.cat-name{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink)}
+.cat-count{font-size:.68rem;color:var(--ink3);margin-left:auto}
+.cat-toggle{background:none;border:none;cursor:none;font-size:.8rem;color:var(--ink3);transition:transform .3s}
+.cat-toggle.open{transform:rotate(180deg)}
+.items-list{overflow:hidden;max-height:0;transition:max-height .4s ease}
+.items-list.open{max-height:9999px}
+/* Checklist items */
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(26,22,18,.04);transition:background .2s}
+.cl-item:last-child{border-bottom:none}
+.cl-item.done .ci-text{text-decoration:line-through;color:var(--ink3)}
+.cl-item.done .ci-title{color:var(--ink3)}
+.cl-check{width:20px;height:20px;border:1.5px solid rgba(26,22,18,.2);border-radius:2px;cursor:none;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px;background:transparent}
+.cl-check.checked{background:var(--gold);border-color:var(--gold);color:#fff}
+.cl-check.checked::after{content:'✓';font-size:.7rem;font-weight:600}
+.ci-title{font-size:.86rem;font-weight:500;color:var(--ink);margin-bottom:2px;transition:color .2s}
+.ci-sub{font-size:.74rem;color:var(--ink3);line-height:1.5}
+.ci-meta{display:flex;gap:8px;align-items:center;margin-top:5px;flex-wrap:wrap}
+.ci-badge{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;font-family:var(--sans);font-weight:500;border-radius:100px}
+.cb-urgent{background:rgba(220,38,38,.1);color:#DC2626}
+.cb-pending{background:#FFF3CD;color:#856404}
+.cb-done{background:#D1FAE5;color:#065F46}
+.cb-assign{background:rgba(184,150,90,.12);color:var(--gold)}
+.ci-due{font-size:.65rem;color:var(--ink3)}
+/* Add item */
+.add-item-row{display:flex;gap:8px;margin-top:8px;padding:12px 0;border-top:1px dashed rgba(26,22,18,.08)}
+.ai-input{flex:1;background:transparent;border:none;border-bottom:1px solid rgba(26,22,18,.12);padding:8px 0;font-family:var(--sans);font-size:.84rem;color:var(--ink);outline:none;transition:border-color .3s}
+.ai-input::placeholder{color:rgba(26,22,18,.25)}
+.ai-input:focus{border-color:var(--gold)}
+.ai-btn{background:var(--ink);color:var(--cream);border:none;padding:8px 16px;font-family:var(--sans);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;cursor:none;transition:background .3s;flex-shrink:0}
+.ai-btn:hover{background:var(--gold)}
+/* Right sidebar */
+.right-col{}
+.stat-mini{background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px;margin-bottom:12px}
+.sm-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.8rem}
+.sm-row:last-child{margin-bottom:0}
+.sm-row span{color:var(--ink3)}
+.sm-row strong{color:var(--ink2);font-weight:500}
+.sm-row.crit strong{color:#DC2626}
+.ai-card{background:var(--dark);padding:20px;margin-bottom:12px}
+.aic-title{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.aic-suggestion{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);padding:12px;margin-bottom:8px;cursor:none;transition:all .3s}
+.aic-suggestion:hover{border-color:rgba(184,150,90,.25);background:rgba(184,150,90,.05)}
+.ais-text{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:5px}
+.ais-action{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item active">📅 Meus Eventos</a>
+    <span class="snl" style="margin-top:16px">Plataforma</span>
+    <a href="fornecedores.html" class="nav-item">🤝 Fornecedores</a>
+    <a href="split-pagamento.html" class="nav-item">💳 Pagamentos</a>
+    <a href="album-fotos.html" class="nav-item">📸 Álbum</a>
+    <a href="loja-kits.html" class="nav-item">🛍️ Loja de Kits</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <h1>Checklist <em>da Camila</em> ✅</h1>
+      <div class="sub">Despedida da Camila Santos · 15 Ago 2025 · 67 dias restantes</div>
+    </div>
+    <div class="tb-right">
+      <a href="detalhe-evento.html" class="tb-btn tb-out">← Voltar ao Evento</a>
+      <button class="tb-btn tb-dark" onclick="addItemPrompt()">+ Nova Tarefa</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div>
+      <!-- Progress -->
+      <div class="progress-card">
+        <div class="pc-top">
+          <div class="pc-title">Progresso geral</div>
+          <div class="pc-val" id="pct">62%</div>
+        </div>
+        <div class="pc-bar"><div class="pc-fill" id="prog-fill" style="width:62%"></div></div>
+        <div class="pc-sub" id="prog-sub">13 de 21 tarefas concluídas</div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-row">
+        <button class="fp active" onclick="setFilter(this,'all')">Tudo (21)</button>
+        <button class="fp" onclick="setFilter(this,'pending')">⏳ Pendente (8)</button>
+        <button class="fp" onclick="setFilter(this,'urgent')">🔴 Urgente (2)</button>
+        <button class="fp" onclick="setFilter(this,'done')">✓ Concluído (13)</button>
+      </div>
+
+      <!-- LOGÍSTICA -->
+      <div class="cat-section">
+        <div class="cat-hdr" onclick="toggleCat(this)">
+          <span class="cat-icon">🚗</span>
+          <span class="cat-name">Logística & Transporte</span>
+          <span class="cat-count">3/4 concluídos</span>
+          <button class="cat-toggle open">▼</button>
+        </div>
+        <div class="items-list open" id="items-log">
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Reservar van para o grupo</div><div class="ci-sub">Transporte de ida e volta para 12 pessoas</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span><span class="ci-badge cb-assign">Responsável: Ana</span></div></div>
+          </div>
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Confirmar endereço do primeiro stop</div><div class="ci-sub">Espaço Aurora — Vila Olímpia</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Mapear rota completa do roteiro</div><div class="ci-sub">3 paradas: Spa → Brunch → Balada</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Confirmar horário de saída com todas</div><div class="ci-sub">Ponto de encontro: Metrô Vila Olímpia</div><div class="ci-meta"><span class="ci-badge cb-pending">Pendente</span><span class="ci-due">📅 Até 1 Ago</span></div></div>
+          </div>
+          <div class="add-item-row"><input class="ai-input" type="text" placeholder="Adicionar tarefa em Logística..."><button class="ai-btn" onclick="addItem(this)">+</button></div>
+        </div>
+      </div>
+
+      <!-- PAGAMENTOS -->
+      <div class="cat-section">
+        <div class="cat-hdr" onclick="toggleCat(this)">
+          <span class="cat-icon">💳</span>
+          <span class="cat-name">Pagamentos</span>
+          <span class="cat-count">3/4 concluídos</span>
+          <button class="cat-toggle open">▼</button>
+        </div>
+        <div class="items-list open">
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Abrir split de pagamento</div><div class="ci-sub">R$ 2.160 divididos em 12 partes</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Pagar sinal do Espaço Aurora</div><div class="ci-sub">R$ 1.400 · 50% do pacote VIP</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Cobrar participantes em atraso</div><div class="ci-sub">Julia e Priscila ainda não pagaram</div><div class="ci-meta"><span class="ci-badge cb-urgent">🔴 Urgente</span><span class="ci-due">📅 Vence amanhã</span></div></div>
+          </div>
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Pagar van antecipado</div><div class="ci-sub">R$ 380 para reserva da data</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="add-item-row"><input class="ai-input" type="text" placeholder="Adicionar tarefa em Pagamentos..."><button class="ai-btn" onclick="addItem(this)">+</button></div>
+        </div>
+      </div>
+
+      <!-- DECORAÇÃO -->
+      <div class="cat-section">
+        <div class="cat-hdr" onclick="toggleCat(this)">
+          <span class="cat-icon">🎀</span>
+          <span class="cat-name">Decoração & Lembranças</span>
+          <span class="cat-count">2/5 concluídos</span>
+          <button class="cat-toggle open">▼</button>
+        </div>
+        <div class="items-list open">
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Pedir tiara e faixa personalizadas</div><div class="ci-sub">Loja de Kits · entrega em 5 dias úteis</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Comprar balões e decoração</div><div class="ci-sub">Cor: rosa e dourado · tema noiva</div><div class="ci-meta"><span class="ci-badge cb-pending">Pendente</span><span class="ci-badge cb-assign">Responsável: Mariana</span><span class="ci-due">📅 Até 10 Ago</span></div></div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Contratar fotógrafa</div><div class="ci-sub">Para o spa e o brunch</div><div class="ci-meta"><span class="ci-badge cb-urgent">🔴 Urgente</span><span class="ci-due">📅 Definir até 5 Ago</span></div></div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Montar kit lembrança para as convidadas</div><div class="ci-sub">Sachê + mini champanhe + tag</div><div class="ci-meta"><span class="ci-badge cb-pending">Pendente</span><span class="ci-due">📅 Até 12 Ago</span></div></div>
+          </div>
+          <div class="cl-item done">
+            <div class="cl-check checked" onclick="toggle(this)"></div>
+            <div><div class="ci-title">Escolher tema visual do evento</div><div class="ci-sub">Tema definido: "Garden Party Luxo"</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div>
+          </div>
+          <div class="add-item-row"><input class="ai-input" type="text" placeholder="Adicionar tarefa em Decoração..."><button class="ai-btn" onclick="addItem(this)">+</button></div>
+        </div>
+      </div>
+
+      <!-- COMUNICAÇÃO -->
+      <div class="cat-section">
+        <div class="cat-hdr" onclick="toggleCat(this)">
+          <span class="cat-icon">💬</span>
+          <span class="cat-name">Comunicação & Grupo</span>
+          <span class="cat-count">5/5 concluídos</span>
+          <button class="cat-toggle open">▼</button>
+        </div>
+        <div class="items-list open">
+          <div class="cl-item done"><div class="cl-check checked" onclick="toggle(this)"></div><div><div class="ci-title">Criar grupo no WhatsApp</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div></div>
+          <div class="cl-item done"><div class="cl-check checked" onclick="toggle(this)"></div><div><div class="ci-title">Enviar convites digitais</div><div class="ci-sub">12 enviados · 10 confirmados</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div></div>
+          <div class="cl-item done"><div class="cl-check checked" onclick="toggle(this)"></div><div><div class="ci-title">Confirmar restrições alimentares</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div></div>
+          <div class="cl-item done"><div class="cl-check checked" onclick="toggle(this)"></div><div><div class="ci-title">Definir look do grupo</div><div class="ci-sub">Branco de dia, preto/rose à noite</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div></div>
+          <div class="cl-item done"><div class="cl-check checked" onclick="toggle(this)"></div><div><div class="ci-title">Criar playlist colaborativa no Spotify</div><div class="ci-meta"><span class="ci-badge cb-done">Concluído</span></div></div></div>
+          <div class="add-item-row"><input class="ai-input" type="text" placeholder="Adicionar tarefa em Comunicação..."><button class="ai-btn" onclick="addItem(this)">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-col">
+      <!-- Summary -->
+      <div class="stat-mini">
+        <div style="font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Resumo</div>
+        <div class="sm-row"><span>Total de tarefas</span><strong>21</strong></div>
+        <div class="sm-row"><span>Concluídas</span><strong style="color:#1A6B3A">13 ✓</strong></div>
+        <div class="sm-row"><span>Pendentes</span><strong>6</strong></div>
+        <div class="sm-row crit"><span>Urgentes</span><strong>2 🔴</strong></div>
+        <div class="sm-row"><span>Dias restantes</span><strong>67</strong></div>
+      </div>
+
+      <!-- AI Suggestions -->
+      <div class="ai-card">
+        <div class="aic-title">✨ Sugestões da IA</div>
+        <div class="aic-suggestion" onclick="addSuggestion('Reservar mesa no restaurante para o brunch')">
+          <div class="ais-text">Você ainda não reservou o local do brunch. Quer que eu sugira restaurantes na região?</div>
+          <div class="ais-action">+ Adicionar ao checklist</div>
+        </div>
+        <div class="aic-suggestion" onclick="addSuggestion('Criar playlist para o spa')">
+          <div class="ais-text">Eventos com spa normalmente têm playlist relaxante. Criar no Spotify?</div>
+          <div class="ais-action">+ Adicionar ao checklist</div>
+        </div>
+        <div class="aic-suggestion" onclick="addSuggestion('Enviar lembrete final para o grupo')">
+          <div class="ais-text">Faltam 67 dias. Que tal programar um lembrete automático para 7 dias antes?</div>
+          <div class="ais-action">+ Adicionar ao checklist</div>
+        </div>
+      </div>
+
+      <!-- Quick stats card -->
+      <div style="background:#fff;border:1px solid rgba(26,22,18,.06);padding:18px">
+        <div style="font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Por categoria</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink3);margin-bottom:3px"><span>Logística</span><span>3/4</span></div><div style="height:4px;background:var(--cream2);border-radius:2px"><div style="height:100%;width:75%;background:var(--gold);border-radius:2px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink3);margin-bottom:3px"><span>Pagamentos</span><span>3/4</span></div><div style="height:4px;background:var(--cream2);border-radius:2px"><div style="height:100%;width:75%;background:var(--gold);border-radius:2px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink3);margin-bottom:3px"><span>Decoração</span><span>2/5</span></div><div style="height:4px;background:var(--cream2);border-radius:2px"><div style="height:100%;width:40%;background:var(--rose);border-radius:2px"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink3);margin-bottom:3px"><span>Comunicação</span><span>5/5</span></div><div style="height:4px;background:var(--cream2);border-radius:2px"><div style="height:100%;width:100%;background:#1A6B3A;border-radius:2px"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function toggle(btn){
+  btn.classList.toggle('checked');
+  const item=btn.closest('.cl-item');
+  item.classList.toggle('done',btn.classList.contains('checked'));
+  updateProgress();
+}
+function toggleCat(hdr){
+  const list=hdr.nextElementSibling;
+  const tog=hdr.querySelector('.cat-toggle');
+  list.classList.toggle('open');
+  tog.classList.toggle('open');
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.cl-item').length;
+  const done=document.querySelectorAll('.cl-item.done').length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-sub').textContent=done+' de '+total+' tarefas concluídas';
+}
+function setFilter(btn,f){
+  document.querySelectorAll('.fp').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function addItem(btn){
+  const input=btn.previousElementSibling;
+  const txt=input.value.trim();
+  if(!txt)return;
+  const list=btn.closest('.items-list');
+  const div=document.createElement('div');div.className='cl-item';
+  div.innerHTML=`<div class="cl-check" onclick="toggle(this)"></div><div><div class="ci-title">${txt}</div><div class="ci-meta"><span class="ci-badge cb-pending">Pendente</span></div></div>`;
+  list.insertBefore(div,btn.closest('.add-item-row'));
+  input.value='';
+  updateProgress();
+}
+function addSuggestion(txt){
+  alert('Tarefa "'+txt+'" adicionada ao checklist!');
+}
+function addItemPrompt(){
+  const txt=prompt('Nova tarefa:');
+  if(txt){
+    const list=document.querySelector('.items-list.open');
+    if(list){
+      const div=document.createElement('div');div.className='cl-item';
+      div.innerHTML=`<div class="cl-check" onclick="toggle(this)"></div><div><div class="ci-title">${txt}</div><div class="ci-meta"><span class="ci-badge cb-pending">Pendente</span></div></div>`;
+      list.insertBefore(div,list.querySelector('.add-item-row'));
+      updateProgress();
+    }
+  }
+}
+</script>
+</body>
+</html>

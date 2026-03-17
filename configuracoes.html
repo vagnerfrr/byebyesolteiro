@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--cream:#F7F3EE;--cream2:#EDE8E0;--ink:#1A1612;--ink2:#3A342E;--ink3:#6B5F57;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--dark:#1A1A2E;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.6;transition:width .4s,height .4s}
+.sidebar{width:260px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sidebar-logo{padding:32px 28px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-logo a{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:#fff;text-decoration:none;text-transform:uppercase}
+.sidebar-logo a span{color:var(--gold)}
+.sidebar-nav{flex:1;padding:24px 0}
+.snl{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 28px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 28px;color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;transition:all .2s;position:relative;cursor:none}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.active{color:#fff;background:rgba(232,30,140,.1)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rose)}
+.sidebar-bottom{padding:20px 28px;border-top:1px solid rgba(255,255,255,.06)}
+.up{display:flex;align-items:center;gap:12px}
+.uav{width:36px;height:36px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;font-weight:500;flex-shrink:0}
+.un{font-size:.82rem;color:rgba(255,255,255,.8)}.ur{font-size:.65rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:260px;flex:1;min-height:100vh;display:flex}
+.settings-nav{width:220px;background:#fff;border-right:1px solid rgba(26,22,18,.06);padding:28px 0;position:sticky;top:0;height:100vh;flex-shrink:0}
+.sn-title{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink3);padding:0 24px;margin-bottom:8px;display:block}
+.sn-item{display:flex;align-items:center;gap:10px;padding:11px 24px;color:var(--ink3);font-size:.82rem;cursor:none;transition:all .2s;border:none;background:transparent;width:100%;text-align:left;font-family:var(--sans);text-decoration:none}
+.sn-item:hover{color:var(--ink);background:var(--cream)}
+.sn-item.active{color:var(--rose);background:rgba(232,30,140,.05);border-right:2px solid var(--rose)}
+.content{flex:1;padding:36px 48px;overflow-y:auto}
+.page-title{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:4px}
+.page-sub{font-size:.82rem;color:var(--ink3);margin-bottom:32px}
+.settings-section{background:#fff;border:1px solid rgba(26,22,18,.06);margin-bottom:20px;overflow:hidden}
+.ss-hdr{padding:20px 24px;border-bottom:1px solid rgba(26,22,18,.06);display:flex;align-items:center;gap:10px}
+.ss-icon{font-size:1.1rem}
+.ss-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink)}
+.ss-sub{font-size:.72rem;color:var(--ink3);margin-left:auto}
+.ss-body{padding:0}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(26,22,18,.04)}
+.setting-row:last-child{border-bottom:none}
+.sr-label{font-size:.84rem;color:var(--ink2);margin-bottom:2px}
+.sr-sub{font-size:.72rem;color:var(--ink3)}
+.sr-ctrl{flex-shrink:0;display:flex;align-items:center;gap:10px}
+.toggle{width:44px;height:24px;background:var(--cream2);border-radius:12px;cursor:none;position:relative;transition:background .3s;border:none;flex-shrink:0}
+.toggle.on{background:var(--rose)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(20px)}
+.sel{border:1px solid rgba(26,22,18,.12);background:transparent;padding:7px 12px;font-family:var(--sans);font-size:.78rem;color:var(--ink);outline:none;cursor:none;-webkit-appearance:none}
+.link-btn{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:none;font-family:var(--sans);transition:color .2s}
+.link-btn:hover{color:var(--rose)}
+.link-btn.danger{color:#DC2626}
+.link-btn.danger:hover{color:#991B1B}
+.save-bar{display:flex;align-items:center;justify-content:space-between;background:var(--dark);padding:16px 24px;margin-top:0;position:sticky;bottom:0}
+.save-msg{font-size:.75rem;color:rgba(255,255,255,.4)}
+.save-btns{display:flex;gap:8px}
+.sb{padding:10px 20px;font-family:var(--sans);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;cursor:none;transition:all .3s}
+.sb-dark{background:var(--cream);color:var(--ink);border:none}
+.sb-dark:hover{background:var(--gold);color:#fff}
+.sb-out{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.15)}
+.sb-out:hover{border-color:rgba(255,255,255,.3);color:#fff}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Bye <span>Bye</span> Solteiro</a></div>
+  <nav class="sidebar-nav">
+    <span class="snl">Principal</span>
+    <a href="dashboard.html" class="nav-item">🏠 Dashboard</a>
+    <a href="criar-evento.html" class="nav-item">✨ Criar Evento</a>
+    <a href="detalhe-evento.html" class="nav-item">📅 Meus Eventos</a>
+    <span class="snl" style="margin-top:16px">Conta</span>
+    <a href="meu-perfil.html" class="nav-item">👤 Meu Perfil</a>
+    <a href="configuracoes.html" class="nav-item active">⚙️ Configurações</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="up"><div class="uav">A</div><div><div class="un">Ana Ferreira</div><div class="ur">Organizadora</div></div></div>
+  </div>
+</aside>
+<main class="main">
+  <!-- Settings nav -->
+  <nav class="settings-nav">
+    <span class="sn-title">Configurações</span>
+    <button class="sn-item active" onclick="setSec(this,'conta')">👤 Conta</button>
+    <button class="sn-item" onclick="setSec(this,'notif')">🔔 Notificações</button>
+    <button class="sn-item" onclick="setSec(this,'privacidade')">🔒 Privacidade</button>
+    <button class="sn-item" onclick="setSec(this,'pagamentos')">💳 Pagamentos</button>
+    <button class="sn-item" onclick="setSec(this,'aparencia')">🎨 Aparência</button>
+    <span class="sn-title" style="margin-top:16px">Avançado</span>
+    <button class="sn-item" onclick="setSec(this,'integ')">🔗 Integrações</button>
+    <button class="sn-item" onclick="setSec(this,'dados')">📊 Dados & Exportar</button>
+  </nav>
+
+  <div class="content">
+    <!-- CONTA -->
+    <div id="sec-conta">
+      <div class="page-title">Conta</div>
+      <div class="page-sub">Gerencie suas informações de acesso e segurança.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">🔐</span><div class="ss-title">Segurança</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Senha</div><div class="sr-sub">Última alteração há 3 meses</div></div><div class="sr-ctrl"><button class="link-btn">Alterar senha</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Autenticação em dois fatores</div><div class="sr-sub">Proteção extra com SMS ou app autenticador</div></div><div class="sr-ctrl"><button class="toggle" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Sessões ativas</div><div class="sr-sub">2 dispositivos conectados</div></div><div class="sr-ctrl"><button class="link-btn danger">Encerrar todas</button></div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">🔗</span><div class="ss-title">Conexões</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Google</div><div class="sr-sub">ana.ferreira@gmail.com</div></div><div class="sr-ctrl"><span style="font-size:.7rem;color:#1A6B3A">✓ Conectado</span></div></div>
+          <div class="setting-row"><div><div class="sr-label">WhatsApp Business</div><div class="sr-sub">Para receber cobranças e lembretes</div></div><div class="sr-ctrl"><button class="link-btn">Conectar</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Instagram</div><div class="sr-sub">Para compartilhar momentos do evento</div></div><div class="sr-ctrl"><button class="link-btn">Conectar</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICAÇÕES -->
+    <div id="sec-notif" style="display:none">
+      <div class="page-title">Notificações</div>
+      <div class="page-sub">Escolha como e quando você quer ser avisada.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">📧</span><div class="ss-title">E-mail</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Pagamentos confirmados</div><div class="sr-sub">Quando alguém pagar a parte</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Novos participantes</div><div class="sr-sub">Quando alguém aceitar o convite</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Lembretes de evento</div><div class="sr-sub">7 dias e 1 dia antes do evento</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Promoções e novidades</div><div class="sr-sub">Novos fornecedores, ofertas e recursos</div></div><div class="sr-ctrl"><button class="toggle" onclick="this.classList.toggle('on')"></button></div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">📲</span><div class="ss-title">Push & WhatsApp</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Notificações push</div><div class="sr-sub">No aplicativo</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Mensagens WhatsApp</div><div class="sr-sub">Atualizações via WhatsApp</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Frequência</div></div><div class="sr-ctrl"><select class="sel"><option>Imediato</option><option>Resumo diário</option><option>Resumo semanal</option></select></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIVACIDADE -->
+    <div id="sec-privacidade" style="display:none">
+      <div class="page-title">Privacidade</div>
+      <div class="page-sub">Controle quem pode ver suas informações.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">👁️</span><div class="ss-title">Visibilidade</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Perfil público</div><div class="sr-sub">Outros usuários podem ver seu perfil</div></div><div class="sr-ctrl"><button class="toggle" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Mostrar eventos passados</div><div class="sr-sub">No seu perfil público</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Aparecer em buscas</div><div class="sr-sub">Quando fornecedores buscarem organizadoras</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGAMENTOS -->
+    <div id="sec-pagamentos" style="display:none">
+      <div class="page-title">Pagamentos</div>
+      <div class="page-sub">Gerencie chaves Pix e preferências de cobrança.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">🔑</span><div class="ss-title">Chaves Pix para Receber</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">CPF</div><div class="sr-sub">***.456.789-**</div></div><div class="sr-ctrl"><span style="font-size:.7rem;color:#1A6B3A">✓ Ativa</span></div></div>
+          <div class="setting-row"><div><div class="sr-label">E-mail</div><div class="sr-sub">ana.ferreira@gmail.com</div></div><div class="sr-ctrl"><button class="link-btn">Adicionar</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Celular</div><div class="sr-sub">(11) 99876-5432</div></div><div class="sr-ctrl"><button class="link-btn">Adicionar</button></div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">⚙️</span><div class="ss-title">Preferências de Cobrança</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Lembrete automático</div><div class="sr-sub">Cobrar automaticamente por WhatsApp após 3 dias</div></div><div class="sr-ctrl"><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Expiração do Pix</div></div><div class="sr-ctrl"><select class="sel"><option>24 horas</option><option>48 horas</option><option>72 horas</option><option>7 dias</option></select></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APARÊNCIA -->
+    <div id="sec-aparencia" style="display:none">
+      <div class="page-title">Aparência</div>
+      <div class="page-sub">Personalize sua experiência na plataforma.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">🎨</span><div class="ss-title">Tema</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Modo escuro</div><div class="sr-sub">Ativar tema escuro na plataforma</div></div><div class="sr-ctrl"><button class="toggle" onclick="this.classList.toggle('on')"></button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Idioma</div></div><div class="sr-ctrl"><select class="sel"><option>Português (BR)</option><option>English</option><option>Español</option></select></div></div>
+          <div class="setting-row"><div><div class="sr-label">Fuso horário</div></div><div class="sr-ctrl"><select class="sel"><option>America/Sao_Paulo (GMT-3)</option><option>America/Fortaleza (GMT-3)</option><option>America/Manaus (GMT-4)</option></select></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTEGRAÇÕES -->
+    <div id="sec-integ" style="display:none">
+      <div class="page-title">Integrações</div>
+      <div class="page-sub">Conecte a plataforma com outros serviços.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">🔗</span><div class="ss-title">Serviços Externos</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Google Calendar</div><div class="sr-sub">Sincronizar eventos com seu calendário</div></div><div class="sr-ctrl"><button class="link-btn">Conectar</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Spotify</div><div class="sr-sub">Criar playlist para o evento</div></div><div class="sr-ctrl"><button class="link-btn">Conectar</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Zapier</div><div class="sr-sub">Automatizações avançadas</div></div><div class="sr-ctrl"><button class="link-btn">Conectar</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DADOS -->
+    <div id="sec-dados" style="display:none">
+      <div class="page-title">Dados & Exportar</div>
+      <div class="page-sub">Acesse e exporte seus dados da plataforma.</div>
+      <div class="settings-section">
+        <div class="ss-hdr"><span class="ss-icon">📊</span><div class="ss-title">Exportar Dados</div></div>
+        <div class="ss-body">
+          <div class="setting-row"><div><div class="sr-label">Histórico de eventos</div><div class="sr-sub">Todos seus eventos em CSV</div></div><div class="sr-ctrl"><button class="link-btn">Baixar CSV</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Histórico de pagamentos</div><div class="sr-sub">Todos os pagamentos em PDF</div></div><div class="sr-ctrl"><button class="link-btn">Baixar PDF</button></div></div>
+          <div class="setting-row"><div><div class="sr-label">Dados completos da conta</div><div class="sr-sub">Arquivo ZIP com todos os dados</div></div><div class="sr-ctrl"><button class="link-btn">Solicitar exportação</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <div class="save-msg">Alterações salvas automaticamente</div>
+      <div class="save-btns">
+        <button class="sb sb-out" onclick="window.location.href='meu-perfil.html'">Cancelar</button>
+        <button class="sb sb-dark" onclick="saveSettings(this)">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+function setSec(btn,id){
+  document.querySelectorAll('.sn-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('[id^=sec-]').forEach(s=>s.style.display='none');
+  document.getElementById('sec-'+id).style.display='block';
+}
+function saveSettings(btn){
+  const orig=btn.textContent;btn.textContent='✓ Salvo!';btn.style.background='#1A6B3A';btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2000);
+}
+</script>
+</body>
+</html>
