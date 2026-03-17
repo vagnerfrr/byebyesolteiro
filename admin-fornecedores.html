@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Fornecedores — Bye Bye Solteiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0D0D14;--bg2:#13131E;--bg3:#1A1A2E;--bg4:#22223A;--cream:#F7F3EE;--gold:#B8965A;--rose:#E91E8C;--rose-dark:#C8687A;--green:#22C55E;--red:#EF4444;--yellow:#F59E0B;--blue:#3B82F6;--border:rgba(255,255,255,.06);--text:rgba(255,255,255,.85);--text2:rgba(255,255,255,.5);--text3:rgba(255,255,255,.28);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;cursor:none;overflow-x:hidden;display:flex;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.3}
+.cursor{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--rose);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring{position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid var(--rose);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .4s,height .4s}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);min-height:100vh;display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:200}
+.sb-logo{padding:24px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo-icon{width:32px;height:32px;background:var(--rose);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.sb-logo-text{font-family:var(--serif);font-size:1rem;font-weight:500;letter-spacing:.08em;color:var(--text);text-transform:uppercase}
+.sb-logo-text span{color:var(--gold)}
+.sb-admin-badge{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;background:rgba(239,68,68,.15);color:var(--red);padding:2px 7px;border:1px solid rgba(239,68,68,.2);margin-top:2px}
+.sb-nav{flex:1;padding:18px 0;overflow-y:auto}
+.snl{font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--text3);padding:0 22px;margin-bottom:6px;display:block;margin-top:14px}
+.snl:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 22px;color:var(--text2);font-size:.78rem;text-decoration:none;transition:all .2s;position:relative;cursor:none;border:none;background:transparent;width:100%;text-align:left;font-family:var(--sans)}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-item.active{color:var(--text);background:rgba(232,30,140,.08)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--rose)}
+.nav-icon{width:16px;text-align:center;flex-shrink:0;font-size:.9rem}
+.nb{margin-left:auto;background:var(--rose);color:#fff;font-size:.55rem;padding:2px 6px;border-radius:100px;font-weight:600}
+.nb.yellow{background:var(--yellow);color:#000}
+.sb-bottom{padding:16px 22px;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:10px}
+.sb-av{width:30px;height:30px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.82rem;color:#fff}
+.sb-uname{font-size:.78rem;color:var(--text)}.sb-urole{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column}
+.topbar{background:rgba(13,13,20,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tb-breadcrumb{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3)}
+.tb-breadcrumb span{color:var(--text2);margin:0 6px}.tb-breadcrumb strong{color:var(--text)}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-date{font-size:.7rem;color:var(--text3)}
+.tb-notif{width:32px;height:32px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:none;position:relative;font-size:.9rem}
+.tb-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--rose);border:1.5px solid var(--bg)}
+.content{padding:28px 36px;flex:1}
+.page-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.ph-title{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--text);line-height:1}
+.ph-title em{font-style:italic;color:var(--rose-dark)}
+.ph-sub{font-size:.76rem;color:var(--text3);margin-top:4px}
+.ph-actions{display:flex;gap:8px}
+.btn{padding:9px 18px;font-family:var(--sans);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .3s;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn-rose{background:var(--rose);color:#fff}.btn-rose:hover{background:var(--rose-dark)}
+.btn-out{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-out:hover{border-color:var(--gold);color:var(--gold)}
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
+.tab{padding:10px 20px;font-family:var(--sans);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);cursor:none;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .25s}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--text);border-bottom-color:var(--rose)}
+.tab-count{margin-left:6px;background:rgba(255,255,255,.08);font-size:.6rem;padding:1px 6px;border-radius:100px}
+.tab.active .tab-count{background:rgba(232,30,140,.2);color:var(--rose)}
+/* Search & filter bar */
+.filter-bar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
+.search-box{flex:1;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 14px}
+.search-box input{flex:1;background:transparent;border:none;outline:none;font-family:var(--sans);font-size:.8rem;color:var(--text);padding:10px 0}
+.search-box input::placeholder{color:var(--text3)}
+.search-icon{font-size:.9rem;color:var(--text3)}
+.filter-sel{background:var(--bg2);border:1px solid var(--border);padding:9px 14px;font-family:var(--sans);font-size:.72rem;color:var(--text2);outline:none;cursor:none;-webkit-appearance:none;min-width:140px}
+/* Pending section */
+.pending-banner{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.pb-icon{font-size:1.2rem}
+.pb-text{font-size:.8rem;color:var(--text2)}<br>.pb-text strong{color:var(--text)}
+.pb-action{margin-left:auto;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);cursor:none;background:none;border:none;font-family:var(--sans)}
+/* Provider cards */
+.providers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.prov-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;transition:all .3s;cursor:none}
+.prov-card:hover{border-color:rgba(255,255,255,.12);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.pc-img{height:100px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.pc-status{position:absolute;top:8px;right:8px}
+.pc-verified{position:absolute;top:8px;left:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.25);color:var(--green);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:3px 8px}
+.pc-body{padding:14px 16px}
+.pc-cat{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.pc-name{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--text);margin-bottom:3px}
+.pc-city{font-size:.7rem;color:var(--text3);margin-bottom:10px}
+.pc-stats{display:flex;gap:12px;margin-bottom:12px}
+.pcs{font-size:.7rem;color:var(--text3)}.pcs strong{color:var(--text2);font-weight:400}
+.pc-actions{display:flex;gap:6px;border-top:1px solid var(--border);padding-top:12px}
+.pca{flex:1;padding:7px 0;font-family:var(--sans);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;cursor:none;transition:all .25s;border:1px solid var(--border);background:transparent;color:var(--text3)}
+.pca:hover{border-color:var(--gold);color:var(--gold)}
+.pca.approve{border-color:rgba(34,197,94,.25);color:var(--green)}
+.pca.approve:hover{background:var(--green);border-color:var(--green);color:#000}
+.pca.reject{border-color:rgba(239,68,68,.2);color:var(--red)}
+.pca.reject:hover{background:var(--red);border-color:var(--red);color:#fff}
+.pca.suspend{border-color:rgba(245,158,11,.2);color:var(--yellow)}
+.pca.suspend:hover{background:var(--yellow);border-color:var(--yellow);color:#000}
+/* Table view */
+.card{background:var(--bg2);border:1px solid var(--border)}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ch-title{font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--text)}
+.ch-action{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);cursor:none;background:none;border:none;font-family:var(--sans)}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-weight:400}
+.data-table td{font-size:.78rem;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text2);vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;font-size:.58rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:100px;font-family:var(--sans)}
+.b-green{background:rgba(34,197,94,.12);color:var(--green)}
+.b-yellow{background:rgba(245,158,11,.12);color:var(--yellow)}
+.b-red{background:rgba(239,68,68,.12);color:var(--red)}
+.b-gray{background:rgba(255,255,255,.06);color:var(--text3)}
+.td-name{color:var(--text) !important;font-weight:400}
+.stars{color:var(--gold);font-size:.75rem}
+.act-btns{display:flex;gap:4px}
+.ab{padding:5px 10px;font-family:var(--sans);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;cursor:none;border:1px solid var(--border);background:transparent;color:var(--text3);transition:all .25s}
+.ab:hover{border-color:var(--gold);color:var(--gold)}
+.ab.green:hover{border-color:var(--green);color:var(--green)}
+.ab.red:hover{border-color:var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">🎉</div>
+    <div><div class="sb-logo-text">Bye <span>Bye</span> Solteiro</div><div class="sb-admin-badge">Admin Interno</div></div>
+  </div>
+  <nav class="sb-nav">
+    <span class="snl">Visão Geral</span>
+    <a href="admin-dashboard.html" class="nav-item"><span class="nav-icon">📊</span>Dashboard</a>
+    <button class="nav-item"><span class="nav-icon">📈</span>Métricas & KPIs</button>
+    <span class="snl">Usuários</span>
+    <a href="admin-usuarios.html" class="nav-item"><span class="nav-icon">👥</span>Organizadoras</a>
+    <button class="nav-item"><span class="nav-icon">👤</span>Convidadas</button>
+    <span class="snl">Fornecedores</span>
+    <button class="nav-item active"><span class="nav-icon">🏢</span>Fornecedores <span class="nb yellow">7</span></button>
+    <button class="nav-item"><span class="nav-icon">⭐</span>Avaliações</button>
+    <span class="snl">Plataforma</span>
+    <button class="nav-item"><span class="nav-icon">🎉</span>Eventos</button>
+    <button class="nav-item"><span class="nav-icon">💳</span>Transações</button>
+    <button class="nav-item"><span class="nav-icon">🛍️</span>Loja & Pedidos</button>
+    <span class="snl">Financeiro</span>
+    <button class="nav-item"><span class="nav-icon">💰</span>Receita & GMV</button>
+    <button class="nav-item"><span class="nav-icon">↩️</span>Reembolsos <span class="nb">2</span></button>
+    <span class="snl">Sistema</span>
+    <button class="nav-item"><span class="nav-icon">🔧</span>Configurações</button>
+    <button class="nav-item"><span class="nav-icon">📋</span>Logs de Auditoria</button>
+  </nav>
+  <div class="sb-bottom">
+    <div class="sb-user"><div class="sb-av">V</div><div><div class="sb-uname">Vagner</div><div class="sb-urole">Super Admin</div></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="tb-breadcrumb">Admin<span>/</span><strong>Fornecedores</strong></div>
+    <div class="tb-right">
+      <div class="tb-date">Terça, 17 Mar 2026</div>
+      <div class="tb-notif">🔔<div class="tb-dot"></div></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="page-hdr">
+      <div>
+        <div class="ph-title">Gestão de <em>Fornecedores</em></div>
+        <div class="ph-sub">89 ativos · 7 aguardando aprovação · 4 suspensos</div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-out">⬇️ Exportar CSV</button>
+        <button class="btn btn-rose">+ Cadastrar Fornecedor</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="setTab(this)">Todos <span class="tab-count">100</span></button>
+      <button class="tab" onclick="setTab(this)">✓ Ativos <span class="tab-count">89</span></button>
+      <button class="tab" onclick="setTab(this)">⏳ Aguardando <span class="tab-count" style="background:rgba(245,158,11,.2);color:var(--yellow)">7</span></button>
+      <button class="tab" onclick="setTab(this)">⚠️ Suspensos <span class="tab-count">4</span></button>
+    </div>
+
+    <!-- Pending banner -->
+    <div class="pending-banner">
+      <div class="pb-icon">⏳</div>
+      <div class="pb-text"><strong>7 fornecedores aguardando aprovação.</strong> O mais antigo está aguardando há 72h. Revise e decida.</div>
+      <button class="pb-action">Revisar agora →</button>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="search-box"><span class="search-icon">🔍</span><input type="text" placeholder="Buscar fornecedor por nome, cidade ou categoria..."></div>
+      <select class="filter-sel"><option>Todas as categorias</option><option>Bar & Balada</option><option>Spa & Beleza</option><option>Brunch & Jantar</option><option>Viagem</option><option>Experiências</option></select>
+      <select class="filter-sel"><option>Todas as cidades</option><option>São Paulo</option><option>Rio de Janeiro</option><option>Belo Horizonte</option><option>Florianópolis</option></select>
+      <select class="filter-sel"><option>Ordernar por: Avaliação</option><option>Ordernar por: GMV</option><option>Ordernar por: Cadastro</option></select>
+    </div>
+
+    <!-- Pending providers cards -->
+    <div style="font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--yellow);margin-bottom:12px">⏳ Aguardando aprovação (7)</div>
+    <div class="providers-grid">
+      <div class="prov-card">
+        <div class="pc-img" style="background:linear-gradient(135deg,#1A0A2A,#5A1A8A)">💆<div class="pc-status"><span class="badge b-yellow">Pendente 72h</span></div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Spa & Beleza</div>
+          <div class="pc-name">Spa Essence</div>
+          <div class="pc-city">📍 Rio de Janeiro, RJ</div>
+          <div class="pc-stats">
+            <div class="pcs">Capacidade: <strong>Até 20</strong></div>
+            <div class="pcs">Preço: <strong>a partir R$800</strong></div>
+          </div>
+          <div class="pc-actions">
+            <button class="pca approve" onclick="approve(this)">✓ Aprovar</button>
+            <button class="pca" onclick="openReview(this)">👁 Ver</button>
+            <button class="pca reject" onclick="reject(this)">✕ Recusar</button>
+          </div>
+        </div>
+      </div>
+      <div class="prov-card">
+        <div class="pc-img" style="background:linear-gradient(135deg,#0A1A2A,#1A4A6A)">🍽️<div class="pc-status"><span class="badge b-yellow">Pendente 48h</span></div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Brunch & Jantar</div>
+          <div class="pc-name">Villa Brunch Garden</div>
+          <div class="pc-city">📍 Campinas, SP</div>
+          <div class="pc-stats">
+            <div class="pcs">Capacidade: <strong>Até 40</strong></div>
+            <div class="pcs">Preço: <strong>a partir R$600</strong></div>
+          </div>
+          <div class="pc-actions">
+            <button class="pca approve" onclick="approve(this)">✓ Aprovar</button>
+            <button class="pca" onclick="openReview(this)">👁 Ver</button>
+            <button class="pca reject" onclick="reject(this)">✕ Recusar</button>
+          </div>
+        </div>
+      </div>
+      <div class="prov-card">
+        <div class="pc-img" style="background:linear-gradient(135deg,#1A1A0A,#4A4A1A)">✈️<div class="pc-status"><span class="badge b-yellow">Pendente 24h</span></div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Viagem & Passeios</div>
+          <div class="pc-name">Escape Roteiros</div>
+          <div class="pc-city">📍 Gramado, RS</div>
+          <div class="pc-stats">
+            <div class="pcs">Grupos: <strong>5–20</strong></div>
+            <div class="pcs">Preço: <strong>a partir R$1.200</strong></div>
+          </div>
+          <div class="pc-actions">
+            <button class="pca approve" onclick="approve(this)">✓ Aprovar</button>
+            <button class="pca" onclick="openReview(this)">👁 Ver</button>
+            <button class="pca reject" onclick="reject(this)">✕ Recusar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active providers table -->
+    <div style="font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;margin-top:8px">✓ Fornecedores ativos (89)</div>
+    <div class="card">
+      <div class="card-hdr">
+        <div class="ch-title">Lista Completa</div>
+        <div style="display:flex;gap:8px">
+          <button class="ch-action">⬇️ Exportar</button>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Fornecedor</th><th>Categoria</th><th>Cidade</th><th>Avaliação</th><th>Eventos</th><th>GMV Total</th><th>Comissão</th><th>Status</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-name">Espaço Aurora</td>
+            <td>🍸 Bar & Balada</td>
+            <td>Vila Olímpia, SP</td>
+            <td><span class="stars">★★★★★</span> <span style="font-size:.7rem;color:var(--text3)">4.9</span></td>
+            <td>87</td>
+            <td style="color:var(--gold)">R$ 142K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-green">Ativo</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab">Editar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+          <tr>
+            <td class="td-name">Black Label Club</td>
+            <td>🍸 Bar & Balada</td>
+            <td>Vila Madalena, SP</td>
+            <td><span class="stars">★★★★☆</span> <span style="font-size:.7rem;color:var(--text3)">4.4</span></td>
+            <td>63</td>
+            <td style="color:var(--gold)">R$ 98K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-green">Ativo</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab">Editar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+          <tr>
+            <td class="td-name">Spa Belle Femme</td>
+            <td>💆 Spa & Beleza</td>
+            <td>Moema, SP</td>
+            <td><span class="stars">★★★★★</span> <span style="font-size:.7rem;color:var(--text3)">4.8</span></td>
+            <td>52</td>
+            <td style="color:var(--gold)">R$ 87K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-green">Ativo</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab">Editar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+          <tr>
+            <td class="td-name">Osteria del Vino</td>
+            <td>🍽️ Brunch & Jantar</td>
+            <td>Jardins, SP</td>
+            <td><span class="stars">★★★★☆</span> <span style="font-size:.7rem;color:var(--text3)">4.6</span></td>
+            <td>38</td>
+            <td style="color:var(--gold)">R$ 61K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-green">Ativo</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab">Editar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+          <tr>
+            <td class="td-name">Club Rose</td>
+            <td>🍸 Bar & Balada</td>
+            <td>Itaim Bibi, SP</td>
+            <td><span class="stars">★★★☆☆</span> <span style="font-size:.7rem;color:var(--red)">3.2</span></td>
+            <td>18</td>
+            <td style="color:var(--gold)">R$ 22K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-yellow">Em revisão</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab green">Reativar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+          <tr>
+            <td class="td-name">Roteiros da Serra</td>
+            <td>✈️ Viagem</td>
+            <td>Gramado, RS</td>
+            <td><span class="stars">★★★★★</span> <span style="font-size:.7rem;color:var(--text3)">5.0</span></td>
+            <td>12</td>
+            <td style="color:var(--gold)">R$ 48K</td>
+            <td style="color:var(--green)">15%</td>
+            <td><span class="badge b-green">Ativo</span></td>
+            <td><div class="act-btns"><button class="ab">Ver</button><button class="ab">Editar</button><button class="ab red">Suspender</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='16px';cursor.style.height='16px';ring.style.width='48px';ring.style.height='48px'});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='8px';cursor.style.height='8px';ring.style.width='32px';ring.style.height='32px'});
+});
+function setTab(btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+function approve(btn){
+  const card=btn.closest('.prov-card');
+  const actions=btn.closest('.pc-actions');
+  actions.innerHTML='<span class="badge b-green" style="padding:8px 14px;border-radius:0;font-size:.65rem">✓ Aprovado</span>';
+  card.style.opacity='.5';setTimeout(()=>card.remove(),1500);
+}
+function reject(btn){
+  const card=btn.closest('.prov-card');
+  card.style.opacity='.4';setTimeout(()=>card.remove(),800);
+}
+function openReview(btn){}
+</script>
+</body>
+</html>
